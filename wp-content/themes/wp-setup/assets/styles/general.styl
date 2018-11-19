@@ -1,7 +1,7 @@
 html
-  font-family Gilroy, sans-serif
+  font-family 'Gilroy', sans-serif
   font-weight 200
-  bs-font-size(20)
+  font-size "%spx" % (BaseFontSize)
   line-height 120%
   color Black
 
@@ -12,19 +12,19 @@ h1, h2, h3, h4, h5, h6
   font-weight 700
 
 h1
-  bs-font-size(62)
+  rem-font-size(62)
 
 h2
-  bs-font-size(44)
+  rem-font-size(44)
 
 h3
-  font-size BS * 36
+  rem-font-size(36)
 
 h4
-  font-size BS * 26
+  rem-font-size(26)
 
 h5, h6
-  font-size BS * 20
+  rem-font-size(20)
 
 p
   margin 0
@@ -40,5 +40,21 @@ a
   text-decoration none
   color inherit
   transition transform 0.3s ease-out
+  &:hover
+    transform scale(1.03)
   &:active
-    transform scale(0.95)
+    transform scale(0.96)
+
+.desktop_only
+  display block
+
+.mobile_only
+  display none
+
+
+@media BreakpointS
+  .mobile_only
+    display block
+
+  .desktop_only
+    display none

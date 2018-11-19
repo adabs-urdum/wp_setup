@@ -4,15 +4,15 @@
     var $main = $(this);
 
     function init(){
-      cacheDOM();
+      setVars();
       bindEvents();
-    };
+    }
 
-    function cacheDOM(){
-    };
+    function setVars(){
+    }
 
     function bindEvents(){
-    };
+    }
 
     init();
   };

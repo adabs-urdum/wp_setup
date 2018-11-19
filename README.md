@@ -6,7 +6,7 @@
 3. 	Im Terminal `cd "Pfad-Zum-Projektordner"`
 4. 	`git clone ⌘v`
 5. 	`cd "Projektname"`
-6. 	`valet link`
+6. 	`valet link && valet secure`
 7.  Datenbank einrichten. (Sequel Pro öffnen, mit localhost/127.0.0.1 verbinden, neue Datenbank erstellen)
 8. 	`open .`
 9.  Den Inhalt dieses WP Setup Ordners in den Projektordner kopieren.
