@@ -25,7 +25,7 @@ class LiteSpeed_Cache
 
 	const NAME = 'LiteSpeed Cache' ;
 	const PLUGIN_NAME = 'litespeed-cache' ;
-	const PLUGIN_VERSION = '2.6.0.1' ;
+	const PLUGIN_VERSION = '2.8' ;
 
 	const PAGE_EDIT_HTACCESS = 'lscache-edit-htaccess' ;
 
@@ -91,7 +91,7 @@ class LiteSpeed_Cache
 
 		// Check if debug is on
 		$should_debug = intval( self::config( LiteSpeed_Cache_Config::OPID_DEBUG ) ) ;
-		if ( $should_debug == LiteSpeed_Cache_Config::VAL_ON || ( $should_debug == LiteSpeed_Cache_Config::VAL_ON2 && LiteSpeed_Cache_Router::is_admin_ip() ) ) {
+		if ( $should_debug == LiteSpeed_Cache_Config::VAL_ON || $should_debug == LiteSpeed_Cache_Config::VAL_ON2 ) {
 			LiteSpeed_Cache_Log::init() ;
 		}
 
@@ -104,14 +104,18 @@ class LiteSpeed_Cache
 			define( 'LITESPEED_DISABLE_ALL', true ) ;
 		}
 
-		// Register plugin activate/deactivate/uninstall hooks
-		// NOTE: this can't be moved under after_setup_theme, otherwise activation will be bypassed somehow
-		if( is_admin() || defined( 'LITESPEED_CLI' ) ) {
-			$plugin_file = LSCWP_DIR . 'litespeed-cache.php' ;
-			register_activation_hook( $plugin_file, array( 'LiteSpeed_Cache_Activation', 'register_activation' ) ) ;
-			register_deactivation_hook( $plugin_file, array('LiteSpeed_Cache_Activation', 'register_deactivation' ) ) ;
-			register_uninstall_hook( $plugin_file, 'LiteSpeed_Cache_Activation::uninstall_litespeed_cache' ) ;
-		}
+		/**
+		 * Register plugin activate/deactivate/uninstall hooks
+		 * NOTE: this can't be moved under after_setup_theme, otherwise activation will be bypassed somehow
+		 *
+		 * @since  2.7.1	Disabled admin&CLI check to make frontend able to enable cache too
+		 */
+		// if( is_admin() || defined( 'LITESPEED_CLI' ) ) {
+		$plugin_file = LSCWP_DIR . 'litespeed-cache.php' ;
+		register_activation_hook( $plugin_file, array( 'LiteSpeed_Cache_Activation', 'register_activation' ) ) ;
+		register_deactivation_hook( $plugin_file, array('LiteSpeed_Cache_Activation', 'register_deactivation' ) ) ;
+		register_uninstall_hook( $plugin_file, 'LiteSpeed_Cache_Activation::uninstall_litespeed_cache' ) ;
+		// }
 
 		add_action( 'after_setup_theme', array( $this, 'init' ) ) ;
 
@@ -155,6 +159,9 @@ class LiteSpeed_Cache
 		 * @since  2.6 	Added filter to all config values in LiteSpeed_Cache_Config
 		 */
 		do_action( 'litespeed_init' ) ;
+
+		// in `after_setup_theme`, before `init` hook
+		$this->_auto_update() ;
 
 		if ( ! self::config( LiteSpeed_Cache_Config::OPID_HEARTBEAT ) ) {
 			add_action( 'init', 'LiteSpeed_Cache_Log::disable_heartbeat', 1 ) ;
@@ -221,6 +228,39 @@ class LiteSpeed_Cache
 		// Load frontend GUI
 		LiteSpeed_Cache_GUI::get_instance() ;
 
+	}
+
+	/**
+	 * Handle auto update
+	 *
+	 * @since 2.7.2
+	 * @access private
+	 */
+	private function _auto_update()
+	{
+		if ( ! self::config( LiteSpeed_Cache_Config::OPT_AUTO_UPGRADE ) ) {
+			return ;
+		}
+
+		add_filter( 'auto_update_plugin', function( $update, $item ) {
+				if ( $item->slug == 'litespeed-cache' ) {
+					// Check latest stable version allowed to upgrade
+					$url = 'https://wp.api.litespeedtech.com/auto_upgrade_v' ;
+					$response = wp_remote_get( $url, array( 'timeout' => 15 ) ) ;
+					if ( ! is_array( $response ) || empty( $response[ 'body' ] ) ) {
+						return false ;
+					}
+					$auto_v = $response[ 'body' ] ;
+
+					if ( empty( $item->new_version ) || $auto_v !== $item->new_version ) {
+						return false ;
+					}
+
+					return true ;
+				}
+
+				return $update; // Else, use the normal API response to decide whether to update or not
+			}, 10, 2 ) ;
 	}
 
 	/**
@@ -575,6 +615,8 @@ class LiteSpeed_Cache
 		// send PURGE header (Always send regardless of cache setting disabled/enabled)
 		if ( defined( 'LITESPEED_ON' ) && $purge_header ) {
 			@header( $purge_header ) ;
+			LiteSpeed_Cache_Log::log_purge( $purge_header ) ;
+
 			if ( defined( 'LSCWP_LOG' ) ) {
 				LiteSpeed_Cache_Log::debug( $purge_header ) ;
 				if ( $running_info_showing ) {

@@ -3,7 +3,7 @@ Contributors: LiteSpeedTech
 Tags: caching, optimize, performance, pagespeed, seo, speed, image optimize, compress, object cache, redis, memcached, database cleaner
 Requires at least: 4.0
 Tested up to: 4.9.8
-Stable tag: 2.6.0.1
+Stable tag: 2.8
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl.html
 
@@ -248,6 +248,7 @@ Click on the `Advanced View` link at the top of the page, and several more tabs 
 
 = What are the known compatible plugins and themes? =
 
+* [WPML](https://wpml.org/)
 * [bbPress](https://wordpress.org/plugins/bbpress/)
 * [WooCommerce](https://wordpress.org/plugins/woocommerce/)
 * [Contact Form 7](https://wordpress.org/plugins/contact-form-7/)
@@ -275,6 +276,87 @@ Click on the `Advanced View` link at the top of the page, and several more tabs 
 
 == Changelog ==
 
+= 2.8 - Nov 30 2018 =
+* 🌱: ESI shortcodes.
+* 🌱: Mobile crawler.
+* 🌱: Cookie crawler.
+* <strong>API</strong>: Can now add `_litespeed_rm_qs=0` to bypass Remove Query Strings.
+* <strong>Optm</strong>: Removed error log when minify JS failed.
+* 🐞<strong>Core</strong>: Fixed a bug that caused network activation PHP warning.
+* <strong>Media</strong>: Removed canvas checking for WebP to support TOR. (@odeskumair)
+* <strong>Media</strong>: Eliminated potential image placeholder PHP warning.
+* <strong>3rd</strong>: Bypassed Google recaptcha from Remove Query Strings for better compatibility.
+* <strong>IAPI</strong>: Showed destroy timeout details.
+* <strong>Debug</strong>: Moved Google Fonts log to advanced level.
+* <strong>GUI</strong>: Replaced all Learn More links for functions.
+* <strong>GUI</strong>: Cosmetic updates including Emoji.
+* 🕷️: Removed duplicated data in sitemap and blacklist.
+
+= 2.7.3 - Nov 26 2018 =
+* <strong>Optm</strong>: Improved page render speed with Web Font Loader JS library for Load Google Fonts Asynchronously.
+* <strong>Optm</strong>: Directly used JS library files in plugin folder instead of short links `/min/`.
+* <strong>Optm</strong>: Handled exceptions in JS optimization when meeting badly formatted JS.
+* <strong>3rd</strong>: Added Adobe Lightroom support for NextGen Gallery.
+* <strong>3rd</strong>: Improved Postman app support for POST JSON requests.
+* <strong>IAPI</strong>: <strong>US3 server IP changed to 68.183.60.185</strong>.
+
+= 2.7.2 - Nov 19 2018 =
+* 🌱: Auto Upgrade feature.
+* <strong>CDN</strong>: Bypass CDN for cron to avoid WP jQuery deregister warning.
+
+= 2.7.1 - Nov 15 2018 =
+* 🌱<strong>CLI</strong>: Ability to set CDN mapping by `set_option litespeed-cache-cdn_mapping[url][0] https://url`.
+* 🌱<strong>CDN</strong>: Ability to customize default CDN mapping data in default.ini.
+* 🌱<strong>API</strong>: Default.ini now supports both text-area items and on/off options.
+* <strong>Vary</strong>: Refactored Vary and related API.
+* <strong>Vary</strong>: New hook to manipulate vary cookies value.
+* <strong>Core</strong>: Activation now can generate Object Cache file.
+* <strong>Core</strong>: Unified Object Cache/rewrite rules generation process across activation/import/reset/CLI.
+* <strong>Core</strong>: Always hook activation to make activation available through the front end.
+* 🐞<strong>IAPI</strong>: Fixed a bug where environment report gave incorrect image optimization data.
+* 🐞<strong>OLS</strong>: Fixed a bug where login cookie kept showing a warning on OpenLiteSpeed.
+* 🐞<strong>Core</strong>: Fixed a bug where Import/Activation/CLI was missing CDN mapping settings.
+* <strong>API</strong>: <strong>Filters `litespeed_cache_media_lazy_img_excludes/litespeed_optm_js_defer_exc` passed-in parameter is changed from string to array.</strong>
+
+= 2.7 - Nov 2 2018 =
+* 🌱: Separate Purge log for better debugging.
+* <strong>3rd</strong>: Now fully compatible with WPML.
+* <strong>IAPI</strong>: Sped up Image Optimization workflow.
+* <strong>GUI</strong>: Current IP now shows in Debug settings.
+* <strong>GUI</strong>: Space separated placeholder queue list for better look.
+* <strong>IAPI</strong>: <strong>EU3 server IP changed to 165.227.131.98</strong>.
+
+= 2.6.4.1 - Oct 25 2018 =
+* 🔥🐞<strong>Media</strong>: Fixed a bug where the wrong table was used in the Image Optimization process.
+* <strong>IAPI</strong>: IAPI v2.6.4.1.
+
+= 2.6.4 - Oct 24 2018 =
+* 🌱: Ability to create custom default config options per hosting company.
+* 🌱: Ability to generate mobile Critical CSS.
+* 🐞<strong>Media</strong>: Fixed a bug where Network sites could incorrectly override optimized images.
+* 🐞<strong>CDN</strong>: Fixed a bug where image URLs containing backslashes were matched.
+* <strong>Cache</strong>: Added default Mobile UA config setting.
+* <strong>GUI</strong>: Fixed unknown shortcut characters for non-English languages Setting tabs.
+
+= 2.6.3 - Oct 18 2018 =
+* 🌱: Ability to Reset All Options.
+* 🌱<strong>CLI</strong>: Added new `lscache-admin reset_options` command.
+* <strong>GUI</strong>: Added shortcuts for more of the Settings tabs.
+* <strong>Media</strong>: Updated Lazy Load JS library to the most recent version.
+* There is no longer any need to explicitly Save Settings upon Import.
+* Remove Query String now will remove *all* query strings in JS/CSS static files.
+* <strong>IAPI</strong>: Added summary info to debug log.
+
+= 2.6.2 - Oct 11 2018 =
+* <strong>Setting</strong>: Automatically correct invalid numeric values in configuration settings upon submit.
+* 🐞<strong>Media</strong>: Fixed the issue where iframe lazy load was broken by latest Chrome release. (@ofmarconi)
+* 🐞: Fixed an issue with Multisite where subsites failed to purge when only primary site has WooCommerce . (@kierancalv)
+
+= 2.6.1 - Oct 4 2018 =
+* 🌱: Ability to generate separate Critical CSS Cache for Post Types & URIs.
+* <strong>API</strong>: Filter `litespeed_frontend_htaccess` for frontend htaccess path.
+* <strong>Media</strong>: Removed responsive placeholder generation history to save space.
+
 = 2.6.0.1 - Sep 24 2018 =
 * 🔥🐞: Fixed an issue in responsive placeholder generation where redundant history data was being saved and using a lot of space.
 
@@ -293,7 +375,7 @@ Click on the `Advanced View` link at the top of the page, and several more tabs 
 * 🐞: Fixed issue where enabling remote JQuery caused missing jquery-migrate library error.
 
 = 2.5.1 - Sep 11 2018 =
-* 🆕 Responsive placeholder. (@szmigieldesign)
+* 🌱 Responsive placeholder. (@szmigieldesign)
 * Changed CSS::ccss_realpath function scope to private.
 * 🐞 Detected JS filetype before optimizing to avoid PHP source conflict. (@closte #50)
 

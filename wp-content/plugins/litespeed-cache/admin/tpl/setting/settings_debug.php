@@ -5,7 +5,7 @@ if ( ! defined( 'WPINC' ) ) die ;
 
 <h3 class="litespeed-title-short">
 	<?php echo __('Developer Testing', 'litespeed-cache'); ?>
-	<a href="https://www.litespeedtech.com/support/wiki/doku.php/litespeed_wiki:cache:lscwp:configuration:debug" target="_blank" class="litespeed-learn-more"><?php echo __('Learn More', 'litespeed-cache') ; ?></a>
+	<?php $this->learn_more( 'https://www.litespeedtech.com/support/wiki/doku.php/litespeed_wiki:cache:lscwp:configuration:debug', false, 'litespeed-learn-more' ) ; ?>
 </h3>
 
 <table><tbody>
@@ -55,9 +55,13 @@ if ( ! defined( 'WPINC' ) ) die ;
 		<td>
 			<?php $this->build_textarea( LiteSpeed_Cache_Config::OPID_ADMIN_IPS, 30 ) ; ?>
 			<div class="litespeed-desc">
-				<?php echo __( 'Allows listed IPs (one per line) to perform certain actions from their browsers.', 'litespeed-cache' ) ; ?><br />
-				<?php echo sprintf( __( 'More information about the available commands can be found <a %s>here</a>.', 'litespeed-cache' ),
-					'href="https://www.litespeedtech.com/support/wiki/doku.php/litespeed_wiki:cache:lscwp:information:admin-ip-commands" target="_blank"' ) ; ?>
+				<?php echo __( 'Allows listed IPs (one per line) to perform certain actions from their browsers.', 'litespeed-cache' ) ; ?>
+				<?php echo __( 'Your IP', 'litespeed-cache' ) ; ?>: <code><?php echo LiteSpeed_Cache_Router::get_ip() ; ?></code>
+				<br />
+				<?php $this->learn_more(
+					'href="https://www.litespeedtech.com/support/wiki/doku.php/litespeed_wiki:cache:lscwp:information:admin-ip-commands',
+					__( 'More information about the available commands can be found here.', 'litespeed-cache' )
+				) ; ?>
 			</div>
 		</td>
 	</tr>
@@ -102,7 +106,8 @@ if ( ! defined( 'WPINC' ) ) die ;
 			<?php $this->build_switch( LiteSpeed_Cache_Config::OPID_HEARTBEAT ) ; ?>
 			<div class="litespeed-desc">
 				<?php echo __( 'Disable WordPress heartbeat to prevent AJAX calls from breaking debug logging.', 'litespeed-cache' ) ; ?>
-				<font class="litespeed-warning"><?php echo __( 'WARNING', 'litespeed-cache' ) ; ?>:
+				<font class="litespeed-warning">
+					🚨
 					<?php echo __( 'Disabling this may cause WordPress tasks triggered by AJAX to stop working.', 'litespeed-cache' ) ; ?>
 				</font>
 			</div>
@@ -135,7 +140,8 @@ if ( ! defined( 'WPINC' ) ) die ;
 			<?php $this->build_switch( LiteSpeed_Cache_Config::OPID_LOG_FILTERS ) ; ?>
 			<div class="litespeed-desc">
 				<?php echo __( 'Log all WordPress filter hooks.', 'litespeed-cache' ) ; ?>
-				<font class="litespeed-warning"><?php echo __( 'WARNING', 'litespeed-cache' ) ; ?>:
+				<font class="litespeed-warning">
+					🚨
 					<?php echo __( 'Enabling this option will cause log file size to grow quickly.', 'litespeed-cache' ) ; ?>
 				</font>
 			</div>
@@ -148,7 +154,7 @@ if ( ! defined( 'WPINC' ) ) die ;
 			<?php $this->build_textarea2( LiteSpeed_Cache_Config::ITEM_LOG_IGNORE_FILTERS, 30 ) ; ?>
 			<div class="litespeed-desc">
 				<?php echo __( 'Listed filters (one per line) will not be logged.', 'litespeed-cache' ) ; ?>
-				<a href="https://www.litespeedtech.com/support/wiki/doku.php/litespeed_wiki:cache:lscwp:configuration:debug#exclude_filters" target="_blank"><?php echo __('Recommended default value', 'litespeed-cache') ; ?></a>
+				<?php $this->learn_more( 'https://www.litespeedtech.com/support/wiki/doku.php/litespeed_wiki:cache:lscwp:configuration:debug#exclude_filters', __( 'Recommended default value', 'litespeed-cache' ) ) ; ?>
 			</div>
 		</td>
 	</tr>
@@ -159,7 +165,7 @@ if ( ! defined( 'WPINC' ) ) die ;
 			<?php $this->build_textarea2( LiteSpeed_Cache_Config::ITEM_LOG_IGNORE_PART_FILTERS, 30 ) ; ?>
 			<div class="litespeed-desc">
 				<?php echo __( 'Filters containing these strings (one per line) will not be logged.', 'litespeed-cache' ) ; ?>
-				<a href="https://www.litespeedtech.com/support/wiki/doku.php/litespeed_wiki:cache:lscwp:configuration:debug#exclude_part_filters" target="_blank"><?php echo __('Recommended default value', 'litespeed-cache') ; ?></a>
+				<?php $this->learn_more( 'https://www.litespeedtech.com/support/wiki/doku.php/litespeed_wiki:cache:lscwp:configuration:debug#exclude_part_filters', __( 'Recommended default value', 'litespeed-cache' ) ) ; ?>
 			</div>
 		</td>
 	</tr>

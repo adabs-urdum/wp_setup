@@ -33,6 +33,7 @@ class LiteSpeed_Cache_Img_Optm
 	const DB_IMG_OPTIMIZE_DESTROY = 'litespeed-optimize-destroy' ;
 	const DB_IMG_OPTIMIZE_DATA = 'litespeed-optimize-data' ;
 	const DB_IMG_OPTIMIZE_STATUS = 'litespeed-optimize-status' ;
+	const DB_IMG_OPTIMIZE_STATUS_PREPARE = 'prepare' ;
 	const DB_IMG_OPTIMIZE_STATUS_REQUESTED = 'requested' ;
 	const DB_IMG_OPTIMIZE_STATUS_NOTIFIED = 'notified' ;
 	const DB_IMG_OPTIMIZE_STATUS_PULLED = 'pulled' ;
@@ -1234,6 +1235,7 @@ class LiteSpeed_Cache_Img_Optm
 		$data = array() ;
 
 		$data[ 'img_count' ] = $this->img_count() ;
+		$data[ 'optm_summary' ] = $this->summary_info() ;
 
 		$data[ '_wp_attached_file' ] = get_post_meta( $pid, '_wp_attached_file', true ) ;
 		$data[ '_wp_attachment_metadata' ] = get_post_meta( $pid, '_wp_attachment_metadata', true ) ;
@@ -1250,7 +1252,7 @@ class LiteSpeed_Cache_Img_Optm
 					'src'	=> $v->src,
 					'srcpath_md5'	=> $v->srcpath_md5,
 					'src_md5'	=> $v->src_md5,
-					'server'	=> $v->server,
+					'server_info'	=> $v->server_info,
 				) ;
 			}
 		}
@@ -1398,7 +1400,7 @@ class LiteSpeed_Cache_Img_Optm
 		$request_time = get_option( self::DB_IMG_OPTIMIZE_DESTROY ) ;
 		if ( time() - $request_time > 300 ) {
 			LiteSpeed_Cache_Log::debug( '[Img_Optm] terminate DESTROY process due to timeout' ) ;
-			exit( 'Destroy callback timeout ( 300 seconds )' ) ;
+			exit( 'Destroy callback timeout ( 300 seconds )[' . time() . " - $request_time]" ) ;
 		}
 
 		// Start deleting files
@@ -1433,6 +1435,7 @@ class LiteSpeed_Cache_Img_Optm
 
 		// Clear credit info
 		delete_option( self::DB_IMG_OPTM_SUMMARY ) ;
+		delete_option( LiteSpeed_Cache_Config::ITEM_IMG_OPTM_NEED_PULL ) ;
 
 		exit( 'ok' ) ;
 	}

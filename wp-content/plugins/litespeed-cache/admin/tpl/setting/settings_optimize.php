@@ -7,7 +7,7 @@ $last_critical_css_generated = LiteSpeed_Cache_CSS::get_summary() ;
 
 <h3 class="litespeed-title-short">
 	<?php echo __('Optimization Settings', 'litespeed-cache'); ?>
-	<a href="https://www.litespeedtech.com/support/wiki/doku.php/litespeed_wiki:cache:lscwp:configuration:optimize" target="_blank" class="litespeed-learn-more"><?php echo __('Learn More', 'litespeed-cache') ; ?></a>
+	<?php $this->learn_more( 'https://www.litespeedtech.com/support/wiki/doku.php/litespeed_wiki:cache:lscwp:configuration:optimize', false, 'litespeed-learn-more' ) ; ?>
 </h3>
 
 <?php if ( ! LiteSpeed_Cache_Data::optm_available() ) : ?>
@@ -162,7 +162,7 @@ $last_critical_css_generated = LiteSpeed_Cache_CSS::get_summary() ;
 			<div class="litespeed-desc">
 				<?php echo __( 'Automatically generate critical CSS in the background via a cron-based queue.', 'litespeed-cache' ) ; ?>
 				<?php echo sprintf( __( 'If set to %s this is done in the foreground, which may slow down page load.', 'litespeed-cache' ), '<code>' . __('OFF', 'litespeed-cache') . '</code>' ) ; ?>
-				<a href="https://www.litespeedtech.com/support/wiki/doku.php/litespeed_wiki:cache:lscwp:configuration:optimize#generate_critical_css" target="_blank"><?php echo __( 'Learn More', 'litespeed-cache' ) ; ?></a>
+				<?php $this->learn_more( 'https://www.litespeedtech.com/support/wiki/doku.php/litespeed_wiki:cache:lscwp:configuration:optimize#generate_critical_css' ) ; ?>
 			</div>
 
 			<?php if ( $last_critical_css_generated ) : ?>
@@ -179,7 +179,12 @@ $last_critical_css_generated = LiteSpeed_Cache_CSS::get_summary() ;
 					<div class="litespeed-callout-warning">
 						<h4><?php echo __( 'URL list in queue waiting for cron','litespeed-cache' ) ; ?></h4>
 						<p>
-							<?php echo implode( '<br />', $last_critical_css_generated[ 'queue' ] ) ; ?>
+						<?php foreach ( $last_critical_css_generated[ 'queue' ] as $k => $v ) : ?>
+							<?php if ( ! is_array( $v ) ) continue ; ?>
+							<?php echo $v[ 'url' ] ; ?>
+							<?php if ( $v[ 'is_mobile' ] ) echo ' <span title="mobile">📱</span>' ; ?>
+							<br />
+						<?php endforeach ; ?>
 						</p>
 					</p>
 					<a href="<?php echo LiteSpeed_Cache_Utility::build_url( LiteSpeed_Cache::ACTION_CSS, LiteSpeed_Cache_CSS::TYPE_GENERATE_CRITICAL ) ; ?>" class="litespeed-btn-success">
@@ -188,6 +193,29 @@ $last_critical_css_generated = LiteSpeed_Cache_CSS::get_summary() ;
 				<?php endif ; ?>
 			</div>
 			<?php endif ; ?>
+		</td>
+	</tr>
+
+	<tr>
+		<th class="litespeed-padding-left"><?php echo __( 'Separate CCSS Cache Post Types', 'litespeed-cache' ) ; ?></th>
+		<td>
+			<?php $this->build_textarea2( LiteSpeed_Cache_Config::ITEM_OPTM_CCSS_SEPARATE_POSTTYPE ) ; ?>
+			<div class="litespeed-desc">
+				<?php echo __('List post types where each item of that type should have its own CCSS generated.', 'litespeed-cache'); ?>
+				<?php echo sprintf( __( 'For example, if every Page on the site has different formatting, enter %s in the box. Separate critical CSS files will be stored for every Page on the site.', 'litespeed-cache' ), '<code>page</code>' ) ; ?>
+				<?php $this->learn_more( 'https://www.litespeedtech.com/support/wiki/doku.php/litespeed_wiki:cache:lscwp:configuration:optimize#separate_ccss_cache_post_types' ) ; ?>
+			</div>
+		</td>
+	</tr>
+
+	<tr>
+		<th class="litespeed-padding-left"><?php echo __( 'Separate CCSS Cache URIs', 'litespeed-cache' ) ; ?></th>
+		<td>
+			<?php $this->build_textarea2( LiteSpeed_Cache_Config::ITEM_OPTM_CCSS_SEPARATE_URI ) ; ?>
+			<div class="litespeed-desc">
+				<?php echo __( 'Separate critical CSS files will be generated for paths containing these strings.', 'litespeed-cache' ) ; ?>
+				<?php $this->_uri_usage_example() ; ?>
+			</div>
 		</td>
 	</tr>
 
@@ -219,7 +247,7 @@ $last_critical_css_generated = LiteSpeed_Cache_CSS::get_summary() ;
 			<div class="litespeed-desc">
 				<?php echo sprintf( __( 'Improve compatibility with inline JS by preventing jQuery optimization. (Recommended Setting: %s)', 'litespeed-cache' ), __( 'ON', 'litespeed-cache' ) ) ; ?>
 				<br /><font class="litespeed-warning">
-					<?php echo __('NOTE', 'litespeed-cache'); ?>:
+					⚠️
 					<?php echo sprintf( __( 'If there is any JS error related to %1$s when enabled %2$s, please turn on this option.', 'litespeed-cache' ), 'jQuery', __( 'JS Combine', 'litespeed-cache' ) ) ; ?>
 				</font>
 			</div>
@@ -234,7 +262,7 @@ $last_critical_css_generated = LiteSpeed_Cache_CSS::get_summary() ;
 				<?php echo __( 'Prefetching DNS can reduce latency for visiters.', 'litespeed-cache' ) ; ?>
 				<?php echo __( 'For example', 'litespeed-cache' ) ; ?>: <code>//www.example.com</code>
 				<?php echo __( 'One per line.', 'litespeed-cache' ) ; ?>
-				<a href="https://www.litespeedtech.com/support/wiki/doku.php/litespeed_wiki:cache:lscwp:configuration:optimize#dns_prefetch" target="_blank"><?php echo __( 'Learn More', 'litespeed-cache' ) ; ?></a>
+				<?php $this->learn_more( 'https://www.litespeedtech.com/support/wiki/doku.php/litespeed_wiki:cache:lscwp:configuration:optimize#dns_prefetch' ) ; ?>
 			</div>
 		</td>
 	</tr>

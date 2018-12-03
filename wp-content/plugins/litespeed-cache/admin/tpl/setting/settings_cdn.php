@@ -6,23 +6,13 @@ $parsed = parse_url( $home_url ) ;
 $home_url = str_replace( $parsed[ 'scheme' ] . ':', '', $home_url ) ;
 $cdn_url = 'https://cdn.' . substr( $home_url, 2 ) ;
 
-$cdn_mapping = get_option( LiteSpeed_Cache_Config::ITEM_CDN_MAPPING, array() ) ;
-if ( ! $cdn_mapping ) {
-	// generate one by default
-	$cdn_mapping = array( array(
-		LiteSpeed_Cache_Config::ITEM_CDN_MAPPING_URL => '',
-		LiteSpeed_Cache_Config::ITEM_CDN_MAPPING_INC_IMG => false,
-		LiteSpeed_Cache_Config::ITEM_CDN_MAPPING_INC_CSS => false,
-		LiteSpeed_Cache_Config::ITEM_CDN_MAPPING_INC_JS => false,
-		LiteSpeed_Cache_Config::ITEM_CDN_MAPPING_FILETYPE =>  ".aac\n.css\n.eot\n.gif\n.jpeg\n.js\n.jpg\n.less\n.mp3\n.mp4\n.ogg\n.otf\n.pdf\n.png\n.svg\n.ttf\n.woff",
-	) ) ;
-}
+$cdn_mapping = $this->config->get_item( LiteSpeed_Cache_Config::ITEM_CDN_MAPPING ) ;
 
 ?>
 
 <h3 class="litespeed-title-short">
 	<?php echo __('CDN Settings', 'litespeed-cache'); ?>
-	<a href="https://www.litespeedtech.com/support/wiki/doku.php/litespeed_wiki:cache:lscwp:configuration:cdn" target="_blank" class="litespeed-learn-more"><?php echo __('Learn More', 'litespeed-cache') ; ?></a>
+	<?php $this->learn_more( 'https://www.litespeedtech.com/support/wiki/doku.php/litespeed_wiki:cache:lscwp:configuration:cdn', false, 'litespeed-learn-more' ) ; ?>
 </h3>
 
 <table><tbody>
@@ -116,7 +106,7 @@ if ( ! $cdn_mapping ) {
 				<?php echo __( 'Static file type links to be replaced by CDN links.', 'litespeed-cache' ) ; ?>
 				<?php echo __('One per line.', 'litespeed-cache'); ?>
 				<?php echo sprintf( __( 'This will affect all tags containing attributes: %s %s %s.', 'litespeed-cache' ), '<code>src=""</code>', '<code>data-src=""</code>', '<code>href=""</code>' ) ; ?>
-				<a href="https://www.litespeedtech.com/support/wiki/doku.php/litespeed_wiki:cache:lscwp:configuration:cdn#include_file_types" target="_blank"><?php echo __('Default value', 'litespeed-cache') ; ?></a>
+				<?php $this->learn_more( 'https://www.litespeedtech.com/support/wiki/doku.php/litespeed_wiki:cache:lscwp:configuration:cdn#include_file_types', __( 'Default value', 'litespeed-cache' ) ) ; ?>
 			</div>
 
 		</td>

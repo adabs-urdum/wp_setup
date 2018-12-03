@@ -132,16 +132,40 @@ if ( ! $adv_mode ) {
 	<h2 class="litespeed-header">
 	<?php
 		$i = 1 ;
+		$accesskey_set = array() ;
 		foreach ($menu_list as $tab => $val){
 			if ( in_array( $tab, $hide_tabs ) ) {
 				continue ;
 			}
-			$accesskey = $i <= 9 ? "litespeed-accesskey='$i'" : '' ;
+
+			$accesskey = '' ;
+			if ( $i <= 9 ) {
+				$accesskey = "litespeed-accesskey='$i'" ;
+			}
+			else {
+				$tmp = strtoupper( substr( $tab, 0, 1 ) ) ;
+				if ( ! in_array( $tmp, $accesskey_set ) ) {
+					$accesskey_set[] = $tmp ;
+					$accesskey = "litespeed-accesskey='$tmp'" ;
+				}
+			}
+
 			echo "<a class='litespeed-tab' href='#$tab' data-litespeed-tab='$tab' $accesskey>$val</a>" ;
 			$i ++ ;
 		}
 		foreach ($tp_tabs as $val){
-			$accesskey = $i <= 9 ? "litespeed-accesskey='$i'" : '' ;
+			$accesskey = '' ;
+			if ( $i <= 9 ) {
+				$accesskey = "litespeed-accesskey='$i'" ;
+			}
+			else {
+				$tmp = strtoupper( substr( $val[ 'slug' ], 0, 1 ) ) ;
+				if ( ! in_array( $tmp, $accesskey_set ) ) {
+					$accesskey_set[] = $tmp ;
+					$accesskey = "litespeed-accesskey='$tmp'" ;
+				}
+			}
+
 			echo "<a class='litespeed-tab' href='#$val[slug]' data-litespeed-tab='$val[slug]' $accesskey>$val[title]</a>" ;
 			$i ++ ;
 		}
@@ -183,13 +207,16 @@ if ( ! $adv_mode ) {
 	echo "<div class='litespeed-top20'></div>" ;
 
 	if ( $this->get_disable_all() ) {
-		submit_button(__('Save Changes', 'litespeed-cache'), 'litespeed-btn-primary', 'litespeed-submit', true, array('disabled' => true)) ;
+		submit_button(__('Save Changes', 'litespeed-cache'), 'litespeed-btn-success', 'litespeed-submit', true, array('disabled' => true)) ;
 	}
 	else {
-		submit_button(__('Save Changes', 'litespeed-cache'), 'litespeed-btn-primary', 'litespeed-submit') ;
+		submit_button(__('Save Changes', 'litespeed-cache'), 'litespeed-btn-success', 'litespeed-submit') ;
 	}
 
 	?>
+
+	<a href="admin.php?page=lscache-import" class="litespeed-btn-danger litespeed-float-resetbtn"><?php echo __( 'Reset All Settings', 'litespeed-cache' ) ; ?></a>
+
 	</form>
 	</div>
 </div>

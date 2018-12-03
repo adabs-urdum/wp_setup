@@ -4,7 +4,7 @@ if ( ! defined( 'WPINC' ) ) die ;
 
 <h3 class="litespeed-title-short">
 	<?php echo __('Cache Control Settings', 'litespeed-cache'); ?>
-	<a href="https://www.litespeedtech.com/support/wiki/doku.php/litespeed_wiki:cache:lscwp:configuration:cache" target="_blank" class="litespeed-learn-more"><?php echo __('Learn More', 'litespeed-cache') ; ?></a>
+	<?php $this->learn_more( 'https://www.litespeedtech.com/support/wiki/doku.php/litespeed_wiki:cache:lscwp:configuration:cache', false, 'litespeed-learn-more' ) ; ?>
 </h3>
 
 <?php $this->cache_disabled_warning() ; ?>
@@ -64,14 +64,7 @@ if ( ! defined( 'WPINC' ) ) die ;
 			<?php $this->build_textarea2( LiteSpeed_Cache_Config::ITEM_CACHE_URI_PRIV ) ; ?>
 			<div class="litespeed-desc">
 				<?php echo __('URI Paths containing these strings will NOT be cached as public.', 'litespeed-cache'); ?>
-				<?php echo __('The URLs will be compared to the REQUEST_URI server variable.', 'litespeed-cache'); ?>
-				<?php echo sprintf( __( 'For example, for %s, %s can be used here.', 'litespeed-cache' ), '<code>/mypath/mypage?aa=bb</code>', '<code>mypage?aa=</code>' ) ; ?>
-				<br />
-				<i>
-					<?php echo sprintf( __( 'To match the beginning, add %s to the beginning of the item.', 'litespeed-cache' ), '<code>^</code>' ) ; ?>
-					<?php echo sprintf( __( 'To do an exact match, add %s to the end of the URL.', 'litespeed-cache' ), '<code>$</code>' ) ; ?>
-					<?php echo __('One per line.', 'litespeed-cache'); ?>
-				</i>
+				<?php $this->_uri_usage_example() ; ?>
 			</div>
 		</td>
 	</tr>
@@ -83,7 +76,7 @@ if ( ! defined( 'WPINC' ) ) die ;
 			<div class="litespeed-desc">
 				<?php echo __('Ignore certain query strings when caching.', 'litespeed-cache'); ?>
 				<?php echo sprintf( __( 'For example, to drop parameters beginning with %s, %s can be used here.', 'litespeed-cache' ), '<code>utm</code>', '<code>utm*</code>' ) ; ?>
-				<a href="https://www.litespeedtech.com/support/wiki/doku.php/litespeed_wiki:cache:drop_query_string" target="_blank"><?php echo __('Learn More', 'litespeed-cache') ; ?></a>
+				<?php $this->learn_more( 'https://www.litespeedtech.com/support/wiki/doku.php/litespeed_wiki:cache:drop_query_string' ) ; ?>
 
 				<br />
 				<i>

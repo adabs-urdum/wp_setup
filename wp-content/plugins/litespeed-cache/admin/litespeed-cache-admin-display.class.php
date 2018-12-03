@@ -952,10 +952,45 @@ class LiteSpeed_Cache_Admin_Display
 
 		echo '<font class="litespeed-success"> '
 			. __( 'API', 'litespeed-cache' ) . ': '
-			. sprintf( __( 'Server variable(s) %s available to override this setting.', 'litespeed-cache' ), $s )
-			. ' <a href="https://www.litespeedtech.com/support/wiki/doku.php/litespeed_wiki:cache:lscwp:configuration:server_variables" target="_blank">'
-				. __( 'Learn More', 'litespeed-cache' )
-			. '</a>' ;
+			. sprintf( __( 'Server variable(s) %s available to override this setting.', 'litespeed-cache' ), $s ) ;
+
+		$this->learn_more( 'https://www.litespeedtech.com/support/wiki/doku.php/litespeed_wiki:cache:lscwp:configuration:server_variables' ) ;
+	}
+
+	/**
+	 * Display learn more link
+	 *
+	 * @since  2.6.1
+	 * @access public
+	 */
+	public function learn_more( $link, $title = false, $class = false )
+	{
+		if ( $class ) {
+			$class = " class='$class' " ;
+		}
+
+		if ( ! $title ) {
+			$title = __( 'Learn More', 'litespeed-cache' ) ;
+		}
+
+		echo " <a href='$link' target='_blank' $class>$title</a>" ;
+	}
+
+	/**
+	 * Display URI setting example
+	 *
+	 * @since  2.6.1
+	 * @access private
+	 */
+	private function _uri_usage_example()
+	{
+		echo __( 'The URLs will be compared to the REQUEST_URI server variable.', 'litespeed-cache' ) ;
+		echo ' ' . sprintf( __( 'For example, for %s, %s can be used here.', 'litespeed-cache' ), '<code>/mypath/mypage?aa=bb</code>', '<code>mypage?aa=</code>' ) ;
+		echo '<br /><i>' ;
+			echo sprintf( __( 'To match the beginning, add %s to the beginning of the item.', 'litespeed-cache' ), '<code>^</code>' ) ;
+			echo ' ' . sprintf( __( 'To do an exact match, add %s to the end of the URL.', 'litespeed-cache' ), '<code>$</code>' ) ;
+			echo ' ' . __( 'One per line.', 'litespeed-cache' ) ;
+		echo '</i>' ;
 	}
 
 	/**

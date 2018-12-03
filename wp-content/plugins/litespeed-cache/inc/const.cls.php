@@ -27,6 +27,7 @@ class LiteSpeed_Cache_Const
 	const ITEM_OBJECT_GLOBAL_GROUPS = 'litespeed-object_global_groups' ;
 	const ITEM_OBJECT_NON_PERSISTENT_GROUPS = 'litespeed-object_non_persistent_groups' ;
 	const ITEM_CRWL_AS_UIDS = 'litespeed-crawler-as-uids' ;
+	const ITEM_CRWL_COOKIES = 'litespeed-crawler-cookies' ;
 	const ITEM_ADV_PURGE_ALL_HOOKS = 'litespeed-adv-purge_all_hooks' ;
 	const ITEM_CDN_ORI_DIR = 'litespeed-cdn-ori_dir' ;
 	const ITEM_MEDIA_WEBP_ATTRIBUTE = 'litespeed-media-webp_attribute' ;
@@ -34,6 +35,8 @@ class LiteSpeed_Cache_Const
 	const ITEM_CACHE_URI_PRIV = 'litespeed-cache_uri_priv' ;
 	const ITEM_OPTM_EXCLUDES = 'litespeed-optm_excludes' ;
 	const ITEM_EXCLUDES_URI = 'litespeed-excludes_uri' ;
+	const ITEM_OPTM_CCSS_SEPARATE_POSTTYPE = 'litespeed-optm-ccss-separate_posttype' ;
+	const ITEM_OPTM_CCSS_SEPARATE_URI = 'litespeed-optm-css-separate_uri' ;
 
 	const ITEM_SETTING_MODE = 'litespeed-setting-mode' ;
 	const ITEM_CRAWLER_HASH = 'litespeed-crawler-hash' ;
@@ -65,6 +68,7 @@ class LiteSpeed_Cache_Const
 	const OPID_VERSION = 'version' ;
 	const OPID_ENABLED_RADIO = 'radio_select' ;
 
+	const OPT_AUTO_UPGRADE = 'auto_upgrade' ;
 	const OPID_CACHE_PRIV = 'cache_priv' ;
 	const OPID_CACHE_COMMENTER = 'cache_commenter' ;
 	const OPID_CACHE_REST = 'cache_rest' ;
@@ -254,12 +258,15 @@ class LiteSpeed_Cache_Const
 			self::ITEM_OBJECT_GLOBAL_GROUPS,
 			self::ITEM_OBJECT_NON_PERSISTENT_GROUPS,
 			self::ITEM_CRWL_AS_UIDS,
+			self::ITEM_CRWL_COOKIES,
 			self::ITEM_ADV_PURGE_ALL_HOOKS,
 			self::ITEM_FORCE_CACHE_URI,
 			self::ITEM_CACHE_URI_PRIV,
 			self::ITEM_OPTM_EXCLUDES,
 			self::ITEM_EXCLUDES_URI,
 			self::ITEM_MEDIA_WEBP_ATTRIBUTE,
+			self::ITEM_OPTM_CCSS_SEPARATE_POSTTYPE,
+			self::ITEM_OPTM_CCSS_SEPARATE_URI,
 		) ;
 	}
 
@@ -269,9 +276,53 @@ class LiteSpeed_Cache_Const
 	 * @since 1.8
 	 * @access public
 	 */
-	public function default_item( $k )
+	public function default_item( $item )
 	{
-		switch ( $k ) {
+		/**
+		 * Allow terms default value
+		 * @since  2.7.1
+		 */
+		if ( file_exists( LSCWP_DIR . 'data/const.default.ini' ) ) {
+			$default_ini_cfg = parse_ini_file( LSCWP_DIR . 'data/const.default.ini', true ) ;
+
+			if ( ! empty( $default_ini_cfg[ $item ] ) ) {
+
+				/**
+				 * Special handler for CDN_mapping
+				 *
+				 * format in .ini:
+				 * 		[litespeed-cache-cdn_mapping]
+				 *   	url[0] = 'https://example.com/'
+				 *     	inc_js[0] = true
+				 *
+				 * format out:
+				 * 		[0] = [ 'url' => 'https://example.com', 'inc_js' => true ]
+				 */
+				if ( $item == self::ITEM_CDN_MAPPING ) {
+					$mapping_fields = array(
+						self::ITEM_CDN_MAPPING_URL,
+						self::ITEM_CDN_MAPPING_INC_IMG,
+						self::ITEM_CDN_MAPPING_INC_CSS,
+						self::ITEM_CDN_MAPPING_INC_JS,
+						self::ITEM_CDN_MAPPING_FILETYPE
+					) ;
+					$cdn_mapping = array() ;
+					foreach ( $default_ini_cfg[ $item ][ self::ITEM_CDN_MAPPING_URL ] as $k => $v ) {// $k is numeric
+						$this_row = array() ;
+						foreach ( $mapping_fields as $v2 ) {
+							$this_row[ $v2 ] = ! empty( $default_ini_cfg[ $item ][ $v2 ][ $k ] ) ? $default_ini_cfg[ $item ][ $v2 ][ $k ] : false ;
+						}
+						$cdn_mapping[ $k ] = $this_row ;
+					}
+
+					return $cdn_mapping ;
+				}
+
+				return $default_ini_cfg[ $item ] ;
+			}
+		}
+
+		switch ( $item ) {
 			case self::ITEM_OBJECT_GLOBAL_GROUPS :
 				return "users\nuserlogins\nusermeta\nuser_meta\nsite-transient\nsite-options\nsite-lookup\nblog-lookup\nblog-details\nrss\nglobal-posts\nblog-id-cache" ;
 
@@ -290,6 +341,12 @@ class LiteSpeed_Cache_Const
 						"img.data-src\n" .
 						"div.data-large_image\n" .
 						"img.retina_logo_url" ;
+
+			case self::ITEM_LOG_IGNORE_FILTERS :
+				return "gettext\ngettext_with_context\nget_the_terms\nget_term" ;
+
+			case self::ITEM_LOG_IGNORE_PART_FILTERS :
+				return "i18n\nlocale\nsettings\noption" ;
 
 			default :
 				break ;
@@ -311,11 +368,12 @@ class LiteSpeed_Cache_Const
 			self::OPID_VERSION => LiteSpeed_Cache::PLUGIN_VERSION,
 			self::NETWORK_OPID_ENABLED => false,
 			self::NETWORK_OPID_USE_PRIMARY => false,
+			self::OPT_AUTO_UPGRADE => false,
 			self::OPID_PURGE_ON_UPGRADE => true,
 			self::OPID_CACHE_FAVICON => true,
 			self::OPID_CACHE_RES => true,
 			self::OPID_CACHE_MOBILE => 0, // todo: why not false
-			self::ID_MOBILEVIEW_LIST => false,
+			self::ID_MOBILEVIEW_LIST => 'Mobile|Android|Silk/|Kindle|BlackBerry|Opera\ Mini|Opera\ Mobi',
 			self::OPID_CACHE_OBJECT => false,
 			self::OPID_CACHE_OBJECT_KIND => false,
 			self::OPID_CACHE_OBJECT_HOST => 'localhost',
@@ -371,6 +429,7 @@ class LiteSpeed_Cache_Const
 		$default_options = array(
 			self::OPID_VERSION => LiteSpeed_Cache::PLUGIN_VERSION,
 			self::OPID_ENABLED_RADIO => $default_radio,
+			self::OPT_AUTO_UPGRADE => false,
 			self::OPID_PURGE_ON_UPGRADE => true,
 			self::OPID_CACHE_PRIV => true,
 			self::OPID_CACHE_COMMENTER => true,
@@ -381,7 +440,7 @@ class LiteSpeed_Cache_Const
 			self::OPID_CACHE_FAVICON => true,
 			self::OPID_CACHE_RES => true,
 			self::OPID_CACHE_MOBILE => false,
-			self::ID_MOBILEVIEW_LIST => false,
+			self::ID_MOBILEVIEW_LIST => 'Mobile|Android|Silk/|Kindle|BlackBerry|Opera\ Mini|Opera\ Mobi',
 			self::OPID_CACHE_OBJECT => false,
 			self::OPID_CACHE_OBJECT_KIND => false,
 			self::OPID_CACHE_OBJECT_HOST => 'localhost',
@@ -499,12 +558,37 @@ class LiteSpeed_Cache_Const
 			self::CRWL_DOMAIN_IP => '',
 			self::CRWL_CUSTOM_SITEMAP => '',
 			self::CRWL_CRON_ACTIVE => false,
-				) ;
+		) ;
 
 		if ( LSWCP_ESI_SUPPORT ) {
 			$default_options[self::OPID_ESI_ENABLE] = false ;
 			$default_options[self::OPID_ESI_CACHE_ADMBAR] = true ;
 			$default_options[self::OPID_ESI_CACHE_COMMFORM] = true ;
+		}
+
+		// Load default.ini
+		if ( file_exists( LSCWP_DIR . 'data/const.default.ini' ) ) {
+			$default_ini_cfg = parse_ini_file( LSCWP_DIR . 'data/const.default.ini', true ) ;
+			foreach ( $default_options as $k => $v ) {
+				if ( ! array_key_exists( $k, $default_ini_cfg ) ) {
+					continue ;
+				}
+
+				// Parse value in ini file
+				$ini_v = $default_ini_cfg[ $k ] ;
+				if ( is_bool( $v ) ) { // Keep value type constantly
+					$ini_v = (bool) $default_ini_cfg[ $k ] ;
+				}
+
+				if ( $ini_v == $v ) {
+					continue ;
+				}
+
+				$default_options[ $k ] = $ini_v ;
+			}
+
+			// Handle items in $this->default_item()
+
 		}
 
 		if ( ! $include_thirdparty ) {

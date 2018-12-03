@@ -109,6 +109,14 @@ class LiteSpeed_Cache_Router
 		}
 
 		/**
+		 * Bypass cron to avoid deregister jq notice `Do not deregister the <code>jquery-core</code> script in the administration area.`
+		 * @since  2.7.2
+		 */
+		if ( defined( 'DOING_CRON' ) ) {
+			$can = false ;
+		}
+
+		/**
 		 * Bypass login/reg page
 		 * @since  1.6
 		 */
@@ -160,7 +168,7 @@ class LiteSpeed_Cache_Router
 		LiteSpeed_Cache_Log::debug( '[Router] starting crawler role validation' ) ;
 
 		// Check if is from crawler
-		if ( empty( $_SERVER[ 'HTTP_USER_AGENT' ] ) || $_SERVER[ 'HTTP_USER_AGENT' ] !== Litespeed_Crawler::FAST_USER_AGENT ) {
+		if ( empty( $_SERVER[ 'HTTP_USER_AGENT' ] ) || strpos( $_SERVER[ 'HTTP_USER_AGENT' ], Litespeed_Crawler::FAST_USER_AGENT ) !== 0 ) {
 			LiteSpeed_Cache_Log::debug( '[Router] user agent not match' ) ;
 			return ;
 		}

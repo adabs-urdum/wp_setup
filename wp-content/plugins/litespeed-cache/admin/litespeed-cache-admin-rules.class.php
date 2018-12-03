@@ -63,6 +63,10 @@ class LiteSpeed_Cache_Admin_Rules
 	private function __construct()
 	{
 		$this->path_set() ;
+		// Filter for frontend&backend htaccess path
+		$this->frontend_htaccess = apply_filters( 'litespeed_frontend_htaccess', $this->frontend_htaccess ) ;
+		$this->backend_htaccess = apply_filters( 'litespeed_backend_htaccess', $this->backend_htaccess ) ;
+
 		clearstatcache() ;
 
 		// frontend .htaccess privilege
@@ -434,8 +438,14 @@ class LiteSpeed_Cache_Admin_Rules
 		if( substr($rule, 0, strlen('RewriteRule .? - [E=')) !== 'RewriteRule .? - [E=' ) {//todo: use regex
 			return false ;
 		}
+		
+		$rule_cookie = substr( $rule, strlen( 'RewriteRule .? - [E=' ), -1 ) ;
 
-		return substr($rule, strlen('RewriteRule .? - [E='), -1) ;//todo:user trim('"')
+		if ( LITESPEED_SERVER_TYPE === 'LITESPEED_SERVER_OLS' ) {
+			return trim( $rule_cookie, '"' ) ;
+		}
+		
+		return $rule_cookie ;
 	}
 
 	/**
