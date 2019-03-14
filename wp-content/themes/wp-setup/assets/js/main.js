@@ -17,6 +17,34 @@
     init();
   };
 
+  $.fn.customGoogleAnalyticsEvents = function() {
+    let $main = $(this),
+        $header_contact;
+
+    function init(){
+      setVars();
+      bindEvents();
+    }
+
+    function setVars(){
+      $header_contact = $('.header__contact_link');
+    }
+
+    function bindEvents(){
+      $header_contact.on('click', sendHeaderContactClicked);
+    }
+
+    function sendHeaderContactClicked(e){
+      const $button = $(this);
+      const type = $button.data('type');
+
+      // Send header contact clicked
+      // ga('send', 'event', 'Header', 'contact button clicked', type, $button);
+    }
+
+    init();
+  };
+
   function WebGLThreeJS(){
     var scene,
         camera,
