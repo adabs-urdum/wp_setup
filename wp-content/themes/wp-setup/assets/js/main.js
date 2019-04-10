@@ -19,7 +19,7 @@
 
   $.fn.customGoogleAnalyticsEvents = function() {
     let $main = $(this),
-        $header_contact;
+        $button;
 
     function init(){
       setVars();
@@ -27,14 +27,13 @@
     }
 
     function setVars(){
-      $header_contact = $('.header__contact_link');
     }
 
     function bindEvents(){
-      $header_contact.on('click', sendHeaderContactClicked);
+      $button.on('click', handleClick);
     }
 
-    function sendHeaderContactClicked(e){
+    function handleClick(e){
       const $button = $(this);
       const type = $button.data('type');
 
