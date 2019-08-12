@@ -1,13 +1,13 @@
-=== LiteSpeed Cache  ===
+=== LiteSpeed Cache ===
 Contributors: LiteSpeedTech
 Tags: caching, optimize, performance, pagespeed, seo, speed, image optimize, compress, object cache, redis, memcached, database cleaner
 Requires at least: 4.0
-Tested up to: 4.9.8
-Stable tag: 2.8
+Tested up to: 5.2.2
+Stable tag: 2.9.8.4
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl.html
 
-Speed up your page-load times. Get a faster site with high-performance page caching from LiteSpeed Cache. Easy to set up. Easy to use.
+All-in-one unbeatable acceleration & PageSpeed improvement: caching, image/CSS/JS optimization...
 
 == Description ==
 
@@ -18,12 +18,13 @@ LSCWP supports WordPress Multisite and is compatible with most popular plugins, 
 == Requirements ==
 **General Features** may be used by anyone with any web server (LiteSpeed, Apache, NGiNX, etc.).
 
-**LiteSpeed Exclusive Features** require OpenLiteSpeed, commercial LiteSpeed products, or LiteSpeed-powered hosting.
+**LiteSpeed Exclusive Features** require OpenLiteSpeed, commercial LiteSpeed products, LiteSpeed-powered hosting, or [the new QUIC.cloud CDN](https://quic.cloud), now in beta. [Why?](https://www.litespeedtech.com/support/wiki/doku.php/litespeed_wiki:cache:lscwp:faq#why_do_the_cache_features_require_litespeed_server)
 
 == Plugin Features ==
 
 = General Features =
 
+* Free QUIC.cloud CDN Cache
 * Object Cache (Memcached/LSMCD/Redis)
 * Image Optimization (Lossless/Lossy)
 * Minify CSS, JavaScript, and HTML
@@ -31,10 +32,10 @@ LSCWP supports WordPress Multisite and is compatible with most popular plugins, 
 * Combine CSS/JS
 * Automatically generate Critical CSS
 * Lazyload images/iframes
+* Responsive Image Placeholders
 * Multiple CDN support
 * Load CSS/JS Asynchronously
 * Browser Cache
-* Smart preload crawler with support for SEO-friendly sitemap
 * Database Cleaner and Optimizer
 * PageSpeed score optimization
 * OPcode Cache
@@ -58,10 +59,15 @@ LSCWP supports WordPress Multisite and is compatible with most popular plugins, 
 * Ability to schedule purge for specified URLs
 * WooCommerce and bbPress support
 * [WordPress CLI](https://www.litespeedtech.com/support/wiki/doku.php/litespeed_wiki:cache:lscwp#wordpress_cli) commands
-* Simple API system for each cache integration
+* API system for easy cache integration
 * Exclude from cache by URI, Category, Tag, Cookie, User Agent
-* HTTP/2 & [QUIC](https://blog.litespeedtech.com/2017/07/11/litespeed-announces-quic-support/) support (QUIC not available in OpenLiteSpeed)
-* ESI (Edge Side Includes) support (Not available in OpenLiteSpeed)
+* Smart preload crawler with support for SEO-friendly sitemap
+* Multiple crawlers for cache varies
+* HTTP/2 & [QUIC](https://blog.litespeedtech.com/2017/07/11/litespeed-announces-quic-support/) support<sup>*</sup>
+* ESI (Edge Side Includes) support<sup>*</sup>
+* Widgets and [Shortcodes](https://www.litespeedtech.com/support/wiki/doku.php/litespeed_wiki:cache:lscwp:configuration:esi:shortcode) as ESI blocks<sup>*</sup>
+
+<sup>*</sup> Feature not available in OpenLiteSpeed
 
 == Screenshots ==
 
@@ -133,14 +139,16 @@ Please see [LiteSpeed’s Privacy Policy](https://www.litespeedtech.com/company/
 
 == Frequently Asked Questions ==
 
-= How do the Cache features of LSCache work? =
-This plugin communicates with your LiteSpeed Web Server and its built-in page cache (LSCache) to deliver superior performance to your WordPress site.
+= Why do the cache features require LiteSpeed Server? =
+This plugin communicates with your LiteSpeed Web Server and its built-in page cache (LSCache) to deliver superior performance to your WordPress site. The plugin's cache features indicate to the server that a page is cacheable and for how long, or they invalidate particular cached pages using tags.
 
 LSCache is a server-level cache, so it's faster than PHP-level caches. [Compare with other PHP-based caches](https://www.litespeedtech.com/benchmarks/wordpress).
 
 A page cache allows the server to bypass PHP and database queries altogether. LSCache, in particular, because of its close relationship with the server, can remember things about the cache entries that other plugins cannot, and it can analyze dependencies. It can utilize tags to manage the smart purging of the cache, and it can use vary cookies to serve multiple versions of cached content based on things like mobile vs. desktop, geographic location, and currencies. [See our Caching 101 blog series](https://blog.litespeedtech.com/tag/caching-101/).
 
 If all of that sounds complicated, no need to worry. LSCWP works right out of the box with default settings that are appropriate for most sites. [See the Beginner's Guide](https://www.litespeedtech.com/support/wiki/doku.php/litespeed_wiki:cache:lscwp:beginner).
+
+**Don't have a LiteSpeed server?** We're beta testing our new QUIC.cloud CDN service, and it allows those on *any server* (nginx and Apache included) to experience the power of LiteSpeed caching! [Click here](https://quic.cloud) to learn more or to give QUIC.cloud a try!
 
 = What about the optimization features of LSCache? =
 
@@ -267,14 +275,182 @@ Click on the `Advanced View` link at the top of the page, and several more tabs 
 * [WP-PostRatings](https://wordpress.org/plugins/wp-postratings/)
 * [Avada 5.1 RC1+](https://avada.theme-fusion.com/)
 * [Elegant Themes Divi 3.0.67+](https://www.elegantthemes.com/gallery/divi/)
+* [Elegant Divi Builder] (https://www.elegantthemes.com/plugins/divi-builder/)
 * [Caldera Forms](https://wordpress.org/plugins/caldera-forms/) 1.5.6.2+
 * Login With Ajax
 * [Ninja Forms](https://wordpress.org/plugins/ninja-forms/)
 * [Post Types Order 1.9.3.6+](https://wordpress.org/plugins/post-types-order/)
 * [BoomBox — Viral Magazine WordPress Theme](https://themeforest.net/item/boombox-viral-buzz-wordpress-theme/16596434?ref=PX-lab)
+* Beaver Builder
+* FacetWP (LSWS 5.3.6+)
+* WpDiscuz
+* WP-Stateless
+* Elementor
 
 
 == Changelog ==
+
+= 2.9.8.4 - Jul 25 2019 =
+* <strong>Object</strong>: Increased compatibility with phpredis 5.0.
+* <strong>Object</strong>: Appended `wc_session_id` to default Do Not Cache Groups setting to avoid issue where WooCommerce cart items were missing when Object Cache is used. NOTE: Existing users must add `wc_session_id` manually! (#895333)
+* <strong>CSS</strong>: Added null onload handler for CSS async loading. (@joejordanbrown)
+* 🕷️: Increased crawler timeout to avoid wrongly adding a URL to the blacklist.
+* <strong>3rd</strong>: WooCommerce Advanced Bulk Edit can now purge cache automatically.
+
+= 2.9.8.3 - Jul 9 2019 =
+* <strong>CSS</strong>: Enhanced the CSS Minify compatibility for CSS with missing closing bracket syntax errors. (@fa508210020)
+* 🕷️: Crawler now supports both cookie and no-cookie cases. (@tabare)
+* <strong>CCSS</strong>: Enhanced compatibility with requested pages where meta info size exceeds 8k. (@Joe B)
+* <strong>CCSS</strong>: No longer processing "font" or "import" directives as they are not considered critical. (@Ankit @Joe B)
+* <strong>IAPI</strong>: Removed IPv6 from all servers to avoid invalid firewall whitelist.
+
+= 2.9.8.2 - Jun 17 2019 =
+* 🔥🐞 <strong>3rd</strong>: Fixed PHP 5.3 compatibility issue with Facetwp.
+
+= 2.9.8.1 - Jun 17 2019 =
+* <strong>3rd</strong>: Set ESI template hook priority to highest number to prevent ESI conflict with Enfold theme. (#289354)
+* <strong>3rd</strong>: Improved Facetwp reset button compatibility with ESI. (@emilyel)
+* <strong>3rd</strong>: Enabled user role change to fix duplicate login issue for plugins that use alternative login processes. (#114165 #717223 @sergiom87)
+* <strong>GUI</strong>: Wrapped static text with translate function. (@halilemreozen)
+
+= 2.9.8 - May 22 2019 =
+* <strong>Core</strong>: Refactored loading priority so user related functions & optimization features are set after user initialization. (#717223 #114165 #413338)
+* <strong>Media</strong>: Improved backup file calculation query to prevent out-of-memory issue.
+* <strong>Conf</strong>: Feed cache now defaults to ON.
+* <strong>API</strong>: Fully remote attachment compatibility API of image optimization now supported.
+* 🕷️: Bypassed vary change for crawler; crawler can now simulate default vary cookie.
+* <strong>ESI</strong>: Refactored ESI widget. Removed `widget_load_get_options()` function.
+* <strong>ESI</strong>: Changed the input name of widget fields in form.
+* <strong>3rd</strong>: Elementor can now save ESI widget settings in frontend builder.
+* <strong>3rd</strong>: WP-Stateless compatibility.
+* <strong>IAPI</strong>: Image optimization can now successfully finish the destroy process with large volume images with automatic continual mode.
+* 🐞<strong>CDN</strong>: Fixed issue with Load JQuery Remotely setting where WP 5.2.1 provided an unexpected jQuery version.
+* 🐞<strong>3rd</strong>: Login process now gets the correct role; fixed double login issue.
+
+= 2.9.7.2 - May 2 2019 =
+* <strong>Conf</strong>: Enhanced compatibility when an option is not properly initialized.
+* <strong>Conf</strong>: Prevent non-array instance in widget from causing 500 error. (#210407)
+* <strong>CCSS</strong>: Increase CCSS generation timeout to 60s.
+* <strong>Media</strong>: Renamed lazyload CSS class to avoid conflicts with other plugins. (@DynamoProd)
+* <strong>JS</strong>: Improved W3 validator. (@istanbulantik)
+* <strong>QUIC</strong>: Synced cache tag prefix for static files cache.
+* <strong>ESI</strong>: Restored query strings to ESI admin bar for accurate rendering. (#977284)
+* <strong>ESI</strong>: Tweaked ESI init priority to honor LITESPEED_DISABLE_ALL const. ESI will now init after plugin loaded.
+* 🐞<strong>ESI</strong>: No longer initialize ESI if ESI option is OFF.
+* <strong>API</strong>: New "Disable All" API function.
+* <strong>API</strong>: New "Force public cache" API function.
+* 🐞<strong>Vary</strong>: Fixed an issue with saving vary groups.
+* 🐞<strong>IAPI</strong>: Fixed an issue where image md5 validation failed due to whitespace in the image path.
+* 🐞<strong>3rd</strong>: Bypass all optimization/ESI/Cache features when entering Divi Theme Builder frontend editor.
+* 🐞<strong>3rd</strong>: Fixed an issue where DIVI admin bar exit button didn't work when ESI was ON.
+
+= 2.9.7.1 - Apr 9 2019 =
+* <strong>Purge</script>: Purge All no longer includes Purge CCSS/Placeholder.
+* <strong>3rd</strong>: Divi Theme Builder no longer experiences nonce expiration issues in the contact form widget. (#475461)
+
+= 2.9.7 - Apr 1 2019 =
+* 🌱🌱🌱 QUIC.cloud CDN feature. Now Apache/Nginx can use LiteSpeed cache freely.
+
+= 2.9.6 - Mar 27 2019 =
+* 🌱<strong>IAPI</strong>: Appended XMP to `Preserve EXIF data` setting. WebP will now honor this setting. (#902219)
+* <strong>Object</script>: Fixed SASL connection with LSMCD.
+* <strong>ESI</strong>: Converted ESI URI parameters to JSON; Added ESI validation.
+* <strong>Import</strong>: Import/Export will now use JSON format. <strong>Please re-export any backed up settings. Previous backup format is no longer recognized.</strong>
+* <strong>Media</strong>: WebP replacement will honor `Role Excludes` setting now. (@mfazio26)
+* <strong>Data</strong>: Forbid direct visit to const.default.ini.
+* <strong>Utility</strong>: Can handle WHM passed in `LITESPEED_ERR` constant now.
+* <strong>IAPI</strong>: Communicate via JSON encoding.
+* <strong>IAPI</strong>: IAPI v2.9.6.
+
+= 2.9.5 - Mar 14 2019 =
+* 🌱 Auto convert default WordPress nonce to ESI to avoid expiration.
+* 🌱 <strong>API</strong>: Ability to easily convert custom nonce to ESI by registering `LiteSpeed_Cache_API::nonce_action`.
+* <strong>OPTM</strong>: Tweaked redundant attr `data-no-optimize` in func `_analyse_links` to `data-ignore-optimize` to offer the API to bypass optimization but still move src to top of source code.
+* <strong>API</strong>: Renamed default nonce ESI ID from `lscwp_nonce_esi` to `nonce`.
+* <strong>API</strong>: Added WebP generation & validation hook API. (@alim #wp-stateless)
+* <strong>API</strong>: Added hook to bypass vary commenter check. (#wpdiscuz)
+* <strong>Doc</strong>: Clarified Cache Mobile description. (@JohnnyNguyen)
+* <strong>Doc</strong>: Replaced incorrect link in description. (@JohnnyNguyen)
+* <strong>3rd</strong>: Improved wpDiscuz compatibility.
+* 🐞<strong>3rd</strong>: Fixed Divi Theme Builder comment compatibility on non-builder pages. (#410919)
+* <strong>3rd</strong>: Added YITH ESI adjustment.
+
+= 2.9.4.1 - Feb 28 2019 =
+* 🔥🐞<strong>Tag</strong>: Fixed issue where unnecessary warning potentially displayed after upgrade process when object cache is enabled.
+
+= 2.9.4 - Feb 27 2019 =
+* 🐞<strong>REST</strong>: New REST class with better WP5 Gutenberg and internal REST call support when ESI is embedded.
+* <strong>ESI</strong>: ESI block ID is now in plain text in ESI URL parameters.
+* 🐞<strong>ESI</strong>: Fixed a redundant ESI 301 redirect when comma is in ESI URL.
+* <strong>ESI</strong>: REST call can now parse shortcodes in ESI.
+* <strong>API</strong>: Changed ESI `parse_esi_param()` function to private and `load_esi_block` function to non-static.
+* <strong>API</strong>: Added `litespeed_is_json` hook for buffer JSON conversion.
+* <strong>GUI</strong>: Prepended plugin name to new version notification banner.
+* <strong>3rd</strong>: WPML multi domains can now be handled in optimization without CDN tricks.
+
+= 2.9.3 - Feb 20 2019 =
+* <strong>ESI</strong>: ESI shortcodes can now be saved in Gutenberg editor.
+* <strong>ESI</strong>: ESI now honors the parent page JSON data type to avoid breaking REST calls (LSWS 5.3.6+).
+* <strong>ESI</strong>: Added is_json parameter support for admin_bar.
+* <strong>ESI</strong>: Simplified comment form code.
+* <strong>3rd</strong>: Better page builder plugin compatibility within AJAX calls.
+* <strong>3rd</strong>: Compatibility with FacetWP (LSWS 5.3.6+).
+* <strong>3rd</strong>: Compatibility with Beaver Builder.
+* <strong>Debug</strong>: Added ESI buffer content to log.
+* <strong>Tag</strong>: Only append blog ID to cache tags when site is part of a network.
+* <strong>IAPI</strong>: Optimized database query for pulling images.
+* <strong>GUI</strong>: Added more plugin version checking for better feature compatibility.
+* <strong>GUI</strong>: Ability to bypass non-critical banners with the file .litespeed_no_banner.
+* <strong>Media</strong>: Background image WebP replacement now supports quotes around src.
+
+= 2.9.2 - Feb 5 2019 =
+* <strong>API</strong>: Add a hook `litespeed_esi_shortcode-*` for ESI shortcodes.
+* <strong>3rd</strong>: WooCommerce can purge products now when variation stock is changed.
+* 🐞🕷️: Forced HTTP1.1 for crawler due to a CURL HTTP2 bug.
+
+= 2.9.1 - Jan 25 2019 =
+* <strong>Compatibility</strong>: Fixed fatal error for PHP 5.3.
+* <strong>Compatibility</strong>: Fixed PHP warning in htmlspecialchars when building URLs. (@souljahn2)
+* <strong>Media</strong>: Excluded invalid image src from lazyload. (@andrew55)
+* <strong>Optm</strong>: Improved URL compatibility when detecting closest cloud server.
+* <strong>ESI</strong>: Supported JSON format comment format in ESI with `is_json` parameter.
+* <strong>API</strong>: Added filters to CCSS/CSS/JS content. (@lhoucine)
+* <strong>3rd</strong>: Improved comment compatibility with Elegant Divi Builder.
+* <strong>IAPI</strong>: New Europe Image Optimization server (EU5). <strong>Please whitelist the new [IAPI IP List](https://wp.api.litespeedtech.com/ips).</strong>
+* <strong>GUI</strong>: No longer show banners when `Disable All` in `Debug` is ON. (@rabbitwordpress)
+* <strong>GUI</strong>: Fixed button style for RTL languages.
+* <strong>GUI</strong>: Removed unnecessary translation in report.
+* <strong>GUI</strong>: Updated readme wiki links.
+* <strong>GUI</strong>: Fixed pie styles in image optimization page.
+
+= 2.9 - Dec 31 2018 =
+* 🌱<strong>Media</strong>: Lazy Load Image Classname Excludes. (@thinkmedia)
+* 🌱: New EU/AS cloud servers for faster image optimization handling.
+* 🌱: New EU/AS cloud servers for faster CCSS generation.
+* 🌱: New EU/AS cloud servers for faster responsive placeholder generation.
+* 🌱<strong>Conf</strong>: Ability to set single options via link.
+* 🌱<strong>Cache</strong>: Ability to add custom TTLs to Force Cache URIs.
+* <strong>Purge</strong>: Added post type to Purge tags.
+* <strong>Purge</strong>: Redefined CCSS page types.
+* <strong>Core</strong>: Using Exception for .htaccess R/W.
+* <strong>IAPI</strong>: <strong>New cloud servers added. Please whitelist the new [IAPI IP List](https://wp.api.litespeedtech.com/ips).</strong>
+* <strong>Optm</strong>: Trim BOM when detecting if the page is HTML.
+* <strong>GUI</strong>: Added PageSpeed Score comparison into promotion banner.
+* <strong>GUI</strong>: Refactored promotion banner logic.
+* <strong>GUI</strong>: Removed page optimized comment when ESI Silence is requested.
+* <strong>GUI</strong>: WHM transient changed to option instead of transient when storing.
+* <strong>GUI</strong>: Appending more descriptions to CDN filetype setting.
+* <strong>IAPI</strong>: Removed duplicate messages.
+* <strong>IAPI</strong>: Removed taken_failed/client_pull(duplicated) status.
+* <strong>Debug</strong>: Environment report no longer generates hash for validation.
+* <strong>3rd</strong>: Non-cacheable pages no longer punch ESI holes for Divi compatibility.
+* 🐞<strong>Network</strong>: Added slashes for mobile rules when activating plugin.
+* 🐞<strong>CCSS</strong>: Eliminated a PHP notice when appending CCSS.
+
+= 2.8.1 - Dec 5 2018 =
+* 🐞🕷️: Fixed an activation warning related to cookie crawler. (@kacper3355 @rastel72)
+* 🐞<strong>Media</strong>: Replace safely by checking if pulled images is empty or not first. (@Monarobase)
+* <strong>3rd</strong>: Shortcode ESI compatibility with Elementor.
 
 = 2.8 - Nov 30 2018 =
 * 🌱: ESI shortcodes.

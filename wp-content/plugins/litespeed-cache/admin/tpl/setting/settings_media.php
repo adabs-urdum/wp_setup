@@ -44,6 +44,18 @@ $last_responsive_placeholder_generated = LiteSpeed_Cache_Media::get_summary() ;
 	</tr>
 
 	<tr>
+		<th><?php echo __( 'Lazy Load Image Class Name Excludes', 'litespeed-cache' ) ; ?></th>
+		<td>
+			<?php $this->build_textarea2( LiteSpeed_Cache_Config::ITEM_MEDIA_LAZY_IMG_CLS_EXC ) ; ?>
+			<div class="litespeed-desc">
+				<?php echo __( 'Images containing these class names will not be lazy loaded.', 'litespeed-cache' ) ; ?>
+				<?php echo __( 'Both full and partial strings can be used.', 'litespeed-cache' ) ; ?>
+				<?php echo __('One per line.', 'litespeed-cache'); ?>
+			</div>
+		</td>
+	</tr>
+
+	<tr>
 		<th><?php echo __( 'Lazy Load Image Placeholder', 'litespeed-cache' ) ; ?></th>
 		<td>
 			<?php $this->build_input( LiteSpeed_Cache_Config::OPID_MEDIA_IMG_LAZY_PLACEHOLDER, 'litespeed-input-long' ) ; ?>
@@ -209,7 +221,7 @@ $last_responsive_placeholder_generated = LiteSpeed_Cache_Media::get_summary() ;
 	</tr>
 
 	<tr>
-		<th class="litespeed-padding-left"><?php echo __( 'Preserve EXIF data', 'litespeed-cache' ) ; ?></th>
+		<th class="litespeed-padding-left"><?php echo __( 'Preserve EXIF/XMP data', 'litespeed-cache' ) ; ?></th>
 		<td>
 			<?php $this->build_switch( LiteSpeed_Cache_Config::OPT_MEDIA_OPTM_EXIF ) ; ?>
 			<div class="litespeed-desc">

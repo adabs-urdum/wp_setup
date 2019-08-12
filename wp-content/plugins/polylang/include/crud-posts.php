@@ -42,10 +42,10 @@ class PLL_CRUD_Posts {
 	 */
 	public function set_default_language( $post_id ) {
 		if ( ! $this->model->post->get_language( $post_id ) ) {
-			if ( ! empty( $_GET['new_lang'] ) && $lang = $this->model->get_language( $_GET['new_lang'] ) ) {
+			if ( ! empty( $_GET['new_lang'] ) && $lang = $this->model->get_language( sanitize_key( $_GET['new_lang'] ) ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 				// Defined only on admin.
 				$this->model->post->set_language( $post_id, $lang );
-			} elseif ( ! isset( $this->pref_lang ) && ! empty( $_REQUEST['lang'] ) && $lang = $this->model->get_language( $_REQUEST['lang'] ) ) {
+			} elseif ( ! isset( $this->pref_lang ) && ! empty( $_REQUEST['lang'] ) && $lang = $this->model->get_language( sanitize_key( $_REQUEST['lang'] ) ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 				// Testing $this->pref_lang makes this test pass only on admin.
 				$this->model->post->set_language( $post_id, $lang );
 			} elseif ( ( $parent_id = wp_get_post_parent_id( $post_id ) ) && $parent_lang = $this->model->post->get_language( $parent_id ) ) {
@@ -207,8 +207,8 @@ class PLL_CRUD_Posts {
 	 *
 	 * @since 0.9
 	 *
-	 * @param string $file
-	 * @return string unmodified $file
+	 * @param string $file Path to the file to delete.
+	 * @return string Empty or unmodified path.
 	 */
 	public function wp_delete_file( $file ) {
 		global $wpdb;
@@ -224,11 +224,72 @@ class PLL_CRUD_Posts {
 		);
 
 		if ( ! empty( $ids ) ) {
-			// Regenerate intermediate sizes if it's an image ( since we could not prevent WP deleting them before )
+			// Regenerate intermediate sizes if it's an image ( since we could not prevent WP deleting them before ).
+			require_once ABSPATH . 'wp-admin/includes/image.php'; // In case the file is deleted outside admin.
 			wp_update_attachment_metadata( $ids[0], wp_generate_attachment_metadata( $ids[0], $file ) );
-			return ''; // Prevent deleting the main file
+			return ''; // Prevent deleting the main file.
 		}
 
 		return $file;
+	}
+
+	/**
+	 * Creates a media translation
+	 *
+	 * @since 1.8
+	 *
+	 * @param int           $post_id
+	 * @param string|object $lang
+	 * @return int id of the translated media
+	 */
+	public function create_media_translation( $post_id, $lang ) {
+		if ( empty( $post_id ) ) {
+			return $post_id;
+		}
+
+		$post = get_post( $post_id );
+
+		if ( empty( $post ) ) {
+			return $post;
+		}
+
+		$lang = $this->model->get_language( $lang ); // Make sure we get a valid language slug
+
+		// Create a new attachment ( translate attachment parent if exists )
+		add_filter( 'pll_enable_duplicate_media', '__return_false', 99 ); // Avoid a conflict with automatic duplicate at upload
+		$post->ID = null; // Will force the creation
+		$post->post_parent = ( $post->post_parent && $tr_parent = $this->model->post->get_translation( $post->post_parent, $lang->slug ) ) ? $tr_parent : 0;
+		$post->tax_input = array( 'language' => array( $lang->slug ) ); // Assigns the language
+		$tr_id = wp_insert_attachment( wp_slash( (array) $post ) );
+		remove_filter( 'pll_enable_duplicate_media', '__return_false', 99 ); // Restore automatic duplicate at upload
+
+		// Copy metadata, attached file and alternative text
+		foreach ( array( '_wp_attachment_metadata', '_wp_attached_file', '_wp_attachment_image_alt' ) as $key ) {
+			if ( $meta = get_post_meta( $post_id, $key, true ) ) {
+				add_post_meta( $tr_id, $key, wp_slash( $meta ) );
+			}
+		}
+
+		$this->model->post->set_language( $tr_id, $lang );
+
+		$translations = $this->model->post->get_translations( $post_id );
+		if ( ! $translations && $src_lang = $this->model->post->get_language( $post_id ) ) {
+			$translations[ $src_lang->slug ] = $post_id;
+		}
+
+		$translations[ $lang->slug ] = $tr_id;
+		$this->model->post->save_translations( $tr_id, $translations );
+
+		/**
+		 * Fires after a media translation is created
+		 *
+		 * @since 1.6.4
+		 *
+		 * @param int    $post_id post id of the source media
+		 * @param int    $tr_id   post id of the new media translation
+		 * @param string $slug    language code of the new translation
+		 */
+		do_action( 'pll_translate_media', $post_id, $tr_id, $lang->slug );
+		return $tr_id;
 	}
 }

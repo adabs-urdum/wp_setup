@@ -25,7 +25,8 @@ class LiteSpeed_Cache
 
 	const NAME = 'LiteSpeed Cache' ;
 	const PLUGIN_NAME = 'litespeed-cache' ;
-	const PLUGIN_VERSION = '2.8' ;
+	const PLUGIN_FILE = 'litespeed-cache/litespeed-cache.php' ;
+	const PLUGIN_VERSION = '2.9.8.4' ;
 
 	const PAGE_EDIT_HTACCESS = 'lscache-edit-htaccess' ;
 
@@ -50,6 +51,9 @@ class LiteSpeed_Cache
 	const ACTION_BLACKLIST_SAVE = 'blacklist-save' ;
 	const ACTION_CDN_CLOUDFLARE = 'cdn_cloudflare' ;
 	const ACTION_CDN_QUIC = 'cdn_quic' ;
+	const ACTION_CFG = 'cfg' ;
+	const ACTION_ACTIVATION = 'activate' ;
+	const ACTION_UTIL = 'util' ;
 
 	const ACTION_FRONT_EXCLUDE = 'front-exclude' ;
 
@@ -67,8 +71,8 @@ class LiteSpeed_Cache
 	const ACTION_SAPI_PASSIVE_CALLBACK = 'sapi_passive_callback' ;
 	const ACTION_SAPI_AGGRESSIVE_CALLBACK = 'sapi_aggressive_callback' ;
 
-	const WHM_TRANSIENT = 'lscwp_whm_install' ;
-	const WHM_TRANSIENT_VAL = 'whm_install' ;
+	const WHM_MSG = 'lscwp_whm_install' ;
+	const WHM_MSG_VAL = 'whm_install' ;
 
 	const HEADER_DEBUG = 'X-LiteSpeed-Debug' ;
 
@@ -101,7 +105,7 @@ class LiteSpeed_Cache
 		}
 
 		if ( self::config( LiteSpeed_Cache_Config::OPID_DEBUG_DISABLE_ALL ) ) {
-			define( 'LITESPEED_DISABLE_ALL', true ) ;
+			! defined( 'LITESPEED_DISABLE_ALL' ) && define( 'LITESPEED_DISABLE_ALL', true ) ;
 		}
 
 		/**
@@ -127,8 +131,15 @@ class LiteSpeed_Cache
 		}
 
 		/**
+		 * Hook internal REST
+		 * @since  2.9.4
+		 */
+		LiteSpeed_Cache_REST::get_instance() ;
+
+		/**
 		 * Added hook before init
 		 * @since  1.6.6
+		 * @deprecated 2.9.7.2 This can't be used by any plugin due to unpredictable plugin loading priority.
 		 */
 		do_action( 'litespeed_before_init' ) ;
 
@@ -136,9 +147,7 @@ class LiteSpeed_Cache
 		 * Preload ESI functionality for ESI request uri recovery
 		 * @since 1.8.1
 		 */
-		if ( ! LiteSpeed_Cache_Router::is_ajax() && LiteSpeed_Cache_Router::esi_enabled() ) {
-			LiteSpeed_Cache_ESI::get_instance() ;
-		}
+		LiteSpeed_Cache_ESI::get_instance() ;
 	}
 
 	/**
@@ -161,17 +170,11 @@ class LiteSpeed_Cache
 		do_action( 'litespeed_init' ) ;
 
 		// in `after_setup_theme`, before `init` hook
-		$this->_auto_update() ;
-
-		if ( ! self::config( LiteSpeed_Cache_Config::OPID_HEARTBEAT ) ) {
-			add_action( 'init', 'LiteSpeed_Cache_Log::disable_heartbeat', 1 ) ;
-		}
+		LiteSpeed_Cache_Activation::auto_update() ;
 
 		if( is_admin() ) {
 			LiteSpeed_Cache_Admin::get_instance() ;
 		}
-
-		LiteSpeed_Cache_Router::get_instance()->is_crawler_role_simulation() ;
 
 		// if ( ! defined( 'LITESPEED_ON' ) || ! defined( 'LSCACHE_ADV_CACHE' ) ) {
 		// 	return ;
@@ -182,19 +185,19 @@ class LiteSpeed_Cache
 			return ;
 		}
 
+		do_action( 'litespeed_initing' ) ;
+
 		ob_start( array( $this, 'send_headers_force' ) ) ;
 		add_action( 'shutdown', array( $this, 'send_headers' ), 0 ) ;
 		add_action( 'wp_footer', 'LiteSpeed_Cache::footer_hook' ) ;
 
 		/**
-		 * Check lazy lib request in the very beginning
-		 * @since 1.4
-		 * Note: this should be before optimizer to avoid lazyload lib catched wrongly
+		 * Check if is non optm simulator
+		 * @since  2.9
 		 */
-		LiteSpeed_Cache_Media::get_instance() ;
-
-		// Check minify file request in the very beginning
-		LiteSpeed_Cache_Optimize::get_instance() ;
+		if ( ! empty( $_GET[ LiteSpeed_Cache::ACTION_KEY ] ) && $_GET[ LiteSpeed_Cache::ACTION_KEY ] == 'before_optm' ) {
+			! defined( 'LITESPEED_BYPASS_OPTM' ) && define( 'LITESPEED_BYPASS_OPTM', true ) ;
+		}
 
 		/**
 		 * Register vary filter
@@ -206,19 +209,55 @@ class LiteSpeed_Cache
 		// 2. Init cacheable status
 		LiteSpeed_Cache_Vary::get_instance() ;
 
-		// Hook cdn for attachements
-		LiteSpeed_Cache_CDN::get_instance() ;
-
 		// Init Purge hooks
 		LiteSpeed_Cache_Purge::get_instance() ;
 
 		LiteSpeed_Cache_Tag::get_instance() ;
 
-		// load cron tasks
-		LiteSpeed_Cache_Task::get_instance() ;
+		// Load hooks that may be related to users
+		add_action( 'init', array( $this, 'after_user_init' ) ) ;
 
 		// Load 3rd party hooks
 		add_action( 'wp_loaded', array( $this, 'load_thirdparty' ), 2 ) ;
+	}
+
+	/**
+	 * Run hooks after user init
+	 *
+	 * @since 2.9.8
+	 * @access public
+	 */
+	public function after_user_init()
+	{
+		LiteSpeed_Cache_Router::get_instance()->is_crawler_role_simulation() ;
+
+		if ( $result = LiteSpeed_Cache_Config::get_instance()->in_exclude_optimization_roles() ) {
+			LiteSpeed_Cache_Log::debug( '[Core] ⛑️ bypass_optm: hit Role Excludes setting: ' . $result ) ;
+			! defined( 'LITESPEED_BYPASS_OPTM' ) && define( 'LITESPEED_BYPASS_OPTM', true ) ;
+		}
+
+		// Todo: Move to tool.cls in v3.0
+		if ( ! self::config( LiteSpeed_Cache_Config::OPID_HEARTBEAT ) ) {
+			LiteSpeed_Cache_Log::disable_heartbeat() ;
+		}
+
+		if ( ! defined( 'LITESPEED_BYPASS_OPTM' ) ) {
+			/**
+			 * Check lazy lib request in the very beginning
+			 * @since 1.4
+			 * Note: this should be before optimizer to avoid lazyload lib catched wrongly
+			 */
+			LiteSpeed_Cache_Media::get_instance() ;
+
+			// Check minify file request in the very beginning
+			LiteSpeed_Cache_Optimize::get_instance() ;
+
+			// Hook cdn for attachements
+			LiteSpeed_Cache_CDN::get_instance() ;
+
+			// load cron tasks
+			LiteSpeed_Cache_Task::get_instance() ;
+		}
 
 		// load litespeed actions
 		if ( $action = LiteSpeed_Cache_Router::get_action() ) {
@@ -228,39 +267,6 @@ class LiteSpeed_Cache
 		// Load frontend GUI
 		LiteSpeed_Cache_GUI::get_instance() ;
 
-	}
-
-	/**
-	 * Handle auto update
-	 *
-	 * @since 2.7.2
-	 * @access private
-	 */
-	private function _auto_update()
-	{
-		if ( ! self::config( LiteSpeed_Cache_Config::OPT_AUTO_UPGRADE ) ) {
-			return ;
-		}
-
-		add_filter( 'auto_update_plugin', function( $update, $item ) {
-				if ( $item->slug == 'litespeed-cache' ) {
-					// Check latest stable version allowed to upgrade
-					$url = 'https://wp.api.litespeedtech.com/auto_upgrade_v' ;
-					$response = wp_remote_get( $url, array( 'timeout' => 15 ) ) ;
-					if ( ! is_array( $response ) || empty( $response[ 'body' ] ) ) {
-						return false ;
-					}
-					$auto_v = $response[ 'body' ] ;
-
-					if ( empty( $item->new_version ) || $auto_v !== $item->new_version ) {
-						return false ;
-					}
-
-					return true ;
-				}
-
-				return $update; // Else, use the normal API response to decide whether to update or not
-			}, 10, 2 ) ;
 	}
 
 	/**
@@ -387,6 +393,18 @@ class LiteSpeed_Cache
 				$msg = LiteSpeed_Cache_CDN_Quic::handler() ;
 				break ;
 
+			case LiteSpeed_Cache::ACTION_CFG :
+				$msg = LiteSpeed_Cache_Config::handler() ;
+				break ;
+
+			case LiteSpeed_Cache::ACTION_ACTIVATION :
+				$msg = LiteSpeed_Cache_Activation::handler() ;
+				break ;
+
+			case LiteSpeed_Cache::ACTION_UTIL :
+				$msg = LiteSpeed_Cache_Utility::handler() ;
+				break ;
+
 			default:
 				break ;
 		}
@@ -481,6 +499,9 @@ class LiteSpeed_Cache
 			$buffer = preg_replace( '|<!--.*?-->|s', '', $buffer ) ;
 		}
 		$buffer = trim( $buffer ) ;
+
+		$buffer = Litespeed_File::remove_zero_space( $buffer ) ;
+
 		$is_html = stripos( $buffer, '<html' ) === 0 || stripos( $buffer, '<!DOCTYPE' ) === 0 ;
 
 		if ( ! $is_html ) {
@@ -512,8 +533,10 @@ class LiteSpeed_Cache
 		// Replace ESI preserved list
 		$buffer = LiteSpeed_Cache_ESI::finalize( $buffer ) ;
 
-		// Image lazy load check
-		$buffer = LiteSpeed_Cache_Media::finalize( $buffer ) ;
+		if ( ! defined( 'LITESPEED_BYPASS_OPTM' ) ) {
+			// Image lazy load check
+			$buffer = LiteSpeed_Cache_Media::finalize( $buffer ) ;
+		}
 
 		/**
 		 * Clean wrapper mainly for esi block
@@ -522,14 +545,43 @@ class LiteSpeed_Cache
 		 */
 		$buffer = LiteSpeed_Cache_GUI::finalize( $buffer ) ;
 
-		$buffer = LiteSpeed_Cache_Optimize::finalize( $buffer ) ;
+		if ( ! defined( 'LITESPEED_BYPASS_OPTM' ) ) {
+			$buffer = LiteSpeed_Cache_Optimize::finalize( $buffer ) ;
 
-		$buffer = LiteSpeed_Cache_CDN::finalize( $buffer ) ;
+			$buffer = LiteSpeed_Cache_CDN::finalize( $buffer ) ;
+		}
 
 		$this->send_headers( true ) ;
 
 		if ( $this->footer_comment ) {
 			$buffer .= $this->footer_comment ;
+		}
+
+		/**
+		 * If ESI req is JSON, give the content JSON format
+		 * @since  2.9.3
+		 * @since  2.9.4 ESI req could be from internal REST call, so moved json_encode out of this cond
+		 */
+		if ( defined( 'LSCACHE_IS_ESI' ) ) {
+			LiteSpeed_Cache_Log::debug( '[Core] ESI Start 👇' ) ;
+			if ( strlen( $buffer ) > 100 ) {
+				LiteSpeed_Cache_Log::debug( trim( substr( $buffer, 0, 100 ) ) . '.....' ) ;
+			}
+			else {
+				LiteSpeed_Cache_Log::debug( $buffer ) ;
+			}
+			LiteSpeed_Cache_Log::debug( '[Core] ESI End 👆' ) ;
+		}
+
+		if ( apply_filters( 'litespeed_is_json', false ) ) {
+			if ( json_decode( $buffer, true ) == NULL ) {
+				LiteSpeed_Cache_Log::debug( '[Core] Buffer converting to JSON' ) ;
+				$buffer = json_encode( $buffer ) ;
+				$buffer = trim( $buffer, '"' ) ;
+			}
+			else {
+				LiteSpeed_Cache_Log::debug( '[Core] JSON Buffer' ) ;
+			}
 		}
 
 		LiteSpeed_Cache_Log::debug( "End response\n--------------------------------------------------------------------------------\n" ) ;
@@ -576,11 +628,21 @@ class LiteSpeed_Cache
 		$control_header = LiteSpeed_Cache_Control::output() ;
 
 		// Init comment info
-		$running_info_showing = ( defined( 'LITESPEED_IS_HTML' ) && LITESPEED_IS_HTML ) || ( defined( 'LSCACHE_IS_ESI' ) && LSCACHE_IS_ESI ) ;
+		$running_info_showing = defined( 'LITESPEED_IS_HTML' ) || defined( 'LSCACHE_IS_ESI' ) ;
 		if ( defined( 'LSCACHE_ESI_SILENCE' ) ) {
 			$running_info_showing = false ;
 			LiteSpeed_Cache_Log::debug( '[Core] ESI silence' ) ;
 		}
+		/**
+		 * Silence comment for json req
+		 * @since 2.9.3
+		 */
+		if ( LiteSpeed_Cache_REST::get_instance()->is_rest() || LiteSpeed_Cache_Router::is_ajax() ) {
+			$running_info_showing = false ;
+			LiteSpeed_Cache_Log::debug( '[Core] Silence Comment due to REST/AJAX' ) ;
+		}
+
+		$running_info_showing = apply_filters( 'litespeed_comment', $running_info_showing ) ;
 
 		if ( $running_info_showing ) {
 			// Give one more break to avoid ff crash

@@ -12,6 +12,7 @@ if ( ! defined('ABSPATH') ) {
 	die() ;
 }
 LiteSpeed_Cache_API::register('LiteSpeed_Cache_ThirdParty_WooCommerce') ;
+LiteSpeed_Cache_API::hook_init( 'LiteSpeed_Cache_ThirdParty_WooCommerce::preload' ) ;
 
 class LiteSpeed_Cache_ThirdParty_WooCommerce
 {
@@ -68,6 +69,7 @@ class LiteSpeed_Cache_ThirdParty_WooCommerce
 
 		// Purging a product on stock change should only occur during product purchase. This function will add the purging callback when an order is complete.
 		add_action( 'woocommerce_product_set_stock', array( $this, 'purge_product' ) ) ;
+		add_action( 'woocommerce_variation_set_stock', array( $this, 'purge_product' ) ) ; // #984479 Update variations stock
 
 		LiteSpeed_Cache_API::hook_get_options( array( $this, 'get_config' ) ) ;
 		add_action( 'comment_post', array( $this, 'add_review' ), 10, 3 ) ;
@@ -83,7 +85,7 @@ class LiteSpeed_Cache_ThirdParty_WooCommerce
 			}
 
 			if ( function_exists( 'is_product' ) && is_product() ) {
-				LiteSpeed_Cache_API::hook_esi_param( 'widget', array( $this, 'add_post_id' ) ) ;
+				LiteSpeed_Cache_API::hook_esi_param( array( $this, 'add_post_id' ) ) ;
 			}
 
 			/**
@@ -417,12 +419,14 @@ class LiteSpeed_Cache_ThirdParty_WooCommerce
 	 * @param array $params The current ESI parameters.
 	 * @return array The updated esi parameters.
 	 */
-	public function add_post_id($params)
+	public function add_post_id( $params, $block_id )
 	{
-		if ( ! isset($params) || ! isset($params[LiteSpeed_Cache_API::PARAM_NAME]) || $params[LiteSpeed_Cache_API::PARAM_NAME] !== 'WC_Widget_Recently_Viewed' ) {
-			return $params ;
+		if ( $block_id == 'widget' ) {
+			if ( $params[ LiteSpeed_Cache_API::PARAM_NAME ] == 'WC_Widget_Recently_Viewed' ) {
+				$params[ self::ESI_PARAM_POSTID ] = get_the_ID() ;
+			}
 		}
-		$params[self::ESI_PARAM_POSTID] = get_the_ID() ;
+
 		return $params ;
 	}
 
@@ -665,7 +669,12 @@ class LiteSpeed_Cache_ThirdParty_WooCommerce
 			$this->backend_purge($product->get_id()) ;
 		}
 
-		LiteSpeed_Cache_API::purge(LiteSpeed_Cache_API::TYPE_POST . $product->get_id()) ;
+		LiteSpeed_Cache_API::purge( LiteSpeed_Cache_API::TYPE_POST . $product->get_id() ) ;
+
+		// Check if is variation, purge stock too #984479
+		if ( $product->is_type( 'variation' ) ) {
+			LiteSpeed_Cache_API::purge( LiteSpeed_Cache_API::TYPE_POST . $product->get_parent_id() ) ;
+		}
 	}
 
 	/**
@@ -937,6 +946,63 @@ class LiteSpeed_Cache_ThirdParty_WooCommerce
 		}
 
 		return $product_cats ;
+	}
+
+	/**
+	 * 3rd party prepload
+	 *
+	 * @since  2.9.8.4
+	 */
+	public static function preload()
+	{
+		/**
+		 * Auto puge for WooCommerce Advanced Bulk Edit plugin,
+		 * Bulk edit hook need to add to preload as it will die before detect.
+		 */
+		add_action( 'wp_ajax_wpmelon_adv_bulk_edit', 'LiteSpeed_Cache_ThirdParty_WooCommerce::bulk_edit_purge', 1 ) ;
+	}
+
+	/**
+	 * Auto puge for WooCommerce Advanced Bulk Edit plugin,
+	 *
+	 * @since  2.9.8.4
+	 */
+	public static function bulk_edit_purge()
+	{
+		if ( empty( $_POST[ 'type' ] ) || $_POST[ 'type' ] != 'saveproducts' || empty( $_POST[ 'data' ] ) ) return ;
+
+		/*
+		* admin-ajax form-data structure
+		* array(
+		*		"type" => "saveproducts",
+		*		"data" => array(
+		*			"column1" => "464$###0$###2#^#463$###0$###4#^#462$###0$###6#^#",
+		*			"column2" => "464$###0$###2#^#463$###0$###4#^#462$###0$###6#^#"
+		*		)
+		*	)
+		*/
+		$stock_string_arr = array() ;
+		foreach ( $_POST[ 'data' ] as $stock_value ) {
+			$stock_string_arr = array_merge( $stock_string_arr, explode( '#^#', $stock_value ) ) ;
+		}
+
+		$lscwp_3rd_woocommerce = new LiteSpeed_Cache_ThirdParty_WooCommerce ;
+
+		if ( count( $stock_string_arr ) < 1 ) {
+			return ;
+		}
+
+		foreach ( $stock_string_arr as $edited_stock ) {
+			$product_id = strtok( $edited_stock, '$' );
+			$product = wc_get_product( $product_id ) ;
+
+			if ( empty( $product ) ) {
+				LiteSpeed_Cache_API::debug( '3rd woo purge: ' . $product_id . ' not found.' ) ;
+				continue ;
+			}
+
+			$lscwp_3rd_woocommerce->purge_product( $product );
+		}
 	}
 
 	/**

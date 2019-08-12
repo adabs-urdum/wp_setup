@@ -141,26 +141,32 @@ class LiteSpeed_Cache_Vary
 	 */
 	public function check_commenter( $comments )
 	{
-		$pending = false ;
-		foreach ( $comments as $comment ) {
-			if ( ! $comment->comment_approved ) {// current user has pending comment
-				$pending = true ;
-				break ;
-			}
-		}
-
-		// No pending comments, don't need to add private cache
-		if ( ! $pending ) {
-			$this->remove_commenter() ;
-
-			// Remove commenter prefilled info if exists, for public cache
-			foreach( $_COOKIE as $cookie_name => $cookie_value ) {
-				if ( strlen( $cookie_name ) >= 15 && strpos( $cookie_name, 'comment_author_' ) === 0 ) {
-					unset( $_COOKIE[ $cookie_name ] ) ;
+		/**
+		 * Hook to bypass pending comment check for comment related plugins compatibility
+		 * @since 2.9.5
+		 */
+		if ( apply_filters( 'litespeed_vary_check_commenter_pending', true ) ) {
+			$pending = false ;
+			foreach ( $comments as $comment ) {
+				if ( ! $comment->comment_approved ) {// current user has pending comment
+					$pending = true ;
+					break ;
 				}
 			}
 
-			return $comments ;
+			// No pending comments, don't need to add private cache
+			if ( ! $pending ) {
+				$this->remove_commenter() ;
+
+				// Remove commenter prefilled info if exists, for public cache
+				foreach( $_COOKIE as $cookie_name => $cookie_value ) {
+					if ( strlen( $cookie_name ) >= 15 && strpos( $cookie_name, 'comment_author_' ) === 0 ) {
+						unset( $_COOKIE[ $cookie_name ] ) ;
+					}
+				}
+
+				return $comments ;
+			}
 		}
 
 		// Current user/visitor has pending comments
@@ -270,6 +276,15 @@ class LiteSpeed_Cache_Vary
 		 */
 		if ( $_SERVER["REQUEST_METHOD"] !== 'GET' && $_SERVER["REQUEST_METHOD"] !== 'POST' ) {
 			LiteSpeed_Cache_Log::debug( '[Vary] can_change_vary bypassed due to method not get/post' ) ;
+			return false ;
+		}
+
+		/**
+		 * Disable vary change if is from crawler
+		 * @since  2.9.8 To enable woocommerce cart not empty warm up (@Taba)
+		 */
+		if ( ! empty( $_SERVER[ 'HTTP_USER_AGENT' ] ) && strpos( $_SERVER[ 'HTTP_USER_AGENT' ], Litespeed_Crawler::FAST_USER_AGENT ) === 0 ) {
+			LiteSpeed_Cache_Log::debug( '[Vary] can_change_vary bypassed due to crawler' ) ;
 			return false ;
 		}
 

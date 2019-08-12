@@ -107,6 +107,10 @@ $cdn_mapping = $this->config->get_item( LiteSpeed_Cache_Config::ITEM_CDN_MAPPING
 				<?php echo __('One per line.', 'litespeed-cache'); ?>
 				<?php echo sprintf( __( 'This will affect all tags containing attributes: %s %s %s.', 'litespeed-cache' ), '<code>src=""</code>', '<code>data-src=""</code>', '<code>href=""</code>' ) ; ?>
 				<?php $this->learn_more( 'https://www.litespeedtech.com/support/wiki/doku.php/litespeed_wiki:cache:lscwp:configuration:cdn#include_file_types', __( 'Default value', 'litespeed-cache' ) ) ; ?>
+
+				<br />
+				<?php echo sprintf( __( 'If you turn any of the above settings OFF, please remove the related file types from the %s box.' ), '<b>' . __( 'Include File Types', 'litespeed-cache' ) . '</b>' ) ; ?>
+				<?php $this->learn_more( 'https://www.litespeedtech.com/support/wiki/doku.php/litespeed_wiki:cache:lscwp:configuration:cdn#include_file_types' ) ; ?>
 			</div>
 
 		</td>
@@ -177,19 +181,19 @@ $cdn_mapping = $this->config->get_item( LiteSpeed_Cache_Config::ITEM_CDN_MAPPING
 		</td>
 	</tr>
 
-	<tr <?php if ( ! defined( 'LITESPEED_QUIC_CLOUD' ) ) echo 'class="litespeed-hide"' ; ?>>
+	<tr>
 		<th><?php echo __( 'Quic Cloud API', 'litespeed-cache' ) ; ?></th>
 		<td>
 			<?php $this->build_switch( LiteSpeed_Cache_Config::OPT_CDN_QUIC ) ; ?>
 			<div class="litespeed-desc">
 				<?php echo sprintf( __( 'Use %s API functionality.', 'litespeed-cache' ), 'Quic Cloud' ) ; ?>
 
-				<a id='litespeed_modal_href' href="https://quic.cloud" target="_blank">Quic.cloud</a>
+				<a id='litespeed_modal_href' href="https://quic.cloud" target="_blank">Register for free at QUIC.cloud</a>
 
 				<!-- <link rel="stylesheet" href="<?php echo LSWCP_PLUGIN_URL ; ?>css/iziModal.min.css"> -->
-				<!-- <script type="text/javascript" src="<?php echo LSWCP_PLUGIN_URL ; ?>js/iziModal.min.js"></script> -->
+				<!-- <script src="<?php echo LSWCP_PLUGIN_URL ; ?>js/iziModal.min.js"></script> -->
 				<!-- <div id="litespeed_modal"></div> -->
-				<script type="text/javascript">
+				<script>
 					// var litespeed_modal = jQuery("#litespeed_modal").iziModal({iframe: true});
 					// jQuery("#litespeed_modal_href").click(function(event) {
 					// 	event.preventDefault();
@@ -213,7 +217,7 @@ $cdn_mapping = $this->config->get_item( LiteSpeed_Cache_Config::ITEM_CDN_MAPPING
 					<?php $this->build_input( LiteSpeed_Cache_Config::OPT_CDN_QUIC_KEY ) ; ?>
 					<div class="litespeed-desc">
 						<?php echo sprintf( __( 'Your API key is used to access %s APIs.', 'litespeed-cache' ), 'Quic Cloud' ) ; ?>
-						<?php echo sprintf( __( 'Get it from <a %1$s>%2$s</a>.', 'litespeed-cache' ), 'href="https://quic.cloud/dashboard" target="_blank"', 'Quic Cloud' ) ; ?>
+						<?php echo sprintf( __( 'Get it from <a %1$s>%2$s</a>.', 'litespeed-cache' ), 'href="https://my.quic.cloud/dashboard" target="_blank"', 'Quic Cloud' ) ; ?>
 					</div>
 				</div>
 

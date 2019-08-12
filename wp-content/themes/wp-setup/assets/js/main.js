@@ -1,21 +1,13 @@
 (function($) {
 
-  $.fn.Plugin = function() {
-    var $main = $(this);
-
-    function init(){
-      setVars();
-      bindEvents();
+  class TestClass{
+    constructor(one, two){
+      console.log('TestClass -- constructor');
+      this.one = one;
+      this.two = two;
+      console.log(this.one + ' ' + this.two);
     }
-
-    function setVars(){
-    }
-
-    function bindEvents(){
-    }
-
-    init();
-  };
+  }
 
   $.fn.customGoogleAnalyticsEvents = function() {
     let $main = $(this),

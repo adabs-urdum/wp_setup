@@ -38,6 +38,19 @@ class LiteSpeed_Cache_API extends LiteSpeed_Cache_Const
 	const WIDGET_OPID_TTL =			LiteSpeed_Cache_ESI::WIDGET_OPID_TTL ;
 
 	/**
+	 * Disable All
+	 *
+	 * @since 2.9.7.2
+	 * @access public
+	 */
+	public static function disable_all( $reason )
+	{
+		self::debug( '[API] Disabled_all due to ' . $reason ) ;
+
+		! defined( 'LITESPEED_DISABLE_ALL' ) && define( 'LITESPEED_DISABLE_ALL', true ) ;
+	}
+
+	/**
 	 * Force to set an option
 	 * Note: it will only affect the AFTER usage of that option
 	 *
@@ -146,6 +159,17 @@ class LiteSpeed_Cache_API extends LiteSpeed_Cache_Const
 	public static function set_force_cacheable( $reason )
 	{
 		LiteSpeed_Cache_Control::force_cacheable( $reason ) ;
+	}
+
+	/**
+	 * Set cache to force public cache if cacheable ( Will ignore most kinds of non-cacheable conditions )
+	 *
+	 * @since 2.9.7.2
+	 * @access public
+	 */
+	public static function set_force_public( $reason )
+	{
+		LiteSpeed_Cache_Control::set_public_forced( $reason ) ;
 	}
 
 	/**
@@ -460,11 +484,12 @@ class LiteSpeed_Cache_API extends LiteSpeed_Cache_Const
 	 * Hook ESI params
 	 *
 	 * @since 1.1.3
+	 * @since  2.9.8.1 Changed hook name and params
 	 * @access public
 	 */
-	public static function hook_esi_param($block, $hook)
+	public static function hook_esi_param( $hook, $priority = 10, $args = 2 )
 	{
-		add_filter('litespeed_cache_sub_esi_params-' . $block, $hook) ;
+		add_filter( 'litespeed_esi_params', $hook, $priority, $args ) ;
 	}
 
 	/**
@@ -530,6 +555,7 @@ class LiteSpeed_Cache_API extends LiteSpeed_Cache_Const
 	 * Easiest way to replace WP nonce to an ESI widget
 	 *
 	 * @since 2.6
+	 * @deprecated 2.9.5 Dropped-in wp_create_nonce replacement
 	 * @access public
 	 */
 	public static function nonce( $action = -1, $defence_for_html_filter = true )
@@ -539,7 +565,17 @@ class LiteSpeed_Cache_API extends LiteSpeed_Cache_Const
 		}
 
 		// Replace it to ESI
-		return self::esi_url( 'lscwp_nonce_esi', 'LSCWP Nonce ESI ' . $action, array( 'action' => $action ), '', true, $defence_for_html_filter, true ) ;
+		return self::esi_url( 'nonce', 'LSCWP Nonce ESI ' . $action, array( 'action' => $action ), '', true, $defence_for_html_filter, true ) ;
+	}
+
+	/**
+	 * Append an action to nonce to convert it to ESI
+	 *
+	 * @since  2.9.5
+	 */
+	public static function nonce_action( $action )
+	{
+		LiteSpeed_Cache_ESI::get_instance()->nonce_action( $action ) ;
 	}
 
 	/**
@@ -616,7 +652,7 @@ class LiteSpeed_Cache_API extends LiteSpeed_Cache_Const
 	 */
 	public static function hook_init( $hook )
 	{
-		add_action('litespeed_init', $hook) ;
+		add_action( 'litespeed_init', $hook ) ;
 	}
 
 }

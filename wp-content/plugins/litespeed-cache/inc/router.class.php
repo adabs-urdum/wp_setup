@@ -233,8 +233,19 @@ class LiteSpeed_Cache_Router
 		LiteSpeed_Cache_Log::debug( '[Router] get_role: ' . $role ) ;
 
 		if ( ! $role ) {
+			return $role ;
 			// Guest user
 			LiteSpeed_Cache_Log::debug( '[Router] role: guest' ) ;
+
+			/**
+			 * Fix double login issue
+			 * The previous user init refactoring didn't fix this bcos this is in login process and the user role could change
+			 * @see  https://github.com/litespeedtech/lscache_wp/commit/69e7bc71d0de5cd58961bae953380b581abdc088
+			 * @since  2.9.8 Won't assign const if in login process
+			 */
+			if ( substr_compare( wp_login_url(), $GLOBALS[ 'pagenow' ], -strlen( $GLOBALS[ 'pagenow' ] ) ) === 0 ) {
+				return $role ;
+			}
 		}
 
 		define( 'LITESPEED_WP_ROLE', $role ) ;
@@ -513,6 +524,9 @@ class LiteSpeed_Cache_Router
 			case LiteSpeed_Cache::ACTION_IMPORT:
 			case LiteSpeed_Cache::ACTION_REPORT:
 			case LiteSpeed_Cache::ACTION_CSS:
+			case LiteSpeed_Cache::ACTION_CFG:
+			case LiteSpeed_Cache::ACTION_ACTIVATION:
+			case LiteSpeed_Cache::ACTION_UTIL:
 				if ( $_can_option && ! $_is_network_admin ) {
 					self::$_action = $action ;
 				}
@@ -530,9 +544,13 @@ class LiteSpeed_Cache_Router
 				return ;
 
 			case LiteSpeed_Cache::ACTION_DISMISS:
-				if ( self::is_ajax() ) {
-					self::$_action = $action ;
-				}
+				/**
+				 * Non ajax call can dismiss too
+				 * @since  2.9
+				 */
+				// if ( self::is_ajax() ) {
+				self::$_action = $action ;
+				// }
 				return ;
 
 			default:

@@ -342,8 +342,11 @@ class LiteSpeed_Cache_Object
 			/**
 			 * Add SASL auth
 			 * @since  1.8.1
+			 * @since  2.9.6 Fixed SASL connection @see https://www.litespeedtech.com/support/wiki/doku.php/litespeed_wiki:lsmcd:new_sasl
 			 */
-			if ( $this->_cfg_user && $this->_cfg_pswd && method_exists( $this->_conn, 'setSaslAuthData' ) && ini_get( 'memcached.use_sasl' ) ) {
+			if ( $this->_cfg_user && $this->_cfg_pswd && method_exists( $this->_conn, 'setSaslAuthData' ) ) {
+				$this->_conn->setOption( Memcached::OPT_BINARY_PROTOCOL, true ) ;
+				$this->_conn->setOption( Memcached::OPT_COMPRESSION, false ) ;
 				$this->_conn->setSaslAuthData( $this->_cfg_user, $this->_cfg_pswd ) ;
 			}
 
@@ -503,7 +506,12 @@ class LiteSpeed_Cache_Object
 
 		// defined( 'LSCWP_LOG' ) && LiteSpeed_Cache_Log::debug2( '[Object] delete ' . $key ) ;
 
-		$res = $this->_conn->delete( $key ) ;
+		if ( $this->_oc_driver == 'Redis' ) {
+			$res = $this->_conn->del( $key ) ;
+		}
+		else {
+			$res = $this->_conn->delete( $key ) ;
+		}
 
 		return $res ;
 	}

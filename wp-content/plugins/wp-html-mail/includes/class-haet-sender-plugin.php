@@ -8,6 +8,9 @@ require HAET_MAIL_PATH . 'includes/class-haet-sender-plugin-contact-form-7.php';
 require HAET_MAIL_PATH . 'includes/class-haet-sender-plugin-wp-support-plus-responsive-ticket-system.php';
 require HAET_MAIL_PATH . 'includes/class-haet-sender-plugin-birthday-emails.php';
 require HAET_MAIL_PATH . 'includes/class-haet-sender-plugin-gravityforms.php';
+require HAET_MAIL_PATH . 'includes/class-haet-sender-plugin-happyforms.php';
+require HAET_MAIL_PATH . 'includes/class-haet-sender-plugin-ultimate-wp-mail.php';
+require HAET_MAIL_PATH . 'includes/class-haet-sender-plugin-divi-theme.php';
 
 class Haet_Different_Plugin_Exception extends Exception {}
 
@@ -22,6 +25,12 @@ class Haet_Sender_Plugin {
 
     public static function get_available_plugins(){
         $plugins = array(
+            // 'PLUGIN_SLUG'   =>  array(
+            //     'name'      =>  'PLUGIN_SLUG',
+            //     'file'      =>  'PLUGIN_FOLDER/MAIN_PLUGIN_FILE.php',
+            //     'class'     =>  'DETECTOR_CLASS_IN_THIS_PLUGIN',
+            //     'display_name' => 'DISPLAY_NAME'
+            // ),
             'contact-form-7'   =>  array(
                 'name'      =>  'contact-form-7',
                 'file'      =>  'contact-form-7/wp-contact-form-7.php',
@@ -64,7 +73,26 @@ class Haet_Sender_Plugin {
                 'class'     =>  'Haet_Sender_Plugin_GravityForms',
                 'display_name' => 'GravityForms',
                 'image_url' =>  HAET_MAIL_URL . '/images/gravityforms.png'
-            )
+            ),
+            'happyforms'   =>  array(
+                'name'      =>  'happyforms',
+                'file'      =>  'happyforms/happyforms.php',
+                'class'     =>  'Haet_Sender_Plugin_Happyforms',
+                'display_name' => 'HappyForms'
+            ),
+            'ultimate-wp-mail'   =>  array(
+                'name'      =>  'ultimate-wp-mail',
+                'file'      =>  'ultimate-wp-mail/Main.php',
+                'class'     =>  'Haet_Sender_Plugin_UltimateWPMail',
+                'display_name' => 'Ultimate WP Mail'
+            ),
+            'divi-theme'   =>  array(
+                'name'      =>  'divi-theme',
+                'file'      =>  'Divi',
+                'class'     =>  'Haet_Sender_Plugin_DiviTheme',
+                'display_name' => 'Divi',
+                'image_url' =>  HAET_MAIL_URL . '/images/divi-theme.png'
+            ),
         );
 
         return apply_filters( 'haet_mail_available_plugins', $plugins );
@@ -118,6 +146,38 @@ class Haet_Sender_Plugin {
             return true;
     }
 
+    
+    /**
+    *   is_header_hidden()
+    *   return true if the header of the mail template should hidden
+    **/
+    public function is_header_hidden(){
+        $plugin_options = $this->get_plugin_options();
+        if(array_key_exists($this->current_plugin['name'], $plugin_options)){
+            if( array_key_exists( 'hide_header', $plugin_options[ $this->current_plugin['name'] ] ) )
+                return $plugin_options[ $this->current_plugin['name'] ]['hide_header'];
+            else
+                return false;
+        }else
+            return false;
+    }
+
+    /**
+    *   is_footer_hidden()
+    *   return true if the footer of the mail template should hidden
+    **/
+    public function is_footer_hidden(){
+        $plugin_options = $this->get_plugin_options();
+        if(array_key_exists($this->current_plugin['name'], $plugin_options)){
+            if( array_key_exists( 'hide_footer', $plugin_options[ $this->current_plugin['name'] ] ) )
+                return $plugin_options[ $this->current_plugin['name'] ]['hide_footer'];
+            else
+                return false;
+        }else
+            return false;
+    }
+
+
     public function get_plugin_name(){
         return $this->current_plugin['name'];
     }
@@ -135,6 +195,10 @@ class Haet_Sender_Plugin {
                         return true;
                     }
                 }
+            }
+            $active_theme = wp_get_theme();
+            if ( $plugin['display_name'] == $active_theme->name || $plugin['display_name']== $active_theme->parent_theme ) {
+                return true;
             }
         }
         return false;
@@ -202,7 +266,7 @@ class Haet_Sender_Plugin {
     *   define plugin specific default options
     **/
     public static function get_plugin_default_options(){
-        return array('template'=>true,'sender'=>true);
+        return array('template'=>true,'sender'=>true,'hide_header'=>false,'hide_footer'=>false);
     }
 
 

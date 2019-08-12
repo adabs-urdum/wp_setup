@@ -757,6 +757,10 @@ class LiteSpeed_Cache_Admin_Settings
 		$id = LiteSpeed_Cache_Config::ITEM_MEDIA_LAZY_IMG_EXC ;
 		$this->_save_item( $id, 'uri' ) ;
 
+		// Update lazyload image classname excludes
+		$id = LiteSpeed_Cache_Config::ITEM_MEDIA_LAZY_IMG_CLS_EXC ;
+		$this->_save_item( $id ) ;
+
 		$id = LiteSpeed_Cache_Config::ITEM_MEDIA_WEBP_ATTRIBUTE ;
 		$this->_save_item( $id ) ;
 	}
@@ -1059,12 +1063,14 @@ class LiteSpeed_Cache_Admin_Settings
 		 */
 		$id = LiteSpeed_Cache_Config::ITEM_CRWL_COOKIES ;
 		$cookie_crawlers = array() ;
-		foreach ( $this->_input[ $id ][ 'name' ] as $k => $v ) {
-			if ( ! $v ) {
-				continue ;
-			}
+		if ( ! empty( $this->_input[ $id ][ 'name' ] ) ) {
+			foreach ( $this->_input[ $id ][ 'name' ] as $k => $v ) {
+				if ( ! $v ) {
+					continue ;
+				}
 
-			$cookie_crawlers[ $v ] = $this->_input[ $id ][ 'vals' ][ $k ] ;
+				$cookie_crawlers[ $v ] = $this->_input[ $id ][ 'vals' ][ $k ] ;
+			}
 		}
 		update_option( $id, $cookie_crawlers ) ;
 
@@ -1193,7 +1199,7 @@ class LiteSpeed_Cache_Admin_Settings
 		}
 
 		// Save vary group settings
-		$this->_save_item( LiteSpeed_Cache_Config::VARY_GROUP ) ;
+		$this->_save_item( LiteSpeed_Cache_Config::VARY_GROUP, 'array' ) ;
 	}
 
 	/**
@@ -1224,13 +1230,17 @@ class LiteSpeed_Cache_Admin_Settings
 	 */
 	public static function validate_widget_save( $instance, $new_instance, $old_instance, $widget )
 	{
-		if ( empty( $_POST[ LiteSpeed_Cache_Config::OPTION_NAME ] ) ) {
+		if ( empty( $new_instance ) ) {
 			return $instance ;
 		}
-		$current = ! empty( $old_instance[ LiteSpeed_Cache_Config::OPTION_NAME ] ) ? $old_instance[ LiteSpeed_Cache_Config::OPTION_NAME ] : false ;
-		$input = $_POST[ LiteSpeed_Cache_Config::OPTION_NAME ] ;
-		$esistr = $input[ LiteSpeed_Cache_ESI::WIDGET_OPID_ESIENABLE ] ;
-		$ttlstr = $input[ LiteSpeed_Cache_ESI::WIDGET_OPID_TTL ] ;
+		if ( ! isset( $new_instance[ LiteSpeed_Cache_ESI::WIDGET_OPID_ESIENABLE ] ) ) {
+			return $instance ;
+		}
+		if ( ! isset( $new_instance[ LiteSpeed_Cache_ESI::WIDGET_OPID_TTL ] ) ) {
+			return $instance ;
+		}
+		$esistr = $new_instance[ LiteSpeed_Cache_ESI::WIDGET_OPID_ESIENABLE ] ;
+		$ttlstr = $new_instance[ LiteSpeed_Cache_ESI::WIDGET_OPID_TTL ] ;
 
 		if ( ! is_numeric( $ttlstr ) || ! is_numeric( $esistr ) ) {
 			add_filter( 'wp_redirect', 'LiteSpeed_Cache_Admin_Settings::widget_save_err' ) ;
@@ -1251,6 +1261,7 @@ class LiteSpeed_Cache_Admin_Settings
 		$instance[ LiteSpeed_Cache_Config::OPTION_NAME ][ LiteSpeed_Cache_ESI::WIDGET_OPID_ESIENABLE ] = $esi ;
 		$instance[ LiteSpeed_Cache_Config::OPTION_NAME ][ LiteSpeed_Cache_ESI::WIDGET_OPID_TTL ] = $ttl ;
 
+		$current = ! empty( $old_instance[ LiteSpeed_Cache_Config::OPTION_NAME ] ) ? $old_instance[ LiteSpeed_Cache_Config::OPTION_NAME ] : false ;
 		if ( ! $current || $esi != $current[ LiteSpeed_Cache_ESI::WIDGET_OPID_ESIENABLE ] ) {
 			LiteSpeed_Cache_Purge::purge_all( 'Wdiget ESI_enable changed' ) ;
 		}

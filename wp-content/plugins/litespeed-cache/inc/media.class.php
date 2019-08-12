@@ -137,6 +137,76 @@ class LiteSpeed_Cache_Media
 	}
 
 	/**
+	 * Return media file info if exists
+	 *
+	 * This is for remote attachment plugins
+	 *
+	 * @since 2.9.8
+	 * @access public
+	 */
+	public function info( $short_file_path, $post_id )
+	{
+		$real_file = $this->wp_upload_dir[ 'basedir' ] . '/' . $short_file_path ;
+
+		if ( file_exists( $real_file ) ) {
+			return array(
+				'url'	=> $this->wp_upload_dir[ 'baseurl' ] . '/' . $short_file_path,
+				'md5'	=> md5_file( $real_file ),
+				'size'	=> filesize( $real_file ),
+			) ;
+		}
+
+		/**
+		 * WP Stateless compatibility #143 https://github.com/litespeedtech/lscache_wp/issues/143
+		 * @since 2.9.8
+		 * @return array( 'url', 'md5', 'size' )
+		 */
+		$info = apply_filters( 'litespeed_media_info', array(), $short_file_path, $post_id ) ;
+		if ( ! empty( $info[ 'url' ] ) && ! empty( $info[ 'md5' ] ) && ! empty( $info[ 'size' ] ) ) {
+			return $info ;
+		}
+
+		return false ;
+	}
+
+	/**
+	 * Delete media file
+	 *
+	 * @since 2.9.8
+	 * @access public
+	 */
+	public function del( $short_file_path, $post_id )
+	{
+		$real_file = $this->wp_upload_dir[ 'basedir' ] . '/' . $short_file_path ;
+
+		if ( file_exists( $real_file ) ) {
+			unlink( $real_file ) ;
+			LiteSpeed_Cache_Log::debug( '[Img_Optm] deleted ' . $real_file ) ;
+		}
+
+		do_action( 'litespeed_media_del', $short_file_path, $post_id ) ;
+	}
+
+	/**
+	 * Rename media file
+	 *
+	 * @since 2.9.8
+	 * @access public
+	 */
+	public function rename( $short_file_path, $short_file_path_new, $post_id )
+	{
+		$real_file = $this->wp_upload_dir[ 'basedir' ] . '/' . $short_file_path ;
+		$real_file_new = $this->wp_upload_dir[ 'basedir' ] . '/' . $short_file_path_new ;
+
+		if ( file_exists( $real_file ) ) {
+			rename( $real_file, $real_file_new ) ;
+			LiteSpeed_Cache_Log::debug( '[Img_Optm] renamed ' . $real_file . ' to ' . $real_file_new ) ;
+		}
+
+		do_action( 'litespeed_media_rename', $short_file_path, $short_file_path_new, $post_id ) ;
+	}
+
+	/**
 	 * Media Admin Menu -> Image Optimization Column Title
 	 *
 	 * @since 1.6.3
@@ -162,6 +232,7 @@ class LiteSpeed_Cache_Media
 		}
 
 		$local_file = get_attached_file( $post_id ) ;
+		$local_file = substr( $local_file, strlen( $this->wp_upload_dir[ 'basedir' ] ) ) ;
 
 		$size_meta = get_post_meta( $post_id, LiteSpeed_Cache_Img_Optm::DB_IMG_OPTIMIZE_SIZE, true ) ;
 
@@ -176,11 +247,11 @@ class LiteSpeed_Cache_Media
 			$desc = false ;
 			$cls = 'litespeed-icon-media-webp' ;
 			$cls_webp = '' ;
-			if ( file_exists( $local_file . '.webp' ) ) {
+			if ( $this->info( $local_file . '.webp', $post_id ) ) {
 				$desc = __( 'Click to Disable WebP', 'litespeed-cache' ) ;
 				$cls_webp = 'litespeed-txt-webp' ;
 			}
-			elseif ( file_exists( $local_file . '.optm.webp' ) ) {
+			elseif ( $this->info( $local_file . '.optm.webp', $post_id ) ) {
 				$cls .= '-disabled' ;
 				$desc = __( 'Click to Enable WebP', 'litespeed-cache' ) ;
 				$cls_webp = 'litespeed-txt-disabled' ;
@@ -213,11 +284,11 @@ class LiteSpeed_Cache_Media
 			$desc = false ;
 			$cls = 'litespeed-icon-media-optm' ;
 			$cls_ori = '' ;
-			if ( file_exists( $bk_file ) ) {
+			if ( $this->info( $bk_file, $post_id ) ) {
 				$desc = __( 'Click to Restore Original File', 'litespeed-cache' ) ;
 				$cls_ori = 'litespeed-txt-ori' ;
 			}
-			elseif ( file_exists( $bk_optm_file ) ) {
+			elseif ( $this->info( $bk_optm_file, $post_id ) ) {
 				$cls .= '-disabled' ;
 				$desc = __( 'Click to Switch To Optimized File', 'litespeed-cache' ) ;
 				$cls_ori = 'litespeed-txt-disabled' ;
@@ -410,7 +481,7 @@ eot;
 		// Include lazyload lib js and init lazyload
 		if ( $cfg_img_lazy || $cfg_iframe_lazy ) {
 			if ( LiteSpeed_Cache::config( LiteSpeed_Cache_Config::OPID_MEDIA_IMG_LAZYJS_INLINE ) ) {
-				$lazy_lib = '<script type="text/javascript">' . Litespeed_File::read( LSCWP_DIR . self::LIB_FILE_IMG_LAZYLOAD ) . '</script>' ;
+				$lazy_lib = '<script>' . Litespeed_File::read( LSCWP_DIR . self::LIB_FILE_IMG_LAZYLOAD ) . '</script>' ;
 			} else {
 				$lazy_lib_url = LSWCP_PLUGIN_URL . self::LIB_FILE_IMG_LAZYLOAD ;
 				$lazy_lib = '<script src="' . $lazy_lib_url . '"></script>' ;
@@ -511,6 +582,8 @@ eot;
 		 */
 		$excludes = apply_filters( 'litespeed_cache_media_lazy_img_excludes', LiteSpeed_Cache_Config::get_instance()->get_item( LiteSpeed_Cache_Config::ITEM_MEDIA_LAZY_IMG_EXC ) ) ;
 
+		$cls_excludes = apply_filters( 'litespeed_media_lazy_img_cls_excludes', LiteSpeed_Cache_Config::get_instance()->get_item( LiteSpeed_Cache_Config::ITEM_MEDIA_LAZY_IMG_CLS_EXC ) ) ;
+
 		$src_list = array() ;
 		$html_list = array() ;
 		$placeholder_list = array() ;
@@ -540,12 +613,27 @@ eot;
 				continue ;
 			}
 
+			if ( ! empty( $attrs[ 'class' ] ) && $hit = LiteSpeed_Cache_Utility::str_hit_array( $attrs[ 'class' ], $cls_excludes ) ) {
+				LiteSpeed_Cache_Log::debug2( '[Media] lazyload image cls excludes [hit] ' . $hit ) ;
+				continue ;
+			}
+
 			/**
 			 * Exclude from lazyload by setting
 			 * @since  1.5
 			 */
 			if ( $excludes && LiteSpeed_Cache_Utility::str_hit_array( $attrs[ 'src' ], $excludes ) ) {
 				LiteSpeed_Cache_Log::debug2( '[Media] lazyload image exclude ' . $attrs[ 'src' ] ) ;
+				continue ;
+			}
+
+			/**
+			 * Excldues invalid image src from buddypress avatar crop
+			 * @see  https://wordpress.org/support/topic/lazy-load-breaking-buddypress-upload-avatar-feature/#post-11040512
+			 * @since  2.9.1
+			 */
+			if ( strpos( $attrs[ 'src' ], '{' ) !== false ) {
+				LiteSpeed_Cache_Log::debug2( '[Media] image src has {} ' . $attrs[ 'src' ] ) ;
 				continue ;
 			}
 
@@ -682,11 +770,18 @@ eot;
 				continue ;
 			}
 
+			/**
+			 * Support quotes in src `background-image: url('src')`
+			 * @since 2.9.3
+			 */
+			$url = trim( $url, '\'"' ) ;
+
 			if ( ! $url2 = $this->replace_webp( $url ) ) {
 				continue ;
 			}
 
-			$html_snippet = sprintf( 'background-image:%1$surl(%2$s)', $matches[ 1 ][ $k ], $url2 ) ;
+			// $html_snippet = sprintf( 'background-image:%1$surl(%2$s)', $matches[ 1 ][ $k ], $url2 ) ;
+			$html_snippet = str_replace( $url, $url2, $matches[ 0 ][ $k ] ) ;
 			$this->content = str_replace( $matches[ 0 ][ $k ], $html_snippet, $this->content ) ;
 		}
 	}
@@ -760,9 +855,15 @@ eot;
 			return false ;
 		}
 
-		if ( LiteSpeed_Cache_Utility::is_internal_file( $url ) ) {
+		/**
+		 * WebP API hook
+		 * NOTE: As $url may contain query strings, WebP check will need to parse_url before appending .webp
+		 * @since  2.9.5
+		 * @see  #751737 - API docs for WEBP generation
+		 */
+		if ( apply_filters( 'litespeed_media_check_ori', LiteSpeed_Cache_Utility::is_internal_file( $url ), $url ) ) {
 			// check if has webp file
-			if ( LiteSpeed_Cache_Utility::is_internal_file( $url, 'webp' ) ) {
+			if ( apply_filters( 'litespeed_media_check_webp', LiteSpeed_Cache_Utility::is_internal_file( $url, 'webp' ), $url ) ) {
 				$url .= '.webp' ;
 			}
 			else {
@@ -907,20 +1008,13 @@ eot;
 		$this->_save_summary( $req_summary ) ;
 
 		// Generate placeholder
-		$url = 'https://wp.api.litespeedtech.com/placeholder/' . $size . '?v=' . LiteSpeed_Cache::PLUGIN_VERSION . '&c=' . $this->_cfg_placeholder_resp_color ;
+		$req_data = array(
+			'size'	=> $size,
+			'color'	=> $this->_cfg_placeholder_resp_color,
+		) ;
+		$data = LiteSpeed_Cache_Admin_API::get( LiteSpeed_Cache_Admin_API::IAPI_ACTION_PLACEHOLDER, $req_data, true ) ;
 
-		LiteSpeed_Cache_Log::debug( '[Media] posting to : ' . $url ) ;
-
-		$response = wp_remote_get( $url, array( 'timeout' => 15 ) ) ;
-
-		// Parse response data
-		if ( is_wp_error( $response ) ) {
-			$error_message = $response->get_error_message() ;
-			LiteSpeed_Cache_Log::debug( '[Media] failed to post: ' . $error_message ) ;
-			return false ;
-		}
-
-		$data = $response[ 'body' ] ;
+		LiteSpeed_Cache_Log::debug( '[Media] _generate_placeholder ' ) ;
 
 		if ( strpos( $data, 'data:image/png;base64,' ) !== 0 ) {
 			LiteSpeed_Cache_Log::debug( '[Media] failed to decode response: ' . $data ) ;

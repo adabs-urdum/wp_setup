@@ -15,13 +15,17 @@ final class Haet_Mail {
 
 	function __construct(){
 		add_action( 'plugins_loaded', 'Haet_Sender_Plugin::hook_plugins', 30 );
+
+		add_action( 'admin_notices', array( $this, 'maybe_show_testmode_warning' ) );
 	}
 	
 	
 	function get_default_options() {
 		return array(
 			'fromname' 				=> 	get_bloginfo('name'),
-			'fromaddress'			=> 	get_bloginfo('admin_email')
+			'fromaddress'			=> 	get_bloginfo('admin_email'),
+			'testmode'				=>	false,
+			'testmode_recipient'	=>	''
 		);
 	}
 
@@ -223,12 +227,6 @@ final class Haet_Mail {
 
 		$template = apply_filters( 'haet_mail_modify_styled_mail', $template );
 
-		$custom_css_desktop = apply_filters( 'haet_mail_css_desktop', '' );
-		$custom_css_mobile = apply_filters( 'haet_mail_css_mobile', '' );
-
-		$template = str_replace( '/**** ADD CSS HERE ****/', $custom_css_desktop . '/**** ADD CSS HERE ****/', $template );
-		$template = str_replace( '/**** ADD MOBILE CSS HERE ****/', $custom_css_mobile . '/**** ADD MOBILE CSS HERE ****/', $template );
-
 		$template = $this->prepare_email_for_delivery($template);
 
 		$tabs = array(
@@ -331,16 +329,7 @@ final class Haet_Mail {
 			$use_template = true;
 		else
 			$use_template = $sender_plugin->use_template();
-
-		// $debug = 'DEBUG<br>';
-		// $debug .= '<pre>=====POST:'.print_r($_POST,true).'</pre>';
-		// $debug .= '<pre>=====GET:'.print_r($_GET,true).'</pre>';
-		// $debug .= 'SENDER-PLUGIN: <pre>'.print_r($sender_plugin,true).'</pre><br>';
-		// $debug .= 'ACTIVE-PLUGINS: <pre>'.print_r(Haet_Sender_Plugin::get_active_plugins(),true).'</pre><br>';
-		// if( strpos( $email['message'], '</body>' ) !== false )
-		// 	$email['message'] = str_replace( '</body>', $debug, $email['message'] );
-		// else
-		// 	$email['message'] .= $debug; 
+		
 
 		$use_template = apply_filters( 'haet_mail_use_template', $use_template, array('to' => $email['to'], 'subject' => $email['subject'], 'message' => $email['message'], 'headers' => $email['headers'], 'attachments' => $email['attachments'], 'sender_plugin' => ($sender_plugin?$sender_plugin->get_plugin_name():null)) );
 
@@ -359,7 +348,8 @@ final class Haet_Mail {
 			// drop <style> blocks in content
 			$email['message'] = preg_replace('/\<style(.*)\<\/style\>/simU', '', $email['message']);
 			
-			$pre_header_text = substr( strip_tags( $email['message'] ), 0, 200 );
+			// mb_substr instead of substr suggested here: https://wordpress.org/support/topic/encoding-problem-on-woocommerce/
+			$pre_header_text = mb_substr( strip_tags( $email['message'] ), 0, 200 );
 			
 
 			if( $this->is_mailbuilder_message( $email['message'] ) )
@@ -396,13 +386,39 @@ final class Haet_Mail {
 
 		if ( $use_template ){
 			add_filter('wp_mail_content_type',array($this, 'set_mail_content_type'),20);
-			add_filter('wp_mail_charset',array($this, 'set_mail_charset'),20);
-		}
+            add_filter('wp_mail_charset',array($this, 'set_mail_charset'),20);
+        }
+        
+
+        if( $use_template && $sender_plugin && $sender_plugin->is_header_hidden() )
+            $email['message'] = preg_replace('/(.*)<!--header-table-->.*<!--\/header-table-->(.*)/smU', '$1 $2', $email['message']);
+        if( $use_template && $sender_plugin && $sender_plugin->is_footer_hidden() )
+            $email['message'] = preg_replace('/(.*)<!--footer-table-->.*<!--\/footer-table-->(.*)/smU', '$1 $2', $email['message']);
+
 
 		// Field values in Ninja Forms and of course also in other plugins are encoded and otherwise not suitable for subjects
 		$email['subject'] = html_entity_decode( $email['subject'] );
 
 		$email = $this->add_attachments( $email );
+
+		if( $this->is_debug_mode() ){
+			$debug_filename = trailingslashit( get_temp_dir() ) . 'debug-' . uniqid() . '.txt';
+            
+            $debug = print_r( $email, true );
+            $debug .= '=====POST:'.print_r($_POST,true)."\n\n";
+            $debug .= '=====GET:'.print_r($_GET,true)."\n\n";
+            $debug .= 'SENDER-PLUGIN: '.print_r($sender_plugin,true)."\n\n";
+            $debug .= 'ACTIVE-PLUGINS: <pre>'.print_r(Haet_Sender_Plugin::get_active_plugins(),true)."\n\n";
+            
+            file_put_contents( $debug_filename, $debug );
+			$email['attachments'][] = $debug_filename;
+		}
+
+		if(	isset( $options['testmode'] ) 
+			&& isset( $options['testmode_recipient'] ) 
+			&& $options['testmode'] 
+			&& is_email( trim( $options['testmode_recipient'] ) ) )
+			$email['to'] = trim( $options['testmode_recipient'] );
 
 		return $email;
 	}
@@ -433,8 +449,7 @@ final class Haet_Mail {
 				}
 			}	
 		}
-		
-
+	
 		return $email;
 	}
 
@@ -544,10 +559,24 @@ final class Haet_Mail {
 
 
 	private function prepare_email_for_delivery( $message ){
+		// general custom CSS via filters
+		$custom_css_desktop = '';
+		$custom_css_mobile = '';
+		$custom_css_desktop = apply_filters( 'haet_mail_css_desktop', $custom_css_desktop );
+		$custom_css_mobile = apply_filters( 'haet_mail_css_mobile', $custom_css_mobile );
+		$custom_css_mobile = ' @media screen and (max-width: 400px) { ' . PHP_EOL . $custom_css_mobile . ' } ';
+		$message = str_replace( '/**** ADD CSS HERE ****/', $custom_css_desktop . '/**** ADD CSS HERE ****/', $message );
+		$message = str_replace( '/**** ADD MOBILE CSS HERE ****/', $custom_css_mobile . '/**** ADD MOBILE CSS HERE ****/', $message );
+
+
 		$message = $this->inline_css($message);
 
 		// remove any scripts injected by hooks and shortcodes
 		$message = preg_replace( '/(<script.*<\/script>)/Us', '', $message );
+
+		// OMG, isn't there a better way to get rid of these encoding issues!?
+		$message = htmlentities( $message, ENT_NOQUOTES, "UTF-8", false );
+		$message = str_replace(array('&lt;','&gt;'),array('<','>'), $message);
 
 		return $message;
 	}
@@ -662,6 +691,7 @@ final class Haet_Mail {
 	}
 
 
+
 	/**
 	 * Show action links on the plugin screen
 	 */
@@ -669,6 +699,37 @@ final class Haet_Mail {
 		return array_merge( array(
 			'<a href="' . get_admin_url(null,'options-general.php?page=wp-html-mail') . '">' . __( 'Settings' ) . '</a>'
 		), $links );
+	}
+
+
+	public function maybe_show_testmode_warning(){
+		$options = $this->get_options();
+		if( is_array( $options ) && isset( $options['testmode'] ) && isset( $options['testmode_recipient'] ) ){
+			if( $options['testmode'] && is_email( trim( $options['testmode_recipient'] ) ) ){
+				?>
+				<div class="notice notice-warning">
+				    <p><?php echo sprintf( __( '<strong>Warning:</strong> WP HTML Mail – Email test mode is enabled. All emails are redirected to <strong>%1$s</strong>.', 'wp-html-mail' ), $options['testmode_recipient'] ); ?></p>
+				</div>
+				<?php
+			}
+		}
+	}
+
+	/**
+	 * added in 2.9
+	 * debug mode can only be used when testmode is active to avoid sending debug infos to clients
+	 */
+	public function is_debug_mode(){
+		$options = $this->get_options();
+		return ( 
+				is_array( $options ) 
+				&& isset( $options['testmode'] ) 
+				&& $options['testmode'] 
+				&& isset( $options['testmode_recipient'] ) 
+				&& is_email( trim( $options['testmode_recipient'] ) )
+				&& isset( $options['debugmode'] ) 
+				&& $options['debugmode']
+		);
 	}
 }
 

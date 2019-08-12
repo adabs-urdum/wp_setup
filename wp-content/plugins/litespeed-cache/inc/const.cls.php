@@ -16,6 +16,7 @@ class LiteSpeed_Cache_Const
 	const ITEM_OPTM_CSS = 'litespeed-optm-css' ;// separate critical css that should be stored in option table
 	const ITEM_OPTM_JS_DEFER_EXC = 'litespeed-optm-js-defer-excludes' ;
 	const ITEM_MEDIA_LAZY_IMG_EXC = 'litespeed-media-lazy-img-excludes' ;
+	const ITEM_MEDIA_LAZY_IMG_CLS_EXC = 'litespeed-media-lazy-img-cls-excludes' ;
 	const ITEM_IMG_OPTM_NEED_PULL = 'litespeed-media-need-pull' ;
 	const ITEM_ENV_REF = 'litespeed-env-ref' ;
 	const ITEM_CACHE_DROP_QS = 'litespeed-cache-drop_qs' ;
@@ -246,6 +247,7 @@ class LiteSpeed_Cache_Const
 			self::ITEM_OPTM_CSS,
 			self::ITEM_OPTM_JS_DEFER_EXC,
 			self::ITEM_MEDIA_LAZY_IMG_EXC,
+			self::ITEM_MEDIA_LAZY_IMG_CLS_EXC,
 			self::ITEM_IMG_OPTM_NEED_PULL,
 			self::ITEM_ENV_REF,
 			self::ITEM_CACHE_DROP_QS,
@@ -327,7 +329,7 @@ class LiteSpeed_Cache_Const
 				return "users\nuserlogins\nusermeta\nuser_meta\nsite-transient\nsite-options\nsite-lookup\nblog-lookup\nblog-details\nrss\nglobal-posts\nblog-id-cache" ;
 
 			case self::ITEM_OBJECT_NON_PERSISTENT_GROUPS :
-				return "comment\ncounts\nplugins" ;
+				return "comment\ncounts\nplugins\nwc_session_id" ;
 
 			case self::ITEM_ADV_PURGE_ALL_HOOKS :
 				return "switch_theme\nwp_create_nav_menu\nwp_update_nav_menu\nwp_delete_nav_menu\ncreate_term\nedit_terms\ndelete_term\nadd_link\nedit_link\ndelete_link" ;
@@ -470,7 +472,7 @@ class LiteSpeed_Cache_Const
 			self::OPID_PUBLIC_TTL => 604800,
 			self::OPID_PRIVATE_TTL => 1800,
 			self::OPID_FRONT_PAGE_TTL => 604800,
-			self::OPID_FEED_TTL => 0,
+			self::OPID_FEED_TTL => 1,
 			self::OPID_403_TTL => 3600,
 			self::OPID_404_TTL => 3600,
 			self::OPID_500_TTL => 3600,
@@ -624,6 +626,7 @@ class LiteSpeed_Cache_Const
 			'LITESPEED_ON',
 			'LITESPEED_ON_IN_SETTING',
 			'LSCACHE_ADV_CACHE',
+			'LSWCP_TAG_PREFIX',
 		) ;
 		$server_vars = array() ;
 		foreach ( $consts as $v ) {

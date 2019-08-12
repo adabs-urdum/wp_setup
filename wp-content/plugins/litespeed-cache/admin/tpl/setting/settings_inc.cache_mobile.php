@@ -11,8 +11,8 @@ if (!defined('WPINC')) die;
 				$this->build_switch(LiteSpeed_Cache_Config::OPID_CACHE_MOBILE);
 			?>
 			<div class="litespeed-desc">
-				<?php echo __('When enabled, mobile views will be cached separately.', 'litespeed-cache'); ?>
-				<?php echo __('A site built with responsive design does not need to check this.', 'litespeed-cache'); ?>
+				<?php echo __('Cache mobile views separately.', 'litespeed-cache'); ?>
+				<?php echo __('Only enable for AMP or mobile-specific design/content, not for responsive sites.', 'litespeed-cache'); ?>
 				<br /><font class="litespeed-warning">
 					⚠️
 					<?php echo __( 'This setting will edit the .htaccess file.', 'litespeed-cache' ) ; ?>
@@ -33,8 +33,6 @@ if (!defined('WPINC')) die;
 
 					// if enabled, check the setting in file
 					if ( defined( 'LITESPEED_ON' ) ) {
-
-						$this->display_messages() ;
 
 						$mobile_agents = LiteSpeed_Cache_Admin_Rules::get_instance()->get_rewrite_rule_mobile_agents() ;
 						if ( $mobile_agents !== $_options[ $id ] ) {

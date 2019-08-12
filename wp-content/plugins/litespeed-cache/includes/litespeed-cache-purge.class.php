@@ -145,8 +145,8 @@ class LiteSpeed_Cache_Purge
 	{
 		$this->_purge_all_lscache( true ) ;
 		$this->_purge_all_cssjs( true ) ;
-		$this->_purge_all_ccss( true ) ;
-		$this->_purge_all_placeholder( true ) ;
+		// $this->_purge_all_ccss( true ) ;
+		// $this->_purge_all_placeholder( true ) ;
 		$this->_purge_all_object( true ) ;
 		$this->_purge_all_opcache( true ) ;
 
@@ -857,7 +857,7 @@ class LiteSpeed_Cache_Purge
 	 */
 	private function _append_prefix( $purge_tags, $is_private = false )
 	{
-		$curr_bid = get_current_blog_id() ;
+		$curr_bid = is_multisite() ? get_current_blog_id() : '' ;
 
 		if ( ! in_array('*', $purge_tags) ) {
 			$tags = array() ;
