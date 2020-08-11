@@ -38,6 +38,15 @@ body {
   line-height: inherit;
 }
 
+button,
+input,
+optgroup,
+select,
+textarea,
+#wpadminbar * {
+  font-family: $FontFamilyMain;
+}
+
 a {
   position: inherit;
   color: $Black;
@@ -186,9 +195,12 @@ textarea:focus {
   color: $Color2;
 }
 
-.login form {
-  border: none;
-  box-shadow: none;
+.login {
+
+  form {
+    border: none;
+    box-shadow: none;
+  }
 }
 
 .wp-core-ui .button-primary,
@@ -254,9 +266,16 @@ ul#adminmenu>li.current>a.current:after {
 }
 
 #adminmenu li.menu-top:hover,
-#adminmenu li.opensub>a.menu-top,
-#adminmenu li>a.menu-top:focus {
+#adminmenu li.opensub>a.menu-top {
   color: $Color1;
+}
+
+#adminmenu li>a.menu-top:focus {
+  color: $Color2;
+}
+
+.wp-core-ui select:hover {
+  color: $Color2;
 }
 
 #wpadminbar {
@@ -472,4 +491,44 @@ input[type="radio"]:checked::before {
   color: $Color1;
   background: $Black;
   border-left-color: $Color1;
+}
+
+#collapse-button .collapse-button-icon:after {
+  color: $Color1;
+}
+
+#collapse-button:focus {
+  color: $Color1;
+}
+
+.contextual-help-tabs .active {
+  border-left-color: $Color1;
+}
+
+#contextual-help-back,
+.contextual-help-tabs .active {
+  background-color: lighten($Color1, lightness($Color1) / 1.5);
+}
+
+.view-switch a.current:before {
+  color: $Color1;
+}
+
+#menu-management .menu-edit,
+#menu-settings-column .accordion-container,
+.comment-ays,
+.feature-filter,
+.imgedit-group,
+.manage-menus,
+.menu-item-handle,
+.popular-tags,
+.stuffbox,
+.widget-inside,
+.widget-top,
+.widgets-holder-wrap,
+.wp-editor-container,
+p.popular-tags,
+table.widefat,
+.postbox {
+  box-shadow: none;
 }

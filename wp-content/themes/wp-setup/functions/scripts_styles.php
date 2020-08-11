@@ -53,7 +53,7 @@ function my_mce_before_init_insert_formats( $init_array ) {
   return $init_array;
 }
 add_filter( 'tiny_mce_before_init', 'my_mce_before_init_insert_formats' );
-add_editor_style( 'editor-style.css' );
+// add_editor_style( 'editor-style.css' );
 add_editor_style( get_template_directory_uri().'/dist/css/editor.min.css' );
 //----------------------------------------------------------
 
