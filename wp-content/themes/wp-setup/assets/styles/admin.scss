@@ -1,15 +1,13 @@
-@import "normalize";
-@import "variables";
 @import "fonts";
-@import "mixins";
-@import "functions";
+@import "variables";
 
 $Color1: $Yellow;
 $Color2: $YellowDark;
 $Black: $Black;
 $White: $White;
 $FontFamilyMain: $FontFamilyMain;
-$LoginText: 'Login WP Setup';
+$LoginTextAfter: 'Login wp_setup.test';
+$LoginTextBefore: 'adabs.ch';
 
 * {
   &::selection {
@@ -23,6 +21,12 @@ html {
 
 body {
   max-width: none;
+
+  &.login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }
 
 canvas,
@@ -81,6 +85,9 @@ $Width: 14px;
 $Duration: 2s;
 
 #login {
+  padding: 0;
+  transform: translateY(-5vh);
+
   h1 {
     display: flex;
     flex-direction: column;
@@ -89,9 +96,15 @@ $Duration: 2s;
     margin-bottom: $Width * 2;
     overflow: visible;
 
+    &:before {
+      content: $LoginTextBefore;
+      margin-bottom: $Width;
+      font-size: 18px;
+    }
+
     &:after {
-      content: $LoginText;
-      margin-top: $Width;
+      content: $LoginTextAfter;
+      margin-top: $Width * 4;
     }
 
     a {
@@ -191,7 +204,7 @@ textarea:focus {
 .login #backtoblog a:hover,
 .login #nav a:hover,
 .login h1 a:hover {
-  color: $Color2;
+  color: $Color1;
 }
 
 .login {
