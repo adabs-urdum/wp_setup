@@ -73,16 +73,4 @@ function login_style() {
 add_action( 'login_enqueue_scripts', 'login_style' );
 //----------------------------------------------------------
 
-// Admin color
-//----------------------------------------------------------
-function custom_admin_color_scheme() {
-  remove_action( 'admin_color_scheme_picker', 'admin_color_scheme_picker' );
-  wp_admin_css_color( 'adabscolor', 'adabs Color', get_template_directory_uri() . '/admin-color.css');
-  add_filter( 'get_user_option_admin_color', function() {
-		return 'adabscolor';
-	});
-}
-add_action( 'admin_init', 'custom_admin_color_scheme' );
-//----------------------------------------------------------
-
 ?>

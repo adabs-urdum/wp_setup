@@ -3,13 +3,18 @@
 @import "fonts";
 @import "mixins";
 @import "functions";
-// @import "./general";
+
+$Color1: $Yellow;
+$Color2: $YellowDark;
+$Black: $Black;
+$White: $White;
+$FontFamilyMain: $FontFamilyMain;
 
 * {
   font-size: inherit;
 
   &::selection {
-    background-color: $Yellow;
+    background-color: $Color1;
   }
 }
 
@@ -38,7 +43,7 @@ a {
   color: $Black;
 
   &:hover {
-    color: $Yellow;
+    color: $Color1;
   }
 
   &:after {
@@ -64,12 +69,82 @@ li {
   }
 }
 
-#login {
-  h1 a[href="https://de.wordpress.org/"] {
+$Width: 14px;
+$Duration: 2s;
 
-    // display: none;
+#login {
+  h1 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: $Width * 2;
+    overflow: visible;
+
     &:after {
-      content: none;
+      content: 'Login WP Setup';
+      margin-top: $Width;
+    }
+
+    a {
+      position: relative;
+      transform-origin: center;
+      background-image: linear-gradient(-45deg, $Color1 0, $Color1 50%, $Color2 50%);
+      overflow: visible;
+      margin: 0;
+      border-radius: 50%;
+      animation: linear ROTATEBASE $Duration*4 infinite;
+
+      &:after,
+      &:before {
+        box-sizing: border-box;
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        background: transparent;
+        width: 30%;
+        height: 30%;
+        border-top: solid $Width $Color2;
+        border-right: solid $Width $Color2;
+        border-bottom: solid $Width $Color1;
+        border-left: solid $Width $Color1;
+        border-radius: 50%;
+        transform: rotate(0deg) translate(-50%, -50%);
+        transform-origin: left top;
+        animation: linear ROTATE $Duration*2 infinite;
+      }
+
+      &:before {
+        width: 100%;
+        height: 100%;
+        border-bottom: solid $Width $Color2;
+        border-right: solid $Width $Color2;
+        border-top: solid $Width $Color1;
+        border-left: solid $Width $Color1;
+        transform: rotate(0deg) translate(-50%, -50%);
+        animation: linear ROTATE $Duration*3 infinite;
+      }
+
+      @keyframes ROTATE {
+        0% {
+          transform: rotate(0deg) translate(-50%, -50%);
+        }
+
+        100% {
+          transform: rotate(360deg) translate(-50%, -50%);
+        }
+      }
+
+      @keyframes ROTATEBASE {
+        0% {
+          transform: rotate(0deg);
+        }
+
+        100% {
+          transform: rotate(-360deg);
+        }
+      }
     }
   }
 
@@ -100,19 +175,20 @@ input[type="url"]:focus,
 input[type="week"]:focus,
 select:focus,
 textarea:focus {
-  border-color: $Yellow;
-  box-shadow: 0 0 0 1px $Yellow;
+  border-color: $Color1;
+  box-shadow: 0 0 0 1px $Color1;
   outline: 2px solid transparent;
 }
 
 .login #backtoblog a:hover,
 .login #nav a:hover,
 .login h1 a:hover {
-  color: $YellowDark;
+  color: $Color2;
 }
 
 .login form {
   border: none;
+  box-shadow: none;
 }
 
 .wp-core-ui .button-primary,
@@ -121,7 +197,7 @@ textarea:focus {
   display: inline-block;
   font-weight: 700;
   background: $Black;
-  color: $Yellow;
+  color: $Color1;
   padding: 0 10px;
   text-transform: none;
   transition: background 0.3s ease-out;
@@ -129,8 +205,8 @@ textarea:focus {
   border: none;
 
   &:hover {
-    background: $YellowDark;
-    color: $Yellow;
+    background: $Color2;
+    color: $Color1;
   }
 
   &:after {
@@ -145,7 +221,7 @@ textarea:focus {
 #adminmenu li.wp-has-current-submenu a.wp-has-current-submenu,
 .folded #adminmenu li.current.menu-top,
 .folded #adminmenu li.wp-has-current-submenu {
-  background: $Yellow;
+  background: $Color1;
   color: $Black;
 }
 
@@ -168,24 +244,24 @@ ul#adminmenu>li.current>a.current:after {
 #adminmenu .wp-submenu a:hover,
 #adminmenu a:hover,
 #adminmenu li.menu-top>a:focus {
-  color: $Yellow;
+  color: $Color1;
 }
 
 #adminmenu li a:focus div.wp-menu-image:before,
 #adminmenu li.opensub div.wp-menu-image:before,
 #adminmenu li:hover div.wp-menu-image:before {
-  color: $Yellow;
+  color: $Color1;
 }
 
 #adminmenu li.menu-top:hover,
 #adminmenu li.opensub>a.menu-top,
 #adminmenu li>a.menu-top:focus {
-  color: $Yellow;
+  color: $Color1;
 }
 
 #wpadminbar {
   color: $Black;
-  background: $Yellow;
+  background: $Color1;
 }
 
 #wpadminbar .ab-item,
@@ -201,7 +277,7 @@ ul#adminmenu>li.current>a.current:after {
 #wpadminbar.nojs .ab-top-menu>li.menupop:hover>.ab-item,
 #wpadminbar .ab-top-menu>li.menupop.hover>.ab-item {
   color: $Black;
-  background: $Yellow;
+  background: $Color1;
 }
 
 #wpadminbar:not(.mobile)>#wp-toolbar li:hover span.ab-label,
@@ -254,12 +330,12 @@ ul#adminmenu>li.current>a.current:after {
 }
 
 .wp-core-ui .button-link {
-  color: $YellowDark;
+  color: $Color2;
 }
 
 .wp-core-ui .button-link:active,
 .wp-core-ui .button-link:hover {
-  color: $YellowDark;
+  color: $Color2;
 }
 
 .wp-core-ui select:focus {
@@ -280,12 +356,12 @@ ul#adminmenu>li.current>a.current:after {
 .wrap .page-title-action:hover {
   background: $Black;
   border-color: none;
-  color: $Yellow;
+  color: $Color1;
 }
 
 #screen-meta-links .show-settings:focus {
-  border-color: $Yellow;
-  box-shadow: 0 0 3px $YellowDark;
+  border-color: $Color1;
+  box-shadow: 0 0 3px $Color2;
 }
 
 input[type="radio"]:checked::before {
@@ -325,14 +401,14 @@ input[type="radio"]:checked::before {
 #wpadminbar li.hover .ab-item:before,
 #wpadminbar li:hover #adminbarsearch:before,
 #wpadminbar li #adminbarsearch.adminbar-focused:before {
-  color: $Yellow;
+  color: $Color1;
 }
 
 .wp-core-ui .button-primary.focus,
 .wp-core-ui .button-primary.hover,
 .wp-core-ui .button-primary:focus,
 .wp-core-ui .button-primary:hover {
-  box-shadow: 0 0 0 1px #fff, 0 0 0 3px $Yellow;
+  box-shadow: 0 0 0 1px #fff, 0 0 0 3px $Color1;
 }
 
 .wp-core-ui .button-primary.focus,
@@ -340,10 +416,60 @@ input[type="radio"]:checked::before {
 .wp-core-ui .button-primary:focus,
 .wp-core-ui .button-primary:hover {
   background: $Black;
-  border-color: $YellowDark;
-  color: $Yellow;
+  border-color: $Color2;
+  color: $Color1;
 }
 
 #collapse-button:hover {
-  color: $Yellow;
+  color: $Color1;
+}
+
+.login #login_error,
+.login .message,
+.login .success {
+  border-left-color: $Color1;
+  box-shadow: none;
+}
+
+.wp-core-ui .button-primary-disabled,
+.wp-core-ui .button-primary.disabled,
+.wp-core-ui .button-primary:disabled,
+.wp-core-ui .button-primary[disabled] {
+  color: $Color1 !important;
+  background: $Color2 !important;
+  border-color: $Color2 !important;
+}
+
+#customize-controls .control-section .accordion-section-title:focus,
+#customize-controls .control-section .accordion-section-title:hover,
+#customize-controls .control-section.open .accordion-section-title,
+#customize-controls .control-section:hover>.accordion-section-title {
+  color: $Color1;
+  background: $Black;
+  border-left-color: $Color1;
+}
+
+#customize-outer-theme-controls .control-section .accordion-section-title:focus:after,
+#customize-outer-theme-controls .control-section .accordion-section-title:hover:after,
+#customize-outer-theme-controls .control-section.open .accordion-section-title:after,
+#customize-outer-theme-controls .control-section:hover>.accordion-section-title:after,
+#customize-theme-controls .control-section .accordion-section-title:focus:after,
+#customize-theme-controls .control-section .accordion-section-title:hover:after,
+#customize-theme-controls .control-section.open .accordion-section-title:after,
+#customize-theme-controls .control-section:hover>.accordion-section-title:after {
+  color: $Color1;
+}
+
+.customize-panel-back:before,
+.customize-section-back:before {
+  color: $Color1;
+}
+
+.customize-panel-back:focus,
+.customize-panel-back:hover,
+.customize-section-back:focus,
+.customize-section-back:hover {
+  color: $Color1;
+  background: $Black;
+  border-left-color: $Color1;
 }
