@@ -1,8 +1,8 @@
 @import "fonts";
 @import "variables";
 
-$Color1: $Yellow;
-$Color2: $YellowDark;
+$ColorLight: $Yellow;
+$ColorDark: $YellowDark;
 $Black: $Black;
 $White: $White;
 $FontFamilyMain: $FontFamilyMain;
@@ -11,7 +11,7 @@ $LoginTextBefore: 'adabs.ch';
 
 * {
   &::selection {
-    background-color: $Color1;
+    background-color: $ColorLight;
   }
 }
 
@@ -55,7 +55,7 @@ a {
   color: $Black;
 
   &:hover {
-    color: $Color1;
+    color: $ColorLight;
   }
 
   &:after {
@@ -110,7 +110,7 @@ $Duration: 2s;
     a {
       position: relative;
       transform-origin: center;
-      background-image: linear-gradient(-45deg, $Color1 0, $Color1 50%, $Color2 50%);
+      background-image: linear-gradient(-45deg, $ColorLight 0, $ColorLight 50%, $ColorDark 50%);
       overflow: visible;
       margin: 0;
       border-radius: 50%;
@@ -126,10 +126,10 @@ $Duration: 2s;
         background: transparent;
         width: 30%;
         height: 30%;
-        border-top: solid $Width $Color2;
-        border-right: solid $Width $Color2;
-        border-bottom: solid $Width $Color1;
-        border-left: solid $Width $Color1;
+        border-top: solid $Width $ColorDark;
+        border-right: solid $Width $ColorDark;
+        border-bottom: solid $Width $ColorLight;
+        border-left: solid $Width $ColorLight;
         border-radius: 50%;
         transform: rotate(0deg) translate(-50%, -50%);
         transform-origin: left top;
@@ -139,10 +139,10 @@ $Duration: 2s;
       &:before {
         width: 100%;
         height: 100%;
-        border-bottom: solid $Width $Color2;
-        border-right: solid $Width $Color2;
-        border-top: solid $Width $Color1;
-        border-left: solid $Width $Color1;
+        border-bottom: solid $Width $ColorDark;
+        border-right: solid $Width $ColorDark;
+        border-top: solid $Width $ColorLight;
+        border-left: solid $Width $ColorLight;
         transform: rotate(0deg) translate(-50%, -50%);
         animation: linear ROTATE $Duration*3 infinite;
       }
@@ -196,15 +196,15 @@ input[type="url"]:focus,
 input[type="week"]:focus,
 select:focus,
 textarea:focus {
-  border-color: $Color1;
-  box-shadow: 0 0 0 1px $Color1;
+  border-color: $ColorLight;
+  box-shadow: 0 0 0 1px $ColorLight;
   outline: 2px solid transparent;
 }
 
 .login #backtoblog a:hover,
 .login #nav a:hover,
 .login h1 a:hover {
-  color: $Color1;
+  color: $ColorLight;
 }
 
 .login {
@@ -221,7 +221,7 @@ textarea:focus {
   display: inline-block;
   font-weight: 700;
   background: $Black;
-  color: $Color1;
+  color: $ColorLight;
   padding: 0 10px;
   text-transform: none;
   transition: background 0.3s ease-out;
@@ -229,8 +229,8 @@ textarea:focus {
   border: none;
 
   &:hover {
-    background: $Color2;
-    color: $Color1;
+    background: $ColorDark;
+    color: $ColorLight;
   }
 
   &:after {
@@ -245,7 +245,7 @@ textarea:focus {
 #adminmenu li.wp-has-current-submenu a.wp-has-current-submenu,
 .folded #adminmenu li.current.menu-top,
 .folded #adminmenu li.wp-has-current-submenu {
-  background: $Color1;
+  background: $ColorLight;
   color: $Black;
 }
 
@@ -268,32 +268,32 @@ ul#adminmenu>li.current>a.current:after {
 #adminmenu .wp-submenu a:hover,
 #adminmenu a:hover,
 #adminmenu li.menu-top>a:focus {
-  color: $Color1;
+  color: $ColorLight;
 }
 
 #adminmenu li a:focus div.wp-menu-image:before,
 #adminmenu li.opensub div.wp-menu-image:before,
 #adminmenu li:hover div.wp-menu-image:before {
-  color: $Color1;
+  color: $ColorLight;
 }
 
 #adminmenu li.menu-top:hover,
 #adminmenu li.opensub>a.menu-top {
-  color: $Color1;
+  color: $ColorLight;
   background-color: darken($Black, lightness($Black) / 2);
 }
 
 #adminmenu li>a.menu-top:focus {
-  color: $Color2;
+  color: $ColorDark;
 }
 
 .wp-core-ui select:hover {
-  color: $Color2;
+  color: $ColorDark;
 }
 
 #wpadminbar {
   color: $Black;
-  background: $Color1;
+  background: $ColorLight;
 }
 
 #wpadminbar .ab-item,
@@ -309,7 +309,7 @@ ul#adminmenu>li.current>a.current:after {
 #wpadminbar.nojs .ab-top-menu>li.menupop:hover>.ab-item,
 #wpadminbar .ab-top-menu>li.menupop.hover>.ab-item {
   color: $Black;
-  background: $Color1;
+  background: $ColorLight;
 }
 
 #wpadminbar:not(.mobile)>#wp-toolbar li:hover span.ab-label,
@@ -362,12 +362,12 @@ ul#adminmenu>li.current>a.current:after {
 }
 
 .wp-core-ui .button-link {
-  color: $Color2;
+  color: $ColorDark;
 }
 
 .wp-core-ui .button-link:active,
 .wp-core-ui .button-link:hover {
-  color: $Color2;
+  color: $ColorDark;
 }
 
 .wp-core-ui select:focus {
@@ -388,12 +388,12 @@ ul#adminmenu>li.current>a.current:after {
 .wrap .page-title-action:hover {
   background: $Black;
   border-color: none;
-  color: $Color1;
+  color: $ColorLight;
 }
 
 #screen-meta-links .show-settings:focus {
-  border-color: $Color1;
-  box-shadow: 0 0 3px $Color2;
+  border-color: $ColorLight;
+  box-shadow: 0 0 3px $ColorDark;
 }
 
 input[type="radio"]:checked::before {
@@ -433,14 +433,14 @@ input[type="radio"]:checked::before {
 #wpadminbar li.hover .ab-item:before,
 #wpadminbar li:hover #adminbarsearch:before,
 #wpadminbar li #adminbarsearch.adminbar-focused:before {
-  color: $Color1;
+  color: $ColorLight;
 }
 
 .wp-core-ui .button-primary.focus,
 .wp-core-ui .button-primary.hover,
 .wp-core-ui .button-primary:focus,
 .wp-core-ui .button-primary:hover {
-  box-shadow: 0 0 0 1px #fff, 0 0 0 3px $Color1;
+  box-shadow: 0 0 0 1px #fff, 0 0 0 3px $ColorLight;
 }
 
 .wp-core-ui .button-primary.focus,
@@ -448,18 +448,18 @@ input[type="radio"]:checked::before {
 .wp-core-ui .button-primary:focus,
 .wp-core-ui .button-primary:hover {
   background: $Black;
-  border-color: $Color2;
-  color: $Color1;
+  border-color: $ColorDark;
+  color: $ColorLight;
 }
 
 #collapse-button:hover {
-  color: $Color1;
+  color: $ColorLight;
 }
 
 .login #login_error,
 .login .message,
 .login .success {
-  border-left-color: $Color1;
+  border-left-color: $ColorLight;
   box-shadow: none;
 }
 
@@ -467,18 +467,18 @@ input[type="radio"]:checked::before {
 .wp-core-ui .button-primary.disabled,
 .wp-core-ui .button-primary:disabled,
 .wp-core-ui .button-primary[disabled] {
-  color: $Color1 !important;
-  background: $Color2 !important;
-  border-color: $Color2 !important;
+  color: $ColorLight !important;
+  background: $ColorDark !important;
+  border-color: $ColorDark !important;
 }
 
 #customize-controls .control-section .accordion-section-title:focus,
 #customize-controls .control-section .accordion-section-title:hover,
 #customize-controls .control-section.open .accordion-section-title,
 #customize-controls .control-section:hover>.accordion-section-title {
-  color: $Color1;
+  color: $ColorLight;
   background: $Black;
-  border-left-color: $Color1;
+  border-left-color: $ColorLight;
 }
 
 #customize-outer-theme-controls .control-section .accordion-section-title:focus:after,
@@ -489,42 +489,42 @@ input[type="radio"]:checked::before {
 #customize-theme-controls .control-section .accordion-section-title:hover:after,
 #customize-theme-controls .control-section.open .accordion-section-title:after,
 #customize-theme-controls .control-section:hover>.accordion-section-title:after {
-  color: $Color1;
+  color: $ColorLight;
 }
 
 .customize-panel-back:before,
 .customize-section-back:before {
-  color: $Color1;
+  color: $ColorLight;
 }
 
 .customize-panel-back:focus,
 .customize-panel-back:hover,
 .customize-section-back:focus,
 .customize-section-back:hover {
-  color: $Color1;
+  color: $ColorLight;
   background: $Black;
-  border-left-color: $Color1;
+  border-left-color: $ColorLight;
 }
 
 #collapse-button .collapse-button-icon:after {
-  color: $Color1;
+  color: $ColorLight;
 }
 
 #collapse-button:focus {
-  color: $Color1;
+  color: $ColorLight;
 }
 
 .contextual-help-tabs .active {
-  border-left-color: $Color1;
+  border-left-color: $ColorLight;
 }
 
 #contextual-help-back,
 .contextual-help-tabs .active {
-  background-color: lighten($Color1, lightness($Color1) / 1.5);
+  background-color: lighten($ColorLight, lightness($ColorLight) / 1.5);
 }
 
 .view-switch a.current:before {
-  color: $Color1;
+  color: $ColorLight;
 }
 
 #menu-management .menu-edit,
@@ -550,8 +550,8 @@ table.widefat,
 .customize-controls-close:hover,
 .customize-controls-preview-toggle:focus,
 .customize-controls-preview-toggle:hover {
-  color: $Color1;
-  border-top-color: $Color1;
+  color: $ColorLight;
+  border-top-color: $ColorLight;
 }
 
 #adminmenu,
