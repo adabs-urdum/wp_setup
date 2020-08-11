@@ -28,9 +28,9 @@ define('FS_METHOD', 'direct');
 include_once( get_stylesheet_directory() . '/functions/scripts_styles.php' );
 include_once( get_stylesheet_directory() . '/functions/menu.php' );
 include_once( get_stylesheet_directory() . '/functions/disable.php' );
-// include_once( get_stylesheet_directory() . '/functions/blocks.php' );
 include_once( get_stylesheet_directory() . '/functions/image_sizes.php' );
 include_once( get_stylesheet_directory() . '/functions/custom_posttypes.php' );
 include_once( get_stylesheet_directory() . '/functions/options.php' );
+// include_once( get_stylesheet_directory() . '/functions/blocks.php' );
 
 ?>
