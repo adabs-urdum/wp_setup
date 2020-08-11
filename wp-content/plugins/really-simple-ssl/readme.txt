@@ -4,9 +4,9 @@ Donate link: https://www.paypal.me/reallysimplessl
 Tags: SSL, https, force SSL, mixed content, insecure content, secure website, website security, TLS, security, secure socket layers, HSTS
 Requires at least: 4.6
 License: GPL2
-Tested up to: 5.2
+Tested up to: 5.5
 Requires PHP: 5.4
-Stable tag: 3.2.3
+Stable tag: 3.3.4
 
 No setup required! You only need an SSL certificate, and this plugin will do the rest.
 
@@ -15,7 +15,7 @@ Really Simple SSL automatically detects your settings and configures your websit
 To keep it lightweight, the options are kept to a minimum. The entire site will move to SSL.
 
 = Three simple steps for setup: =
-* Get an SSL certificate (can't do that for you, sorry).
+* Get an SSL certificate (can't do that for you, sorry.) [See our recommendations for a free SSL certificate](https://really-simple-ssl.com/knowledge-base/how-to-install-a-free-ssl-certificate-on-your-wordpress-cpanel-hosting/).
 * Activate this plugin
 * Enable SSL with one click
 
@@ -27,21 +27,22 @@ Any code suggestions? We're on [GitHub](https://github.com/rlankhorst/really-sim
 Hopefully this plugin saves you some hours of work. If you want to support the continuing development of this plugin, you might consider buying the [premium](https://www.really-simple-ssl.com/pro/), which includes
 some cool features.
 = Pro features =
-* The mixed content scan, which shows you what you have to do if you don't have the green lock yet
+* The mixed content scan, which shows you what you have to do if you don't have the secure lock yet
 * The option to enable HTTP Strict Transport Security
 * The option to configure your site for the HSTS preload list
+* Advanced security headers for additional security
 * Mixed Content Fixer for the back-end
-* More detailed feedback on the configuration page.
-* Certificate expiration check: get an email when your SSL certificate is about to expire.
+* More detailed feedback on the configuration page
+* Certificate expiration check: get an email when your SSL certificate is about to expire
 * Premium support
 
 = What does the plugin actually do =
 * The plugin handles most issues that WordPress has with SSL, like when you're behind a reverse proxy/loadbalancer, or when no headers are passed which WordPress can use to detect SSL.
 * All incoming requests are redirected to https. Default with an internal WordPress redirect, but you can also enable a .htaccess redirect.
-* The site url and home url are changed to https.
-* Your insecure content is fixed by replacing all http:// urls with https://, except hyperlinks to other domains. Dynamically, so no database changes are made (except for the siteurl and homeurl).
+* The siteurl and homeurl are changed to https.
+* Your insecure content is fixed by replacing all http:// URL's with https://, except hyperlinks to other domains. Dynamically, so no database changes are made (except for the siteurl and homeurl).
 
-Check out other plugins developed by Really Simple Plugins as well: [Complianz](https://wordpress.org/plugins/complianz-gdpr/) and [Zip Recipes](https://wordpress.org/plugins/zip-recipes/).
+Check out other plugins developed by Really Simple Plugins as well: [Complianz](https://wordpress.org/plugins/complianz-gdpr/), [Zip Recipes](https://wordpress.org/plugins/zip-recipes/) and [WP Search Insights](https://wordpress.org/plugins/wp-search-insights/).
 
 [contact](https://www.really-simple-ssl.com/contact/) me if you have any questions, issues, or suggestions. Really Simple SSL is developed by [Really Simple Plugins](https://www.really-simple-plugins.com).
 
@@ -71,7 +72,7 @@ The plugin checks your certificate before enabling, but if, for example, you mig
 If you can't deactivate, do not just remove the plugin folder to uninstall! Follow these [instructions](https://really-simple-ssl.com/knowledge-base/uninstall-websitebackend-not-accessible/).
 
 = Mixed content issues =
-Most mixed content issues are caused by urls in css or js files.
+Most mixed content issues are caused by URL's in css or js files.
 For detailed instructions on how to find mixed content read this [article](https://really-simple-ssl.com/knowledge-base/how-to-track-down-mixed-content-or-insecure-content/).
 
 = Redirect loop issues =
@@ -81,6 +82,62 @@ If you are experiencing redirect loops on your site, try these [instructions](ht
 Yes. There is a dedicated network settings page where you can switch between network activated SSL and per page SSL. In the dedicated pro for multisite plugin, you can override all site settings for SSL on the network level, and can activate and deactivate SSL in the network menu for each site.
 
 == Changelog ==
+= 3.3.4 =
+* Fix: prefix review notice dismiss to prevent conflicts with other plugins
+* Updated multisite SSL activation hook for new blogs to wp_insert_site
+* Moved notices CSS inline
+
+= 3.3.3 =
+* Dismiss review notice now uses get variable to dismiss it
+
+= 3.3.2 =
+* Added a notice when using Divi theme with a link to knowledge base instructions
+* Fixed a CSS issue where the active tab in setting didn't have an active color
+* Added an additional option to dismiss the review notice
+* Removed review notice capability check
+* Fixed a bug on multisite where a plusone was shown when it should only shown on non-multisite
+* Added prefix to uses_elementor() function and added checks if function_exists
+
+= 3.3.1 =
+* Fixed a typo in the backup link
+* Added instructions on how to add a free SSL certificate
+
+= 3.3 =
+* Updated SSL activated notice
+* Updated readme
+
+= 3.2.9 =
+* Fixed a bug where the redirect to settings page would abort SSL activation, not writing the wp-config fix on new installs
+* Fixed typo in force-deactivate notice
+
+= 3.2.8 =
+* Added redirect to settings page after activating SSL
+* Improved dashboard SSL certificate check by using the is_valid() check from rsssl_certificate instead of relying on site_has_ssl
+* Updated activation notice
+* Updated settings page sidebar styling and links
+
+= 3.2.7 =
+* Updated switch_to_blog function in to a backwards compatible version for older WP installations
+* Updated review notice
+* Improved .htaccess not writeable notice for Bitnami installations to show htaccess.conf location
+* Updated green lock to secure lock text
+* Removed border for dashboard sidebar button
+* Activate some security headers by default when pro is enabled
+
+= 3.2.6 =
+* Optimized plusone count function
+* Disabled Javascript redirect by default
+* Fixed a bug in the setting highlight function where an undefined setting name could cause a warning
+
+= 3.2.5 =
+* Fixed typo in trace_log() function call
+
+= 3.2.4 =
+* Improved and added dashboard notices
+* Improved debug logging
+* Added option to dismiss all Really Simple SSL notices
+* Fixed a bug where other plugins buttons had their style reset
+
 = 3.2.3 =
 * Added right-to-left text support
 * Show a plusone behind the notice that generated it
@@ -90,7 +147,7 @@ Yes. There is a dedicated network settings page where you can switch between net
 * Added site health notice
 
 = 3.2.2 =
-* Fix: some single sites setup were having issues with multisite files being include.
+* Fix: some single sites setup were having issues with multisite files being included.
 
 = 3.2.1 =
 * Fix: error in regex, cause a fatal error in cases where a plus one already was showing in the settings menu
@@ -540,6 +597,3 @@ Always back up before any upgrade. Especially .htaccess, wp-config.php and the p
 1. After activation, if SSL was detected, you can enable SSL.
 2. View your configuration on the settings page.
 3. Mixed content scan.
-
-== Frequently asked questions ==
-* Really Simple SSL maintains an extensive knowledge-base at https://www.really-simple-ssl.com.

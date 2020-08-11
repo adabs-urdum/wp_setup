@@ -1,11 +1,13 @@
 === Polylang ===
-Contributors: Chouby, manooweb
+Contributors: Chouby, manooweb, raaaahman, marianne38
 Donate link: https://polylang.pro
 Tags: multilingual, bilingual, translate, translation, language, multilanguage, international, localization
-Requires at least: 4.7
-Tested up to: 5.2
-Stable tag: 2.6.3
+Requires at least: 4.9
+Tested up to: 5.4
+Requires PHP: 5.6
+Stable tag: 2.7.4
 License: GPLv3 or later
+License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
 Making WordPress multilingual
 
@@ -41,7 +43,7 @@ Don't hesitate to [give your feedback](http://wordpress.org/support/view/plugin-
 
 == Installation ==
 
-1. Make sure you are using WordPress 4.7 or later and that your server is running PHP 5.2.4 or later (same requirement as WordPress itself)
+1. Make sure you are using WordPress 4.9 or later and that your server is running PHP 5.6 or later (same requirement as WordPress itself)
 1. If you tried other multilingual plugins, deactivate them before activating Polylang, otherwise, you may get unexpected results!
 1. Install and activate the plugin as usual from the 'Plugins' menu in WordPress.
 1. Go to the languages settings page and create the languages you need
@@ -76,61 +78,71 @@ Don't hesitate to [give your feedback](http://wordpress.org/support/view/plugin-
 
 == Changelog ==
 
-= 2.6.3 (2019-08-06) =
+= 2.7.4 ( 2020-06-29) =
 
-* Pro: Fix fatal error when updating an ACF field from frontend
-* Pro: Add action 'pll_post_synchronized'
-* Allow to get the current or default language object using the API. Props Jory Hogeveen. #359
-* Fix empty span in languages switcher widget when showing only flags
-* Fix wpml_register_single_string when updating the original string
+* Pro: Allow using our /untranslated-posts REST endpoint for non-public post types
+* Pro: Fix broken display in the block editor sidebar when a language has no flag
+* Pro: Fix SSO breaking the preview on secondary domains
+* Pro: Fix ACF translation option not working for term custom fields
+* Pro: Fix a styling issue in the fields group list table in ACF 5.9
+* Add Spanish from Puerto Rico to the predefined list of languages
 
-= 2.6.2 (2019-07-16) =
+= 2.7.3 (2020-05-26) =
 
-* Pro: Fix slow admin in case the translations update server can't be reached
-* Pro: Fix value not correctly translated for ACF clone fields in repeater
-* Fix strings translations mixed when registered via the WPML compatibility. #381
+* Security: Slash metas
+* Pro: Fix categories not savedafter the language has been switched in the block editor
+* Pro: Fix ACF fields stored as integers instead of strings
+* Pro: Fix ACF untranslated posts or terms being copied when creating a new translation
+* Pro: Fix PHP notice with ACF when a repeater or group is included in a flexible content
+* Pro: Fix "DevTools failed to load SourceMap" warning in browser console
+* Update plugin updater to 1.7.1
+* Honor the filter "pll_the_language_link" when the language switcher displays a dropdown #506
+* Fix "Something went wrong" message when quick editing untranslated post types #508
+* Fix wpseo_opengraph deprecated warning #509
 
-= 2.6.1 (2019-07-03) =
+= 2.7.2 (2020-04-27) =
 
-* Pro: Fix Yoast SEO sitemap for inactive languages when using subdomains or multiple domains
-* Fix fatal error in combination with Yoast SEO and Social Warfare
-* Fix post type archive url in Yoast SEO sitemap
+* Pro: Re-allow to modify the capability for strings translations
+* Pro: Fix redirect for posts having the same slug as a media
+* Pro: Fix PHP notice with ACF flexible content
+* Pro: Fix a fatal error with InfiniteWP
+* Update plugin updater to 1.7
+* Fix font in setup wizard
 
-= 2.6 (2019-06-26) =
+= 2.7.1 (2020-04-09) =
 
-* Pro: Remove all languages files. All translations are now maintained on TranslationsPress
-* Pro: Move the languages metabox to a block editor plugin
-* Pro: Better management of user capabilities when synchronizing posts
-* Pro: Separate REST requests from the frontend
-* Pro: Copy the post slug when duplicating a post
-* Pro: Duplicate ACF term metas when terms are automatically duplicated when creating a new post translation
-* Pro: Fix hierarchy lost when duplicating terms
-* Pro: Fix page shared slugs with special characters
-* Pro: Fix synchronized posts sharing their slug when the language is set from the content
-* Pro: Fix PHP warning with ACF Pro 5.8.1
-* Pro: Fix ACF clone fields not translated in repeaters
-* Better management of user capablities when synchronizing taxonomies terms and custom fields
-* Extend string translations search to translated strings #207
-* Update plugin updater to 1.6.18
-* Honor the filter `pll_flag` when performing the flag validation when creating a new language
-* Modify the title and the label for the language switcher menu items #307
-* Add support for international domain names
-* Add a title to the link icon used to add a translation #325
-* Add a notice when a static front page is not translated in a language
-* Add support for custom term fields in wpml-config.xml
-* Add filter `pll_admin_languages_filter` for the list of items the admin bar language filter
-* Add compatibility with WP Offload Media Lite. Props Daniel Berkman
-* Yoast SEO: Add post type archive url in all languages to the sitemap
-* Fix www. not redirected to not www. for the home page in multiple domains #311
-* Fix cropped images not being synchronized
-* Fix auto added page to menus when the page is created with the block editor
-* Fix embed of translated static front page #318
-* Fix a possible infinite redirect if the static front page is not translated
-* Fix incorrect behavior of action 'wpml_register_single_string' when updating the string source
-* Fix fatal error with Jetpack when no languages has been defined yet #330
-* Fix a conflict with Laravel Valet. Props @chesio. #250
-* Fix a conflict with Thesis.
-* Fix a conflict with Pods in the block editor. Props Jory Hogeveen. #369
-* Fix fatal error with Twenty Fourteen introduced in version 2.5.4. #374
+* Pro: Fix untranslated post types filtered by the parameter in the REST API #493
+* Fix fatal error when the function idn_to_ascii is not available
+* Fix PHP warning warning when a 3rd party plugin declares options not stored in DB in wpml-config.xml #492
+* Fix fatal error when a 3rd party plugin declares options stored as objects in wpml-config.xml #494
+
+= 2.7 (2020-04-06) =
+
+* Minimum WordPress version is now 4.9
+* Pro: Strings translations can now be exported and imported (in PO format)
+* Pro: Allow to decide individually which ACF fields to copy or synchronize
+* Pro: Add action pll_inactive_language_requested
+* Pro; Fix fatal error in The Events Calendar compatibility when no language is defined yet
+* Pro: Fix bulk translate when a post has no language
+* Pro: Fix reusable block saved without language
+* Pro: Fix post requested by slug not filtered in REST API, when the slug is shared
+* Add a setup wizard
+* Add Swahili, Upper Sorbian, Sindhi and Spanish from Uruguay to the list of predefined languages
+* Add flags in the predefined list of languages
+* Allow to hide the metaboxes from the screen options
+* The deletion of the plugin's data at uninstall is now controlled by a PHP constant instead of an option #456
+* Add parent in ajax response when selecting a term in autocomplete field #328
+* Add Vary: Accept-Language http header in home page redirect. Props @chesio #452
+* Improve performance to register/unregister WPML strings
+* Add support for the action wpml_switch_language
+* Add post_status to the list of accepted args of pll_count_posts()
+* Apply the filter pll_preferred_language in wp-login.php
+* Use filtered wrappers to create meta when creating media translations #231
+* Allow to translate the Twenty Seventeen header video Youtube url #460
+* Notices are now dismissed per site instead of per user #478
+* Fix terms not visible in the quick edit when only one language is defined and teh admin language filter is active
+* Fix post state not displayed for translations of the privacy policy page #395
+* Fix wildcards not correctly interpreted in wpml-config.xml
+* Fix product categories with special characters duplicated when importing WooCommerce products #474
 
 See [changelog.txt](https://plugins.svn.wordpress.org/polylang/trunk/changelog.txt) for older changelog

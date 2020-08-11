@@ -1,810 +1,969 @@
 <?php
 
+declare(strict_types=1);
+
 namespace voku\helper;
 
-use BadMethodCallException;
-use DOMDocument;
-use DOMXPath;
-use InvalidArgumentException;
-use RuntimeException;
-
 /**
- * Class HtmlDomParser
+ * @property-read string $outerText
+ *                                 <p>Get dom node's outer html (alias for "outerHtml").</p>
+ * @property-read string $outerHtml
+ *                                 <p>Get dom node's outer html.</p>
+ * @property-read string $innerText
+ *                                 <p>Get dom node's inner html (alias for "innerHtml").</p>
+ * @property-read string $innerHtml
+ *                                 <p>Get dom node's inner html.</p>
+ * @property-read string $plaintext
+ *                                 <p>Get dom node's plain text.</p>
  *
- * @package voku\helper
- *
- * @property-read string outerText <p>Get dom node's outer html (alias for "outerHtml").</p>
- * @property-read string outerHtml <p>Get dom node's outer html.</p>
- * @property-read string innerText <p>Get dom node's inner html (alias for "innerHtml").</p>
- * @property-read string innerHtml <p>Get dom node's inner html.</p>
- * @property-read string plaintext <p>Get dom node's plain text.</p>
- *
- * @method string outerText() <p>Get dom node's outer html (alias for "outerHtml()").</p>
- * @method string outerHtml() <p>Get dom node's outer html.</p>
- * @method string innerText() <p>Get dom node's inner html (alias for "innerHtml()").</p>
- *
- * @method HtmlDomParser load() load($html) <p>Load HTML from string.</p>
- * @method HtmlDomParser load_file() load_file($html) <p>Load HTML from file.</p>
- *
- * @method static HtmlDomParser file_get_html() file_get_html($html, $libXMLExtraOptions = null) <p>Load HTML from
- *         file.</p>
- * @method static HtmlDomParser str_get_html() str_get_html($html, $libXMLExtraOptions = null) <p>Load HTML from
- *         string.</p>
+ * @method string outerText()
+ *                                 <p>Get dom node's outer html (alias for "outerHtml()").</p>
+ * @method string outerHtml()
+ *                                 <p>Get dom node's outer html.</p>
+ * @method string innerText()
+ *                                 <p>Get dom node's inner html (alias for "innerHtml()").</p>
+ * @method HtmlDomParser load(string $html)
+ *                                 <p>Load HTML from string.</p>
+ * @method HtmlDomParser load_file(string $html)
+ *                                 <p>Load HTML from file.</p>
+ * @method static HtmlDomParser file_get_html($filePath, $libXMLExtraOptions = null)
+ *                                 <p>Load HTML from file.</p>
+ * @method static HtmlDomParser str_get_html($html, $libXMLExtraOptions = null)
+ *                                 <p>Load HTML from string.</p>
  */
-class HtmlDomParser
+class HtmlDomParser extends AbstractDomParser
 {
-  /**
-   * @var array
-   */
-  protected static $functionAliases = array(
-      'outertext' => 'html',
-      'outerhtml' => 'html',
-      'innertext' => 'innerHtml',
-      'innerhtml' => 'innerHtml',
-      'load'      => 'loadHtml',
-      'load_file' => 'loadHtmlFile',
-  );
+    /**
+     * @var string[]
+     */
+    protected static $functionAliases = [
+        'outertext' => 'html',
+        'outerhtml' => 'html',
+        'innertext' => 'innerHtml',
+        'innerhtml' => 'innerHtml',
+        'load'      => 'loadHtml',
+        'load_file' => 'loadHtmlFile',
+    ];
 
-  /**
-   * @var string[][]
-   */
-  protected static $domLinkReplaceHelper = array(
-      'orig' => array('[', ']', '{', '}',),
-      'tmp'  => array(
-          '!!!!SIMPLE_HTML_DOM__VOKU__SQUARE_BRACKET_LEFT!!!!',
-          '!!!!SIMPLE_HTML_DOM__VOKU__SQUARE_BRACKET_RIGHT!!!!',
-          '!!!!SIMPLE_HTML_DOM__VOKU__BRACKET_LEFT!!!!',
-          '!!!!SIMPLE_HTML_DOM__VOKU__BRACKET_RIGHT!!!!',
-      ),
-  );
+    /**
+     * @var bool
+     */
+    protected $isDOMDocumentCreatedWithoutHtml = false;
 
-  /**
-   * @var array
-   */
-  protected static $domReplaceHelper = array(
-      'orig' => array('&', '|', '+', '%'),
-      'tmp'  => array(
-          '!!!!SIMPLE_HTML_DOM__VOKU__AMP!!!!',
-          '!!!!SIMPLE_HTML_DOM__VOKU__PIPE!!!!',
-          '!!!!SIMPLE_HTML_DOM__VOKU__PLUS!!!!',
-          '!!!!SIMPLE_HTML_DOM__VOKU__PERCENT!!!!',
-      ),
-  );
+    /**
+     * @var bool
+     */
+    protected $isDOMDocumentCreatedWithoutWrapper = false;
 
-  /**
-   * @var Callable
-   */
-  protected static $callback;
+    /**
+     * @var bool
+     */
+    protected $isDOMDocumentCreatedWithoutHeadWrapper = false;
 
-  /**
-   * @var DOMDocument
-   */
-  protected $document;
+    /**
+     * @var bool
+     */
+    protected $isDOMDocumentCreatedWithoutPTagWrapper = false;
 
-  /**
-   * @var string
-   */
-  protected $encoding = 'UTF-8';
+    /**
+     * @var bool
+     */
+    protected $isDOMDocumentCreatedWithoutHtmlWrapper = false;
 
-  /**
-   * @var bool
-   */
-  protected $isDOMDocumentCreatedWithoutHtml = false;
+    /**
+     * @var bool
+     */
+    protected $isDOMDocumentCreatedWithoutBodyWrapper = false;
 
-  /**
-   * @var bool
-   */
-  protected $isDOMDocumentCreatedWithoutWrapper = false;
+    /**
+     * @var bool
+     */
+    protected $isDOMDocumentCreatedWithFakeEndScript = false;
 
-  /**
-   * @var bool
-   */
-  protected $isDOMDocumentCreatedWithoutHeadWrapper = false;
+    /**
+     * @var bool
+     */
+    protected $keepBrokenHtml;
 
-  /**
-   * @var bool
-   */
-  protected $isDOMDocumentCreatedWithoutHtmlWrapper = false;
+    /**
+     * @param \DOMNode|SimpleHtmlDomInterface|string $element HTML code or SimpleHtmlDomInterface, \DOMNode
+     */
+    public function __construct($element = null)
+    {
+        $this->document = new \DOMDocument('1.0', $this->getEncoding());
 
-  /**
-   * Constructor
-   *
-   * @param string|SimpleHtmlDom|\DOMNode $element HTML code or SimpleHtmlDom, \DOMNode
-   *
-   * @throws \InvalidArgumentException
-   */
-  public function __construct($element = null)
-  {
-    $this->document = new \DOMDocument('1.0', $this->getEncoding());
+        // DOMDocument settings
+        $this->document->preserveWhiteSpace = true;
+        $this->document->formatOutput = true;
 
-    // DOMDocument settings
-    $this->document->preserveWhiteSpace = true;
-    $this->document->formatOutput = true;
+        if ($element instanceof SimpleHtmlDomInterface) {
+            $element = $element->getNode();
+        }
 
-    if ($element instanceof SimpleHtmlDom) {
-      $element = $element->getNode();
+        if ($element instanceof \DOMNode) {
+            $domNode = $this->document->importNode($element, true);
+
+            if ($domNode instanceof \DOMNode) {
+                /** @noinspection UnusedFunctionResultInspection */
+                $this->document->appendChild($domNode);
+            }
+
+            return;
+        }
+
+        if ($element !== null) {
+            /** @noinspection UnusedFunctionResultInspection */
+            $this->loadHtml($element);
+        }
     }
 
-    if ($element instanceof \DOMNode) {
-      $domNode = $this->document->importNode($element, true);
+    /**
+     * @param string $name
+     * @param array  $arguments
+     *
+     * @return bool|mixed
+     */
+    public function __call($name, $arguments)
+    {
+        $name = \strtolower($name);
 
-      if ($domNode instanceof \DOMNode) {
-        $this->document->appendChild($domNode);
-      }
+        if (isset(self::$functionAliases[$name])) {
+            return \call_user_func_array([$this, self::$functionAliases[$name]], $arguments);
+        }
 
-      return;
+        throw new \BadMethodCallException('Method does not exist: ' . $name);
     }
 
-    if ($element !== null) {
-      $this->loadHtml($element);
-    }
-  }
+    /**
+     * @param string $name
+     * @param array  $arguments
+     *
+     * @throws \BadMethodCallException
+     * @throws \RuntimeException
+     *
+     * @return HtmlDomParser
+     */
+    public static function __callStatic($name, $arguments)
+    {
+        $arguments0 = $arguments[0] ?? '';
 
-  /**
-   * @param $name
-   * @param $arguments
-   *
-   * @return bool|mixed
-   */
-  public function __call($name, $arguments)
-  {
-    $name = strtolower($name);
+        $arguments1 = $arguments[1] ?? null;
 
-    if (isset(self::$functionAliases[$name])) {
-      return call_user_func_array(array($this, self::$functionAliases[$name]), $arguments);
-    }
+        if ($name === 'str_get_html') {
+            $parser = new static();
 
-    /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
-    throw new BadMethodCallException('Method does not exist: ' . $name);
-  }
+            return $parser->loadHtml($arguments0, $arguments1);
+        }
 
-  /**
-   * @param $name
-   * @param $arguments
-   *
-   * @return HtmlDomParser
-   *
-   * @throws \BadMethodCallException
-   * @throws \RuntimeException
-   * @throws \InvalidArgumentException
-   */
-  public static function __callStatic($name, $arguments)
-  {
-    $arguments0 = null;
-    if (isset($arguments[0])) {
-      $arguments0 = $arguments[0];
+        if ($name === 'file_get_html') {
+            $parser = new static();
+
+            return $parser->loadHtmlFile($arguments0, $arguments1);
+        }
+
+        throw new \BadMethodCallException('Method does not exist');
     }
 
-    $arguments1 = null;
-    if (isset($arguments[1])) {
-      $arguments1 = $arguments[1];
+    /** @noinspection MagicMethodsValidityInspection */
+
+    /**
+     * @param string $name
+     *
+     * @return string|null
+     */
+    public function __get($name)
+    {
+        $name = \strtolower($name);
+
+        switch ($name) {
+            case 'outerhtml':
+            case 'outertext':
+                return $this->html();
+            case 'innerhtml':
+            case 'innertext':
+                return $this->innerHtml();
+            case 'text':
+            case 'plaintext':
+                return $this->text();
+        }
+
+        return null;
     }
 
-    if ($name === 'str_get_html') {
-      /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
-      $parser = new self();
-
-      return $parser->loadHtml($arguments0, $arguments1);
-    }
-
-    if ($name === 'file_get_html') {
-      /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
-      $parser = new self();
-
-      return $parser->loadHtmlFile($arguments0, $arguments1);
-    }
-
-    throw new BadMethodCallException('Method does not exist');
-  }
-
-  /** @noinspection MagicMethodsValidityInspection */
-  /**
-   * @param $name
-   *
-   * @return string
-   */
-  public function __get($name)
-  {
-    $name = strtolower($name);
-
-    switch ($name) {
-      case 'outerhtml':
-      case 'outertext':
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
         return $this->html();
-      case 'innerhtml':
-      case 'innertext':
-        return $this->innerHtml();
-      case 'text':
-      case 'plaintext':
-        return $this->text();
     }
 
-    return null;
-  }
+    /**
+     * does nothing (only for api-compatibility-reasons)
+     *
+     * @return bool
+     *
+     * @deprecated
+     */
+    public function clear(): bool
+    {
+        return true;
+    }
 
-  /**
-   * @param string $selector
-   * @param int    $idx
-   *
-   * @return SimpleHtmlDom[]|SimpleHtmlDom|SimpleHtmlDomNodeInterface
-   */
-  public function __invoke($selector, $idx = null)
-  {
-    return $this->find($selector, $idx);
-  }
-
-  /**
-   * @return string
-   */
-  public function __toString()
-  {
-    return $this->html();
-  }
-
-  /**
-   * does nothing (only for api-compatibility-reasons)
-   *
-   * @deprecated
-   *
-   * @return bool
-   */
-  public function clear()
-  {
-    return true;
-  }
-
-  /**
-   * @param string $html
-   *
-   * @return string
-   */
-  public static function replaceToPreserveHtmlEntities($html)
-  {
-    // init
-    $linksNew = array();
-    $linksOld = array();
-
-    if (strpos($html, 'http') !== false) {
-
-      // regEx for e.g.: [https://www.domain.de/foo.php?foobar=1&email=lars%40moelleken.org&guid=test1233312&{{foo}}#foo]
-      $regExUrl = '/(\[?\bhttps?:\/\/[^\s<>]+(?:\([\w]+\)|[^[:punct:]\s]|\/|\}|\]))/i';
-      preg_match_all($regExUrl, $html, $linksOld);
-
-      if (!empty($linksOld[1])) {
-        $linksOld = $linksOld[1];
-        foreach ((array)$linksOld as $linkKey => $linkOld) {
-          $linksNew[$linkKey] = str_replace(
-              self::$domLinkReplaceHelper['orig'],
-              self::$domLinkReplaceHelper['tmp'],
-              $linkOld
-          );
+    /**
+     * Create DOMDocument from HTML.
+     *
+     * @param string   $html
+     * @param int|null $libXMLExtraOptions
+     *
+     * @return \DOMDocument
+     */
+    protected function createDOMDocument(string $html, $libXMLExtraOptions = null): \DOMDocument
+    {
+        if ($this->keepBrokenHtml) {
+            $html = $this->keepBrokenHtml(\trim($html));
         }
-      }
-    }
 
-    $linksNewCount = count($linksNew);
-    if ($linksNewCount > 0 && count($linksOld) === $linksNewCount) {
-      $search = array_merge($linksOld, self::$domReplaceHelper['orig']);
-      $replace = array_merge($linksNew, self::$domReplaceHelper['tmp']);
-    } else {
-      $search = self::$domReplaceHelper['orig'];
-      $replace = self::$domReplaceHelper['tmp'];
-    }
-
-    return str_replace($search, $replace, $html);
-  }
-
-  /**
-   * @param string $html
-   *
-   * @return string
-   */
-  public static function putReplacedBackToPreserveHtmlEntities($html)
-  {
-    static $DOM_REPLACE__HELPER_CACHE = null;
-
-    if ($DOM_REPLACE__HELPER_CACHE === null) {
-      $DOM_REPLACE__HELPER_CACHE['tmp'] = array_merge(
-          self::$domLinkReplaceHelper['tmp'],
-          self::$domReplaceHelper['tmp']
-      );
-      $DOM_REPLACE__HELPER_CACHE['orig'] = array_merge(
-          self::$domLinkReplaceHelper['orig'],
-          self::$domReplaceHelper['orig']
-      );
-    }
-
-    return str_replace($DOM_REPLACE__HELPER_CACHE['tmp'], $DOM_REPLACE__HELPER_CACHE['orig'], $html);
-  }
-
-  /**
-   * Create DOMDocument from HTML.
-   *
-   * @param string   $html
-   * @param int|null $libXMLExtraOptions
-   *
-   * @return \DOMDocument
-   */
-  private function createDOMDocument($html, $libXMLExtraOptions = null)
-  {
-    if (strpos($html, '<') === false) {
-      $this->isDOMDocumentCreatedWithoutHtml = true;
-    } elseif (strpos(ltrim($html), '<') !== 0) {
-      $this->isDOMDocumentCreatedWithoutWrapper = true;
-    }
-
-    if (strpos($html, '<html') === false) {
-      $this->isDOMDocumentCreatedWithoutHtmlWrapper = true;
-    }
-
-    if (strpos($html, '<head>') === false) {
-      $this->isDOMDocumentCreatedWithoutHeadWrapper = true;
-    }
-
-    // set error level
-    $internalErrors = libxml_use_internal_errors(true);
-    $disableEntityLoader = libxml_disable_entity_loader(true);
-    libxml_clear_errors();
-
-    $optionsSimpleXml = LIBXML_DTDLOAD | LIBXML_DTDATTR | LIBXML_NONET;
-    $optionsXml = 0;
-
-    if (defined('LIBXML_BIGLINES')) {
-      $optionsSimpleXml |= LIBXML_BIGLINES;
-    }
-
-    if (defined('LIBXML_COMPACT')) {
-      $optionsSimpleXml |= LIBXML_COMPACT;
-    }
-
-    if (defined('LIBXML_HTML_NOIMPLIED')) {
-      $optionsSimpleXml |= LIBXML_HTML_NOIMPLIED;
-    }
-
-    if (defined('LIBXML_HTML_NODEFDTD')) {
-      $optionsSimpleXml |= LIBXML_HTML_NODEFDTD;
-    }
-
-    if ($libXMLExtraOptions !== null) {
-      $optionsSimpleXml |= $libXMLExtraOptions;
-      $optionsXml |= $libXMLExtraOptions;
-    }
-
-    $sxe = simplexml_load_string($html, 'SimpleXMLElement', $optionsSimpleXml);
-    if ($sxe !== false && count(libxml_get_errors()) === 0) {
-      $this->document = dom_import_simplexml($sxe)->ownerDocument;
-    } else {
-
-      // UTF-8 hack: http://php.net/manual/en/domdocument.loadhtml.php#95251
-      $html = trim($html);
-      $xmlHackUsed = false;
-      if (stripos('<?xml', $html) !== 0) {
-        $xmlHackUsed = true;
-        $html = '<?xml encoding="' . $this->getEncoding() . '" ?>' . $html;
-      }
-
-      $html = self::replaceToPreserveHtmlEntities($html);
-
-      if ($optionsXml) {
-        $this->document->loadHTML($html, $optionsXml);
-      } else {
-        $this->document->loadHTML($html);
-      }
-
-      // remove the "xml-encoding" hack
-      if ($xmlHackUsed === true) {
-        foreach ($this->document->childNodes as $child) {
-          if ($child->nodeType === XML_PI_NODE) {
-            $this->document->removeChild($child);
-          }
+        if (\strpos($html, '<') === false) {
+            $this->isDOMDocumentCreatedWithoutHtml = true;
+        } elseif (\strpos(\ltrim($html), '<') !== 0) {
+            $this->isDOMDocumentCreatedWithoutWrapper = true;
         }
-      }
 
-      libxml_clear_errors();
+        /** @noinspection HtmlRequiredLangAttribute */
+        if (
+            \strpos($html, '<html ') === false
+            &&
+            \strpos($html, '<html>') === false
+        ) {
+            $this->isDOMDocumentCreatedWithoutHtmlWrapper = true;
+        }
+
+        if (
+            \strpos($html, '<body ') === false
+            &&
+            \strpos($html, '<body>') === false
+        ) {
+            $this->isDOMDocumentCreatedWithoutBodyWrapper = true;
+        }
+
+        /** @noinspection HtmlRequiredTitleElement */
+        if (
+            \strpos($html, '<head ') === false
+            &&
+            \strpos($html, '<head>') === false
+        ) {
+            $this->isDOMDocumentCreatedWithoutHeadWrapper = true;
+        }
+
+        /** @noinspection HtmlRequiredTitleElement */
+        if (
+            \strpos($html, '<p ') === false
+            &&
+            \strpos($html, '<p>') === false
+        ) {
+            $this->isDOMDocumentCreatedWithoutPTagWrapper = true;
+        }
+
+        if (
+            \strpos($html, '</script>') === false
+            &&
+            \strpos($html, '<\/script>') !== false
+        ) {
+            $this->isDOMDocumentCreatedWithFakeEndScript = true;
+        }
+
+        if (\strpos($html, '<script') !== false) {
+            $this->html5FallbackForScriptTags($html);
+
+            if (
+                \strpos($html, 'type="text/html"') !== false
+                ||
+                \strpos($html, 'type=\'text/html\'') !== false
+                ||
+                \strpos($html, 'type=text/html') !== false
+                ||
+                \strpos($html, 'type="text/x-custom-template"') !== false
+                ||
+                \strpos($html, 'type=\'text/x-custom-template\'') !== false
+                ||
+                \strpos($html, 'type=text/x-custom-template') !== false
+            ) {
+                $this->keepSpecialScriptTags($html);
+            }
+        }
+
+        // set error level
+        $internalErrors = \libxml_use_internal_errors(true);
+        // $disableEntityLoader = \libxml_disable_entity_loader(true);
+        \libxml_clear_errors();
+
+        $optionsXml = \LIBXML_DTDLOAD | \LIBXML_DTDATTR | \LIBXML_NONET;
+
+        if (\defined('LIBXML_BIGLINES')) {
+            $optionsXml |= \LIBXML_BIGLINES;
+        }
+
+        if (\defined('LIBXML_COMPACT')) {
+            $optionsXml |= \LIBXML_COMPACT;
+        }
+
+        if (\defined('LIBXML_HTML_NODEFDTD')) {
+            $optionsXml |= \LIBXML_HTML_NODEFDTD;
+        }
+
+        if ($libXMLExtraOptions !== null) {
+            $optionsXml |= $libXMLExtraOptions;
+        }
+
+        if (
+            $this->isDOMDocumentCreatedWithoutWrapper
+            ||
+            $this->keepBrokenHtml
+        ) {
+            $html = '<' . self::$domHtmlWrapperHelper . '>' . $html . '</' . self::$domHtmlWrapperHelper . '>';
+        }
+
+        $html = self::replaceToPreserveHtmlEntities($html);
+
+        $documentFound = false;
+        $sxe = \simplexml_load_string($html, \SimpleXMLElement::class, $optionsXml);
+        if ($sxe !== false && \count(\libxml_get_errors()) === 0) {
+            $domElementTmp = \dom_import_simplexml($sxe);
+            if ($domElementTmp) {
+                $documentFound = true;
+                $this->document = $domElementTmp->ownerDocument;
+            }
+        }
+
+        if ($documentFound === false) {
+
+            // UTF-8 hack: http://php.net/manual/en/domdocument.loadhtml.php#95251
+            $xmlHackUsed = false;
+            /** @noinspection StringFragmentMisplacedInspection */
+            if (\stripos('<?xml', $html) !== 0) {
+                $xmlHackUsed = true;
+                $html = '<?xml encoding="' . $this->getEncoding() . '" ?>' . $html;
+            }
+
+            $this->document->loadHTML($html, $optionsXml);
+
+            // remove the "xml-encoding" hack
+            if ($xmlHackUsed) {
+                foreach ($this->document->childNodes as $child) {
+                    if ($child->nodeType === \XML_PI_NODE) {
+                        /** @noinspection UnusedFunctionResultInspection */
+                        $this->document->removeChild($child);
+
+                        break;
+                    }
+                }
+            }
+        }
+
+        // set encoding
+        $this->document->encoding = $this->getEncoding();
+
+        // restore lib-xml settings
+        \libxml_clear_errors();
+        \libxml_use_internal_errors($internalErrors);
+        // \libxml_disable_entity_loader($disableEntityLoader);
+
+        return $this->document;
     }
 
-    // set encoding
-    $this->document->encoding = $this->getEncoding();
+    /**
+     * Find list of nodes with a CSS selector.
+     *
+     * @param string   $selector
+     * @param int|null $idx
+     *
+     * @return SimpleHtmlDomInterface|SimpleHtmlDomInterface[]|SimpleHtmlDomNodeInterface<SimpleHtmlDomInterface>
+     */
+    public function find(string $selector, $idx = null)
+    {
+        $xPathQuery = SelectorConverter::toXPath($selector);
 
-    // restore lib-xml settings
-    libxml_use_internal_errors($internalErrors);
-    libxml_disable_entity_loader($disableEntityLoader);
+        $xPath = new \DOMXPath($this->document);
+        $nodesList = $xPath->query($xPathQuery);
+        $elements = new SimpleHtmlDomNode();
 
-    return $this->document;
-  }
+        if ($nodesList) {
+            foreach ($nodesList as $node) {
+                $elements[] = new SimpleHtmlDom($node);
+            }
+        }
 
-  /**
-   * Return element by #id.
-   *
-   * @param string $id
-   *
-   * @return SimpleHtmlDom|SimpleHtmlDomNodeBlank
-   */
-  public function getElementById($id)
-  {
-    return $this->find("#$id", 0);
-  }
+        // return all elements
+        if ($idx === null) {
+            if (\count($elements) === 0) {
+                return new SimpleHtmlDomNodeBlank();
+            }
 
-  /**
-   * Return element by tag name.
-   *
-   * @param string $name
-   *
-   * @return SimpleHtmlDom|SimpleHtmlDomNodeBlank
-   */
-  public function getElementByTagName($name)
-  {
-    $node = $this->document->getElementsByTagName($name)->item(0);
+            return $elements;
+        }
 
-    if ($node === null) {
-      return new SimpleHtmlDomNodeBlank();
+        // handle negative values
+        if ($idx < 0) {
+            $idx = \count($elements) + $idx;
+        }
+
+        // return one element
+        return $elements[$idx] ?? new SimpleHtmlDomBlank();
     }
 
-    return new SimpleHtmlDom($node);
-  }
-
-  /**
-   * Returns elements by #id.
-   *
-   * @param string   $id
-   * @param null|int $idx
-   *
-   * @return SimpleHtmlDom[]|SimpleHtmlDom|SimpleHtmlDomNodeInterface
-   */
-  public function getElementsById($id, $idx = null)
-  {
-    return $this->find("#$id", $idx);
-  }
-
-  /**
-   * Returns elements by tag name.
-   *
-   * @param string   $name
-   * @param null|int $idx
-   *
-   * @return SimpleHtmlDomNode|SimpleHtmlDomNode[]|SimpleHtmlDomNodeBlank
-   */
-  public function getElementsByTagName($name, $idx = null)
-  {
-    $nodesList = $this->document->getElementsByTagName($name);
-
-    $elements = new SimpleHtmlDomNode();
-
-    foreach ($nodesList as $node) {
-      $elements[] = new SimpleHtmlDom($node);
+    /**
+     * Find nodes with a CSS selector.
+     *
+     * @param string $selector
+     *
+     * @return SimpleHtmlDomInterface[]|SimpleHtmlDomNodeInterface<SimpleHtmlDomInterface>
+     */
+    public function findMulti(string $selector): SimpleHtmlDomNodeInterface
+    {
+        return $this->find($selector, null);
     }
 
-    // return all elements
-    if (null === $idx) {
-      return $elements;
+    /**
+     * Find nodes with a CSS selector or false, if no element is found.
+     *
+     * @param string $selector
+     *
+     * @return false|SimpleHtmlDomInterface[]|SimpleHtmlDomNodeInterface<SimpleHtmlDomInterface>
+     */
+    public function findMultiOrFalse(string $selector)
+    {
+        $return = $this->find($selector, null);
+
+        if ($return instanceof SimpleHtmlDomNodeBlank) {
+            return false;
+        }
+
+        return $return;
     }
 
-    // handle negative values
-    if ($idx < 0) {
-      $idx = count($elements) + $idx;
+    /**
+     * Find one node with a CSS selector.
+     *
+     * @param string $selector
+     *
+     * @return SimpleHtmlDomInterface
+     */
+    public function findOne(string $selector): SimpleHtmlDomInterface
+    {
+        return $this->find($selector, 0);
     }
 
-    // return one element
-    if (isset($elements[$idx])) {
-      return $elements[$idx];
+    /**
+     * Find one node with a CSS selector or false, if no element is found.
+     *
+     * @param string $selector
+     *
+     * @return false|SimpleHtmlDomInterface
+     */
+    public function findOneOrFalse(string $selector)
+    {
+        $return = $this->find($selector, 0);
+
+        if ($return instanceof SimpleHtmlDomBlank) {
+            return false;
+        }
+
+        return $return;
     }
 
-    // return a blank-element
-    return new SimpleHtmlDomNodeBlank();
-  }
+    /**
+     * @param string $content
+     * @param bool   $multiDecodeNewHtmlEntity
+     *
+     * @return string
+     */
+    public function fixHtmlOutput(
+        string $content,
+        bool $multiDecodeNewHtmlEntity = false
+    ): string {
+        // INFO: DOMDocument will encapsulate plaintext into a e.g. paragraph tag (<p>),
+        //          so we try to remove it here again ...
 
-  /**
-   * Find list of nodes with a CSS selector.
-   *
-   * @param string $selector
-   * @param int    $idx
-   *
-   * @return SimpleHtmlDom[]|SimpleHtmlDom|SimpleHtmlDomNodeInterface
-   */
-  public function find($selector, $idx = null)
-  {
-    /** @noinspection ExceptionsAnnotatingAndHandlingInspection */
-    $xPathQuery = SelectorConverter::toXPath($selector);
+        if ($this->getIsDOMDocumentCreatedWithoutHtmlWrapper()) {
+            /** @noinspection HtmlRequiredLangAttribute */
+            $content = \str_replace(
+                [
+                    '<html>',
+                    '</html>',
+                ],
+                '',
+                $content
+            );
+        }
 
-    $xPath = new DOMXPath($this->document);
-    $nodesList = $xPath->query($xPathQuery);
-    $elements = new SimpleHtmlDomNode();
+        if ($this->getIsDOMDocumentCreatedWithoutHeadWrapper()) {
+            /** @noinspection HtmlRequiredTitleElement */
+            $content = \str_replace(
+                [
+                    '<head>',
+                    '</head>',
+                ],
+                '',
+                $content
+            );
+        }
 
-    foreach ($nodesList as $node) {
-      $elements[] = new SimpleHtmlDom($node);
+        if ($this->getIsDOMDocumentCreatedWithoutBodyWrapper()) {
+            /** @noinspection HtmlRequiredLangAttribute */
+            $content = \str_replace(
+                [
+                    '<body>',
+                    '</body>',
+                ],
+                '',
+                $content
+            );
+        }
+
+        if ($this->getIsDOMDocumentCreatedWithFakeEndScript()) {
+            $content = \str_replace(
+                '</script>',
+                '',
+                $content
+            );
+        }
+
+        if ($this->getIsDOMDocumentCreatedWithoutWrapper()) {
+            $content = (string) \preg_replace('/^<p>/', '', $content);
+            $content = (string) \preg_replace('/<\/p>/', '', $content);
+        }
+
+        if ($this->getIsDOMDocumentCreatedWithoutPTagWrapper()) {
+            $content = \str_replace(
+                [
+                    '<p>',
+                    '</p>',
+                ],
+                '',
+                $content
+            );
+        }
+
+        if ($this->getIsDOMDocumentCreatedWithoutHtml()) {
+            $content = \str_replace(
+                '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">',
+                '',
+                $content
+            );
+        }
+
+        /** @noinspection CheckTagEmptyBody */
+        /** @noinspection HtmlExtraClosingTag */
+        /** @noinspection HtmlRequiredTitleElement */
+        $content = \trim(
+            \str_replace(
+                [
+                    '<simpleHtmlDomHtml>',
+                    '</simpleHtmlDomHtml>',
+                    '<simpleHtmlDomP>',
+                    '</simpleHtmlDomP>',
+                    '<head><head>',
+                    '</head></head>',
+                    '<br></br>',
+                ],
+                [
+                    '',
+                    '',
+                    '',
+                    '',
+                    '<head>',
+                    '</head>',
+                    '<br>',
+                ],
+                $content
+            )
+        );
+
+        $content = $this->decodeHtmlEntity($content, $multiDecodeNewHtmlEntity);
+
+        return self::putReplacedBackToPreserveHtmlEntities($content);
     }
 
-    // return all elements
-    if (null === $idx) {
-      return $elements;
+    /**
+     * Return elements by ".class".
+     *
+     * @param string $class
+     *
+     * @return SimpleHtmlDomInterface[]|SimpleHtmlDomNodeInterface<SimpleHtmlDomInterface>
+     */
+    public function getElementByClass(string $class): SimpleHtmlDomNodeInterface
+    {
+        return $this->findMulti(".${class}");
     }
 
-    // handle negative values
-    if ($idx < 0) {
-      $idx = count($elements) + $idx;
+    /**
+     * Return element by #id.
+     *
+     * @param string $id
+     *
+     * @return SimpleHtmlDomInterface
+     */
+    public function getElementById(string $id): SimpleHtmlDomInterface
+    {
+        return $this->findOne("#${id}");
     }
 
-    // return one element
-    if (isset($elements[$idx])) {
-      return $elements[$idx];
+    /**
+     * Return element by tag name.
+     *
+     * @param string $name
+     *
+     * @return SimpleHtmlDomInterface
+     */
+    public function getElementByTagName(string $name): SimpleHtmlDomInterface
+    {
+        $node = $this->document->getElementsByTagName($name)->item(0);
+
+        if ($node === null) {
+            return new SimpleHtmlDomBlank();
+        }
+
+        return new SimpleHtmlDom($node);
     }
 
-    // return a blank-element
-    return new SimpleHtmlDomNodeBlank();
-  }
-
-  /**
-   * @param string $content
-   * @param bool   $multiDecodeNewHtmlEntity
-   *
-   * @return string
-   */
-  protected function fixHtmlOutput($content, $multiDecodeNewHtmlEntity = false)
-  {
-    // INFO: DOMDocument will encapsulate plaintext into a paragraph tag (<p>),
-    //          so we try to remove it here again ...
-
-    if ($this->isDOMDocumentCreatedWithoutHtmlWrapper === true) {
-      $content = str_replace(
-          array(
-              "\n",
-              "\r\n",
-              "\r",
-              '<body>',
-              '</body>',
-              '<html>',
-              '</html>',
-          ),
-          '',
-          $content
-      );
+    /**
+     * Returns elements by "#id".
+     *
+     * @param string   $id
+     * @param int|null $idx
+     *
+     * @return SimpleHtmlDomInterface|SimpleHtmlDomInterface[]|SimpleHtmlDomNodeInterface<SimpleHtmlDomInterface>
+     */
+    public function getElementsById(string $id, $idx = null)
+    {
+        return $this->find("#${id}", $idx);
     }
 
-    if ($this->isDOMDocumentCreatedWithoutWrapper === true) {
-      $content = preg_replace('/^<p>/', '', $content);
-      $content = preg_replace('/<\/p>/', '', $content);
+    /**
+     * Returns elements by tag name.
+     *
+     * @param string   $name
+     * @param int|null $idx
+     *
+     * @return SimpleHtmlDomInterface|SimpleHtmlDomInterface[]|SimpleHtmlDomNodeInterface<SimpleHtmlDomInterface>
+     */
+    public function getElementsByTagName(string $name, $idx = null)
+    {
+        $nodesList = $this->document->getElementsByTagName($name);
+
+        $elements = new SimpleHtmlDomNode();
+
+        foreach ($nodesList as $node) {
+            $elements[] = new SimpleHtmlDom($node);
+        }
+
+        // return all elements
+        if ($idx === null) {
+            if (\count($elements) === 0) {
+                return new SimpleHtmlDomNodeBlank();
+            }
+
+            return $elements;
+        }
+
+        // handle negative values
+        if ($idx < 0) {
+            $idx = \count($elements) + $idx;
+        }
+
+        // return one element
+        return $elements[$idx] ?? new SimpleHtmlDomNodeBlank();
     }
 
-    if ($this->isDOMDocumentCreatedWithoutHtml === true) {
-      $content = str_replace(
-          array(
-              '<p>',
-              '</p>',
-              '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">',
-          ),
-          '',
-          $content
-      );
+    /**
+     * Get dom node's outer html.
+     *
+     * @param bool $multiDecodeNewHtmlEntity
+     *
+     * @return string
+     */
+    public function html(bool $multiDecodeNewHtmlEntity = false): string
+    {
+        if (static::$callback !== null) {
+            \call_user_func(static::$callback, [$this]);
+        }
+
+        if ($this->getIsDOMDocumentCreatedWithoutHtmlWrapper()) {
+            $content = $this->document->saveHTML($this->document->documentElement);
+        } else {
+            $content = $this->document->saveHTML();
+        }
+
+        if ($content === false) {
+            return '';
+        }
+
+        return $this->fixHtmlOutput($content, $multiDecodeNewHtmlEntity);
     }
 
-    $content = str_replace(
-        array(
-            '<simpleHtmlDomP>',
-            '</simpleHtmlDomP>',
-            '<head><head>',
-            '</head></head>',
-        ),
-        array(
-            '',
-            '',
-            '<head>',
-            '</head>',
-        ),
-        $content
-    );
+    /**
+     * Load HTML from string.
+     *
+     * @param string   $html
+     * @param int|null $libXMLExtraOptions
+     *
+     * @return HtmlDomParser
+     */
+    public function loadHtml(string $html, $libXMLExtraOptions = null): DomParserInterface
+    {
+        // reset
+        self::$domBrokenReplaceHelper = [];
 
-    $content = trim($content);
+        $this->document = $this->createDOMDocument($html, $libXMLExtraOptions);
 
-    if ($multiDecodeNewHtmlEntity === true) {
-      $content = UTF8::rawurldecode($content);
-    } else {
-      $flags = ENT_QUOTES | ENT_HTML5;
-      $content = rawurldecode(html_entity_decode($content, $flags));
+        return $this;
     }
 
-    $content = self::putReplacedBackToPreserveHtmlEntities($content);
+    /**
+     * Load HTML from file.
+     *
+     * @param string   $filePath
+     * @param int|null $libXMLExtraOptions
+     *
+     * @throws \RuntimeException
+     *
+     * @return HtmlDomParser
+     */
+    public function loadHtmlFile(string $filePath, $libXMLExtraOptions = null): DomParserInterface
+    {
+        // reset
+        self::$domBrokenReplaceHelper = [];
 
-    return $content;
-  }
+        if (
+            !\preg_match("/^https?:\/\//i", $filePath)
+            &&
+            !\file_exists($filePath)
+        ) {
+            throw new \RuntimeException("File ${filePath} not found");
+        }
 
-  /**
-   * @return DOMDocument
-   */
-  public function getDocument()
-  {
-    return $this->document;
-  }
+        try {
+            if (\class_exists('\voku\helper\UTF8')) {
+                /** @noinspection PhpUndefinedClassInspection */
+                $html = UTF8::file_get_contents($filePath);
+            } else {
+                $html = \file_get_contents($filePath);
+            }
+        } catch (\Exception $e) {
+            throw new \RuntimeException("Could not load file ${filePath}");
+        }
 
-  /**
-   * Get the encoding to use.
-   *
-   * @return string
-   */
-  private function getEncoding()
-  {
-    return $this->encoding;
-  }
+        if ($html === false) {
+            throw new \RuntimeException("Could not load file ${filePath}");
+        }
 
-  /**
-   * @return bool
-   */
-  public function getIsDOMDocumentCreatedWithoutHtml()
-  {
-    return $this->isDOMDocumentCreatedWithoutHtml;
-  }
-
-  /**
-   * @return bool
-   */
-  public function getIsDOMDocumentCreatedWithoutHtmlWrapper()
-  {
-    return $this->isDOMDocumentCreatedWithoutHtmlWrapper;
-  }
-
-  /**
-   * @return bool
-   */
-  public function getIsDOMDocumentCreatedWithoutHeadWrapper()
-  {
-    return $this->isDOMDocumentCreatedWithoutHeadWrapper;
-  }
-
-  /**
-   * @return bool
-   */
-  public function getIsDOMDocumentCreatedWithoutWrapper()
-  {
-    return $this->isDOMDocumentCreatedWithoutWrapper;
-  }
-
-  /**
-   * Get dom node's outer html.
-   *
-   * @param bool $multiDecodeNewHtmlEntity
-   *
-   * @return string
-   */
-  public function html($multiDecodeNewHtmlEntity = false)
-  {
-    if ($this::$callback !== null) {
-      call_user_func($this::$callback, array($this));
+        return $this->loadHtml($html, $libXMLExtraOptions);
     }
 
-    if ($this->getIsDOMDocumentCreatedWithoutHtmlWrapper()) {
-      $content = $this->document->saveHTML($this->document->documentElement);
-    } else {
-      $content = $this->document->saveHTML();
+    /**
+     * Get the HTML as XML or plain XML if needed.
+     *
+     * @param bool $multiDecodeNewHtmlEntity
+     * @param bool $htmlToXml
+     * @param bool $removeXmlHeader
+     * @param int  $options
+     *
+     * @return string
+     */
+    public function xml(
+        bool $multiDecodeNewHtmlEntity = false,
+        bool $htmlToXml = true,
+        bool $removeXmlHeader = true,
+        int $options = \LIBXML_NOEMPTYTAG
+    ): string {
+        $xml = $this->document->saveXML(null, $options);
+        if ($xml === false) {
+            return '';
+        }
+
+        if ($removeXmlHeader) {
+            $xml = \ltrim((string) \preg_replace('/<\?xml.*\?>/', '', $xml));
+        }
+
+        if ($htmlToXml) {
+            $return = $this->fixHtmlOutput($xml, $multiDecodeNewHtmlEntity);
+        } else {
+            $xml = $this->decodeHtmlEntity($xml, $multiDecodeNewHtmlEntity);
+
+            $return = self::putReplacedBackToPreserveHtmlEntities($xml);
+        }
+
+        return $return;
     }
 
-    return $this->fixHtmlOutput($content, $multiDecodeNewHtmlEntity);
-  }
-
-  /**
-   * Get the HTML as XML.
-   *
-   * @param bool $multiDecodeNewHtmlEntity
-   *
-   * @return string
-   */
-  public function xml($multiDecodeNewHtmlEntity = false)
-  {
-    $xml = $this->document->saveXML(null, LIBXML_NOEMPTYTAG);
-
-    // remove the XML-header
-    $xml = ltrim(preg_replace('/<\?xml.*\?>/', '', $xml));
-
-    return $this->fixHtmlOutput($xml, $multiDecodeNewHtmlEntity);
-  }
-
-  /**
-   * Get dom node's inner html.
-   *
-   * @param bool $multiDecodeNewHtmlEntity
-   *
-   * @return string
-   */
-  public function innerHtml($multiDecodeNewHtmlEntity = false)
-  {
-    $text = '';
-
-    foreach ($this->document->documentElement->childNodes as $node) {
-      $text .= $this->document->saveHTML($node);
+    /**
+     * @param string $selector
+     * @param int    $idx
+     *
+     * @return SimpleHtmlDomInterface|SimpleHtmlDomInterface[]|SimpleHtmlDomNodeInterface<SimpleHtmlDomInterface>
+     */
+    public function __invoke($selector, $idx = null)
+    {
+        return $this->find($selector, $idx);
     }
 
-    return $this->fixHtmlOutput($text, $multiDecodeNewHtmlEntity);
-  }
-
-  /**
-   * Load HTML from string.
-   *
-   * @param string   $html
-   * @param int|null $libXMLExtraOptions
-   *
-   * @return HtmlDomParser
-   *
-   * @throws InvalidArgumentException if argument is not string
-   */
-  public function loadHtml($html, $libXMLExtraOptions = null)
-  {
-    if (!is_string($html)) {
-      throw new InvalidArgumentException(__METHOD__ . ' expects parameter 1 to be string.');
+    /**
+     * @return bool
+     */
+    public function getIsDOMDocumentCreatedWithoutHeadWrapper(): bool
+    {
+        return $this->isDOMDocumentCreatedWithoutHeadWrapper;
     }
 
-    $this->document = $this->createDOMDocument($html, $libXMLExtraOptions);
-
-    return $this;
-  }
-
-  /**
-   * Load HTML from file.
-   *
-   * @param string   $filePath
-   * @param int|null $libXMLExtraOptions
-   *
-   * @return HtmlDomParser
-   *
-   * @throws \RuntimeException
-   * @throws \InvalidArgumentException
-   */
-  public function loadHtmlFile($filePath, $libXMLExtraOptions = null)
-  {
-    if (!is_string($filePath)) {
-      throw new InvalidArgumentException(__METHOD__ . ' expects parameter 1 to be string.');
+    /**
+     * @return bool
+     */
+    public function getIsDOMDocumentCreatedWithoutPTagWrapper(): bool
+    {
+        return $this->isDOMDocumentCreatedWithoutPTagWrapper;
     }
 
-    if (!preg_match("/^https?:\/\//i", $filePath) && !file_exists($filePath)) {
-      throw new RuntimeException("File $filePath not found");
+    /**
+     * @return bool
+     */
+    public function getIsDOMDocumentCreatedWithoutHtml(): bool
+    {
+        return $this->isDOMDocumentCreatedWithoutHtml;
     }
 
-    try {
-      $html = UTF8::file_get_contents($filePath);
-    } catch (\Exception $e) {
-      throw new RuntimeException("Could not load file $filePath");
+    /**
+     * @return bool
+     */
+    public function getIsDOMDocumentCreatedWithoutBodyWrapper(): bool
+    {
+        return $this->isDOMDocumentCreatedWithoutBodyWrapper;
     }
 
-    if ($html === false) {
-      throw new RuntimeException("Could not load file $filePath");
+    /**
+     * @return bool
+     */
+    public function getIsDOMDocumentCreatedWithoutHtmlWrapper(): bool
+    {
+        return $this->isDOMDocumentCreatedWithoutHtmlWrapper;
     }
 
-    $this->loadHtml($html, $libXMLExtraOptions);
-
-    return $this;
-  }
-
-  /**
-   * Save the html-dom as string.
-   *
-   * @param string $filepath
-   *
-   * @return string
-   */
-  public function save($filepath = '')
-  {
-    $string = $this->innerHtml();
-    if ($filepath !== '') {
-      file_put_contents($filepath, $string, LOCK_EX);
+    /**
+     * @return bool
+     */
+    public function getIsDOMDocumentCreatedWithoutWrapper(): bool
+    {
+        return $this->isDOMDocumentCreatedWithoutWrapper;
     }
 
-    return $string;
-  }
+    /**
+     * @return bool
+     */
+    public function getIsDOMDocumentCreatedWithFakeEndScript(): bool
+    {
+        return $this->isDOMDocumentCreatedWithFakeEndScript;
+    }
 
-  /**
-   * @param $functionName
-   */
-  public function set_callback($functionName)
-  {
-    $this::$callback = $functionName;
-  }
+    /**
+     * @param string $html
+     *
+     * @return string
+     */
+    protected function keepBrokenHtml(string $html): string
+    {
+        do {
+            $original = $html;
 
-  /**
-   * Get dom node's plain text.
-   *
-   * @param bool $multiDecodeNewHtmlEntity
-   *
-   * @return string
-   */
-  public function text($multiDecodeNewHtmlEntity = false)
-  {
-    return $this->fixHtmlOutput($this->document->textContent, $multiDecodeNewHtmlEntity);
-  }
+            $html = (string) \preg_replace_callback(
+                '/(?<start>.*)<(?<element_start>[a-z]+)(?<element_start_addon> [^>]*)?>(?<value>.*?)<\/(?<element_end>\2)>(?<end>.*)/sui',
+                static function ($matches) {
+                    return $matches['start'] .
+                           '°lt_simple_html_dom__voku_°' . $matches['element_start'] . $matches['element_start_addon'] . '°gt_simple_html_dom__voku_°' .
+                           $matches['value'] .
+                           '°lt/_simple_html_dom__voku_°' . $matches['element_end'] . '°gt_simple_html_dom__voku_°' .
+                           $matches['end'];
+                },
+                $html
+            );
+        } while ($original !== $html);
+
+        do {
+            $original = $html;
+
+            $html = (string) \preg_replace_callback(
+                '/(?<start>[^<]*)?(?<broken>(?:(?:<\/\w+(?:\s+\w+=\\"[^\"]+\\")*+)(?:[^<]+)>)+)(?<end>.*)/u',
+                static function ($matches) {
+                    $matches['broken'] = \str_replace(
+                        ['°lt/_simple_html_dom__voku_°', '°lt_simple_html_dom__voku_°', '°gt_simple_html_dom__voku_°'],
+                        ['</', '<', '>'],
+                        $matches['broken']
+                    );
+
+                    self::$domBrokenReplaceHelper['orig'][] = $matches['broken'];
+                    self::$domBrokenReplaceHelper['tmp'][] = $matchesHash = self::$domHtmlBrokenHtmlHelper . \crc32($matches['broken']);
+
+                    return $matches['start'] . $matchesHash . $matches['end'];
+                },
+                $html
+            );
+        } while ($original !== $html);
+
+        return \str_replace(
+            ['°lt/_simple_html_dom__voku_°', '°lt_simple_html_dom__voku_°', '°gt_simple_html_dom__voku_°'],
+            ['</', '<', '>'],
+            $html
+        );
+    }
+
+    /**
+     * @param string $html
+     *
+     * @return void
+     */
+    protected function keepSpecialScriptTags(string &$html)
+    {
+        // regEx for e.g.: [<script id="elements-image-1" type="text/html">...</script>]
+        $html = (string) \preg_replace_callback(
+            '/(?<start>((?:<script) [^>]*type=(?:["\'])?(?:text\/html|text\/x-custom-template)+(?:[^>]*)>))(?<innerContent>.*)(?<end><\/script>)/isU',
+            static function ($matches) {
+                if (
+                    \strpos($matches['innerContent'], '+') === false
+                    &&
+                    \strpos($matches['innerContent'], '<%') === false
+                    &&
+                    \strpos($matches['innerContent'], '{%') === false
+                    &&
+                    \strpos($matches['innerContent'], '{{') === false
+                ) {
+                    // remove the html5 fallback
+                    $matches[0] = \str_replace('<\/', '</', $matches[0]);
+
+                    $specialNonScript = '<' . self::$domHtmlSpecialScriptHelper . \substr($matches[0], \strlen('<script'));
+
+                    return \substr($specialNonScript, 0, -\strlen('</script>')) . '</' . self::$domHtmlSpecialScriptHelper . '>';
+                }
+
+                // remove the html5 fallback
+                $matches['innerContent'] = \str_replace('<\/', '</', $matches['innerContent']);
+
+                self::$domBrokenReplaceHelper['orig'][] = $matches['innerContent'];
+                self::$domBrokenReplaceHelper['tmp'][] = $matchesHash = '' . self::$domHtmlBrokenHtmlHelper . '' . \crc32($matches['innerContent']);
+
+                return $matches['start'] . $matchesHash . $matches['end'];
+            },
+            $html
+        );
+    }
+
+    /**
+     * @param bool $keepBrokenHtml
+     *
+     * @return HtmlDomParser
+     */
+    public function useKeepBrokenHtml(bool $keepBrokenHtml): DomParserInterface
+    {
+        $this->keepBrokenHtml = $keepBrokenHtml;
+
+        return $this;
+    }
 }

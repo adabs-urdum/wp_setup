@@ -146,8 +146,12 @@ abstract class NF_Abstracts_Field
             $field[ 'value' ] = implode( '', $field[ 'value' ] );
         }
 
-        if( isset( $field['required'] ) && 1 == $field['required'] && is_null( trim( $field['value'] ) ) ){
-            $errors[] = 'Field is required.';
+        if( isset( $field['required'] ) && 1 == intval( $field['required'] ) ) {
+            $val = trim( $field['value'] );
+            if( empty( $val ) && '0' !== $val ){
+                $errors['slug'] = 'required-error';
+                $errors['message'] = esc_html__('This field is required.', 'ninja-forms');
+            }
         }
         return $errors;
     }
@@ -168,7 +172,7 @@ abstract class NF_Abstracts_Field
      */
     public function admin_form_element( $id, $value )
     {
-        return '<input class="widefat" name="fields[' . intval( $id ) . ']" value="' . esc_attr( $value ) . '" />';
+        return '<input class="widefat" name="fields[' . absint( $id ) . ']" value="' . esc_attr( $value ) . '" type="text" />';
     }
 
     public function get_name()

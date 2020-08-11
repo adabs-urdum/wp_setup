@@ -1,26 +1,33 @@
-=== WP HTML Mail - Email Designer ===
-Contributors: haet
-Tags: email template, html mail, email design, mail, email templates, ninja-forms, caldera-forms, wp-e-commerce, easy-digital-downloads, woocommerce, contact-form-7, mandrill, postman, gravityforms
-Requires at least: 4.9
-Tested up to: 5.2.2
-Stable tag: 2.9.0.2
+=== WordPress Email Template Designer - WP HTML Mail ===
+Contributors: codemiq,haet
+Tags: email template, html mail, email design, mail, woocommerce, ninja-forms, caldera-forms, wp-e-commerce, easy-digital-downloads, contact-form-7, mandrill, postman, gravityforms
+Requires at least: 5.0
+Tested up to: 5.4.2
+Requires PHP: 7.2
+Stable tag: 3.0.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-All in one email template solution for Ninja Forms, Caldera Forms, Gravity Forms, WooCommerce, CF7, Support Plus, EDD, ...
+All in one email template design solution for Ninja Forms, Caldera Forms, Gravity Forms, WooCommerce, CF7, Support Plus, EDD, ...
 
 == Description ==
 Beautiful responsive HTML mails, fully customizable without any coding knowledge 
 Create your own professional email template within a few minutes. 
 
+= See how it works =
+
+https://youtu.be/h-bFpPqkAzk
+
 = Features = 
 
 * **Responsive & Device independent:**
 Our e-mail template has been tested in all major desktop, web and mobile mailclients. 
+* **Template library:**
+Start your email design with one of our templates created by professional designer
 * **Text or image header:** 
 Either style your email header with colors and text, use your logo or design a banner.
 * **Customize colors and fonts:**
-Differnt plugins send different emails but you can define global color and font settings for headlines, text, links and more to give all your emails a common professional look.
+Different plugins send different emails but you can define global color and font settings for headlines, text, links and more to give all your emails a common professional look.
 * **Add your companies legal information to the footer:** 
 The email footer can contain links to your legal pages, your contact data or whatever you want. 
 * **Inline CSS:** 
@@ -34,10 +41,6 @@ Customize design, text, products table, simply everything with our Drag & Drop M
 * **Easy Digital Downloads AddOn (PRO):**
 Read more about the [Easy Digital Downloads Email template](https://codemiq.com/en/downloads/wp-html-mail-easy-digital-downloads/)
 
-
-= Tutorial: Create your WordPress email template in 2 minutes =
-
-https://youtu.be/FwtG9NqoeJA
 
 
 Turn email formatting on/off for specific plugins.
@@ -58,7 +61,24 @@ Currently supported are
 * [WooCommerce](https://codemiq.com/en/downloads/wp-html-mail-woocommerce/)
 * [Easy Digital Downloads](https://codemiq.com/en/downloads/wp-html-mail-easy-digital-downloads/)
 * [Give – Donation and Fundraising](https://wordpress.org/plugins/wp-html-mail-give/)
+* TeraWallet
 * WP E-Commerce
+
+Allthough we didn't optimize WP HTML Mail for these plugins our users use it with many more plugins
+
+* ACF Advanced Forms
+* Elementor Forms
+* Events Made Easy
+* Formidable Forms
+* Learndash Notifications
+* Matador Jobs
+* Memberpress
+* Modern Events Calendar
+* Uncanny Owl Groups
+* ShieldSecurity
+* ...
+
+
 
 = WooCommerce Email Template Extension =
 
@@ -80,6 +100,7 @@ https://youtu.be/RV8vUNCWOZw
 
 
 = Works with most email delivery plugins =
+* [WP Offload SES](https://aff.deliciousbrains.com/idevaffiliate.php?id=21298_4_3_3)
 * Post SMTP Mailer/Email Log
 * WP Mail SMTP
 * wpMandrill
@@ -110,13 +131,61 @@ Extract the zip file and just drop the contents in the wp-content/plugins/ direc
 
 == Screenshots ==
 
-1. WooCommerce Demo
+1. Our template library
 2. Use text or image header
 3. set global font settings
 4. append you contact details to the mail footer
+5. turn template on and off for supported plugins
 
 
 == Changelog ==
+
+= 3.0.2 =
+* forgot to remove the webfonts tab in previous version which is still under development
+
+
+= 3.0.1 =
+* enabled transient caching for template library
+* changed the way content type is detected to also support filters
+* improved support for ShieldSecurity 
+* Header and Footer also translatable with Polylang now
+
+
+= 3.0 =
+* brand new react based template editor (for WP 5.4+)
+* template library with 25+ email templates
+
+
+= 2.9.4 =
+* added a link to manage all custom posts created by mailbuilder (tab "advanced")
+* added export and import functions (tab "advanced")
+* added uppercase formatting to font settings
+* added a few more web safe fonts
+* removed call to libxml_disable_entity_loader to support Kinsta hosting
+* tagged minimum PHP version 7.2
+
+
+= 2.9.3 =
+* Header and Footer translatable with WPML
+
+
+= 2.9.2 =
+* Fix: WooCommerce tab has overwritten some settings set on the plugins tab
+* Fixed issue with password reset mail when plain text is interpreted as HTML: https://wordpress.org/support/topic/password-recover-link/
+
+
+= 2.9.1.4 =
+* Fixed bug with headers passed as array instead of string
+* added new option to allow plaintext emails containing HTML code for backwards compatibility
+
+
+= 2.9.1 =
+* TeraWallet Support
+* Improved filtering of plaintext emails
+
+
+= 2.9.0.3 = 
+* custom templates can be moved to uploads folder now
 
 = 2.9.0.2 =
 * fixed a notice with not initialized settings
@@ -338,7 +407,7 @@ add_filter( 'haet_mail_css_mobile', function( $css ){
 
 = How to disable the template for some emails? =
 
-Find anything all emails hav in common. It may be the sender, a word in the subject or something in the email body.
+Find anything all emails have in common. It may be the sender, a word in the subject or something in the email body.
 Then add this function to your (child-)themes functions.php and customize it. Return TRUE if the template should be used and FALSE if not.
 
 `

@@ -145,7 +145,8 @@ class Ninja_Forms_Processing {
 				}
 
                 $val = nf_wp_kses_post_deep( $val );
-
+                $val = ninja_forms_htmlspecialchars_deep( $val );
+                
 				$this->data['fields'][$field_id] = $val;
 				$field_row = ninja_forms_get_field_by_id( $field_id );
 				$field_row['data']['field_class'] = 'ninja-forms-field';
@@ -154,7 +155,7 @@ class Ninja_Forms_Processing {
 
 			foreach($_POST as $key => $val){
 				if(substr($key, 0, 1) == '_'){
-					$this->data['extra'][$key] = $val;
+					$this->data['extra'][$key] = sanitize_text_field($val);
 				}
 			}
 
@@ -174,9 +175,11 @@ class Ninja_Forms_Processing {
 					if(!is_array($val)){
 						$value = stripslashes($val);
 						$value = nf_wp_kses_post_deep( $value );
+						$value = ninja_forms_htmlspecialchars_deep( $value );
 						//$value = htmlspecialchars($value);
 					}else{
 						$value = nf_wp_kses_post_deep( $val );
+						$value = ninja_forms_htmlspecialchars_deep( $val );
 					}
 					$this->data['form'][$key] = $value;
 				}
@@ -203,6 +206,7 @@ class Ninja_Forms_Processing {
 
 						$val = ninja_forms_stripslashes_deep( $val );
 						$val = nf_wp_kses_post_deep( $val );
+						$val = ninja_forms_htmlspecialchars_deep( $val );
 
 						$this->data['fields'][$field_id] = $val;
 						if ( isset ( $cache['field_settings'][$field_id] ) ) {
@@ -985,7 +989,7 @@ class Ninja_Forms_Processing {
 			$sub_total = str_replace('.', '', $sub_total );
 		}
 
-		$sub_total = intval( $sub_total );
+		$sub_total = absint( $sub_total );
 
 		// Get our total if it exists.
 		$total = $this->get_calc_total( false, false );

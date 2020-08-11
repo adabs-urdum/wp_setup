@@ -1,19 +1,23 @@
 <?php
 
 /**
-Plugin Name: Polylang
-Plugin URI: https://polylang.pro
-Version: 2.6.3
-Author: WP SYNTEX
-Author uri: https://polylang.pro
-Description: Adds multilingual capability to WordPress
-Text Domain: polylang
-Domain Path: /languages
+ * Plugin Name: Polylang
+ * Plugin URI: https://polylang.pro
+ * Description: Adds multilingual capability to WordPress
+ * Version: 2.7.4
+ * Requires at least: 4.9
+ * Requires PHP: 5.6
+ * Author: WP SYNTEX
+ * Author uri: https://polylang.pro
+ * License: GPL v3 or later
+ * License URI: https://www.gnu.org/licenses/gpl-3.0.html
+ * Text Domain: polylang
+ * Domain Path: /languages
  */
 
 /*
  * Copyright 2011-2019 Frédéric Demarle
- * Copyright 2019 WP SYNTEX
+ * Copyright 2019-2020 WP SYNTEX
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -51,8 +55,9 @@ if ( defined( 'POLYLANG_BASENAME' ) ) {
 	}
 } else {
 	// Go on loading the plugin
-	define( 'POLYLANG_VERSION', '2.6.3' );
-	define( 'PLL_MIN_WP_VERSION', '4.7' );
+	define( 'POLYLANG_VERSION', '2.7.4' );
+	define( 'PLL_MIN_WP_VERSION', '4.9' );
+	define( 'PLL_MIN_PHP_VERSION', '5.6' );
 
 	define( 'POLYLANG_FILE', __FILE__ ); // this file
 	define( 'POLYLANG_BASENAME', plugin_basename( POLYLANG_FILE ) ); // plugin name as known by WP

@@ -40,40 +40,49 @@ add_filter('mce_buttons_2', 'my_mce_buttons_2');
 // MCE Editor Custom Styles
 //----------------------------------------------------------
 function my_mce_before_init_insert_formats( $init_array ) {
-  $style_formats = array(
-    array(
-      'title' => 'Button Weiss',
+  $style_formats = [
+    [
+      'title' => 'Button',
       'selector' => 'a',
-      'classes' => 'button button--white'
-    )
-  );
+      'classes' => 'button'
+    ]
+  ];
+
 
   $init_array['style_formats'] = json_encode( $style_formats );
   return $init_array;
 }
 add_filter( 'tiny_mce_before_init', 'my_mce_before_init_insert_formats' );
+add_editor_style( 'editor-style.css' );
+add_editor_style( get_template_directory_uri().'/dist/css/editor.min.css' );
 //----------------------------------------------------------
 
-// Add styles.min.css to admin
+// Add admin.min.css to admin
 //----------------------------------------------------------
 function admin_style() {
-  // wp_enqueue_style('admin-styles', get_template_directory_uri().'/dist/css/admin.min.css');
+  wp_enqueue_style('admin-styles', get_template_directory_uri().'/dist/css/admin.min.css');
 }
 add_action('admin_enqueue_scripts', 'admin_style');
+//----------------------------------------------------------
+
+// Add login.min.css to admin
+//----------------------------------------------------------
+function login_style() {
+    wp_enqueue_style( 'login-styles', get_stylesheet_directory_uri() . '/dist/css/admin.min.css' );
+}
+add_action( 'login_enqueue_scripts', 'login_style' );
 //----------------------------------------------------------
 
 // Admin color
 //----------------------------------------------------------
 function custom_admin_color_scheme() {
   remove_action( 'admin_color_scheme_picker', 'admin_color_scheme_picker' );
-  wp_admin_css_color( 'cluscolor', 'CLUS Color', get_template_directory_uri() . '/admin-color.css');
+  wp_admin_css_color( 'adabscolor', 'adabs Color', get_template_directory_uri() . '/admin-color.css');
   add_filter( 'get_user_option_admin_color', function() {
-		return 'cluscolor';
+		return 'adabscolor';
 	});
 }
 add_action( 'admin_init', 'custom_admin_color_scheme' );
-
-add_editor_style( 'editor-style.css' );
 //----------------------------------------------------------
 
 ?>
