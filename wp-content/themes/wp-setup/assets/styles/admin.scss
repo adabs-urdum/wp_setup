@@ -280,6 +280,7 @@ ul#adminmenu>li.current>a.current:after {
 #adminmenu li.menu-top:hover,
 #adminmenu li.opensub>a.menu-top {
   color: $Color1;
+  background-color: darken($Black, lightness($Black) / 2);
 }
 
 #adminmenu li>a.menu-top:focus {
