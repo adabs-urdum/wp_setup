@@ -9,10 +9,9 @@ $Color2: $YellowDark;
 $Black: $Black;
 $White: $White;
 $FontFamilyMain: $FontFamilyMain;
+$LoginText: 'Login WP Setup';
 
 * {
-  font-size: inherit;
-
   &::selection {
     background-color: $Color1;
   }
@@ -91,7 +90,7 @@ $Duration: 2s;
     overflow: visible;
 
     &:after {
-      content: 'Login WP Setup';
+      content: $LoginText;
       margin-top: $Width;
     }
 
@@ -531,4 +530,12 @@ p.popular-tags,
 table.widefat,
 .postbox {
   box-shadow: none;
+}
+
+.customize-controls-close:focus,
+.customize-controls-close:hover,
+.customize-controls-preview-toggle:focus,
+.customize-controls-preview-toggle:hover {
+  color: $Color1;
+  border-top-color: $Color1;
 }
