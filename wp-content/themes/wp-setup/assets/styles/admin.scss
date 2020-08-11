@@ -552,3 +552,18 @@ table.widefat,
   color: $Color1;
   border-top-color: $Color1;
 }
+
+#adminmenu,
+#adminmenu .wp-submenu,
+#adminmenuback {
+  background-color: $Black;
+}
+
+#adminmenuwrap,
+#adminmenu .wp-has-current-submenu .wp-submenu,
+#adminmenu .wp-has-current-submenu .wp-submenu.sub-open,
+#adminmenu .wp-has-current-submenu.opensub .wp-submenu,
+#adminmenu a.wp-has-current-submenu:focus+.wp-submenu,
+.no-js li.wp-has-current-submenu:hover .wp-submenu {
+  background-color: darken($Black, lightness($Black) / 2);
+}
