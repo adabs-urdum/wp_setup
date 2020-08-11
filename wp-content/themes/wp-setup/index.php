@@ -10,8 +10,6 @@
 
     get_template_part('partials/content-elements');
 
-    the_content();
-
   endwhile; endif; ?>
 </main>
 

@@ -1,9 +1,10 @@
 <?php // FLEXIBLE LAYOUT
 if( have_rows('contentelements') ): ?>
 
-  <?php while ( have_rows('contentelements') ) : the_row(); $layout = get_row_layout(); ?>
+  <?php while (have_rows('contentelements')): ?>
 
     <?php
+      $layout = get_row_layout();
       $hide = get_sub_field('hide');
       if(!$hide):
     ?>
