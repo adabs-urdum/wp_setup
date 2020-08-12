@@ -1,5 +1,15 @@
 <?php
 
+if ( ! function_exists('write_log')) {
+   function write_log ( $log )  {
+      if ( is_array( $log ) || is_object( $log ) ) {
+         error_log( print_r( $log, true ) );
+      } else {
+         error_log( $log );
+      }
+   }
+}
+
 // Admin link to adabs
 //----------------------------------------------------------
 function adabs_link( $wp_admin_bar ) {
@@ -32,6 +42,7 @@ include_once( get_stylesheet_directory() . '/functions/image_sizes.php' );
 include_once( get_stylesheet_directory() . '/functions/custom_posttypes.php' );
 include_once( get_stylesheet_directory() . '/functions/options.php' );
 include_once( get_stylesheet_directory() . '/functions/login.php' );
+include_once( get_stylesheet_directory() . '/functions/wp_mail.php' );
 // include_once( get_stylesheet_directory() . '/functions/blocks.php' );
 
 ?>
