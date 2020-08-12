@@ -6,8 +6,8 @@ $ColorDark: $YellowDark;
 $Black: $Black;
 $White: $White;
 $FontFamilyMain: $FontFamilyMain;
-$LoginTextAfter: 'Login wp_setup.test';
-$LoginTextBefore: 'adabs.ch';
+$LogoTextAfter: 'wp_setup.ch';
+$FormIntroText: 'Custom Login';
 
 * {
   &::selection {
@@ -85,6 +85,8 @@ $Width: 14px;
 $Duration: 2s;
 
 #login {
+  display: flex;
+  flex-direction: column;
   padding: 0;
   transform: translateY(-5vh);
 
@@ -93,18 +95,13 @@ $Duration: 2s;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin-bottom: $Width * 2;
+    margin-bottom: $Width * 3;
     overflow: visible;
 
-    &:before {
-      content: $LoginTextBefore;
-      margin-bottom: $Width;
-      font-size: 18px;
-    }
-
     &:after {
-      content: $LoginTextAfter;
-      margin-top: $Width * 4;
+      content: $LogoTextAfter;
+      margin-top: $Width;
+      font-weight: normal;
     }
 
     a {
@@ -212,6 +209,14 @@ textarea:focus {
   form {
     border: none;
     box-shadow: none;
+    margin-top: 0;
+
+    &:before {
+      content: $FormIntroText;
+      display: block;
+      font-size: 36px;
+      margin-bottom: 24px;
+    }
   }
 }
 
@@ -294,6 +299,10 @@ ul#adminmenu>li.current>a.current:after {
 #wpadminbar {
   color: $Black;
   background: $ColorLight;
+}
+
+#adminmenu a {
+  color: $White;
 }
 
 #wpadminbar .ab-item,
