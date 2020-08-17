@@ -2,9 +2,9 @@
 Contributors: andremacola
 Tags: poll, polls, onyx, aop, acf, advanced
 Requires at least: 4.7
-Tested up to: 5.4
+Tested up to: 5.5
 Requires PHP: 7.0
-Stable tag: 1.1.1
+Stable tag: 1.1.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -125,6 +125,12 @@ This plugin will not work with any Internet Explorer version.
 4. Showing poll results.
 
 == Changelog ==
+
+= 1.1.2 =
+*Release Date - 11 Aug 2020*
+
+* TESTED: WordPress 5.5
+* FIXED: Rest API method permission_callback typo
 
 = 1.1.1 =
 *Release Date - 30 May 2020*

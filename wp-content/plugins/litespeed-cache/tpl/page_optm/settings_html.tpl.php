@@ -172,4 +172,18 @@ defined( 'WPINC' ) || exit;
 		</td>
 	</tr>
 
+	<tr>
+		<th>
+			<?php $id = Base::O_OPTM_NOSCRIPT_RM; ?>
+			<?php $this->title( $id ); ?>
+		</th>
+		<td>
+			<?php $this->build_switch( $id ); ?>
+			<div class="litespeed-desc">
+				<?php echo sprintf( __( 'This option will remove all %s tags from HTML.', 'litespeed-cache' ), '<code>&lt;noscript&gt;</code>' ); ?>
+				<?php Doc::learn_more( 'https://docs.litespeedtech.com/lscache/lscwp/pageopt/#remove-noscript-tags' ); ?>
+			</div>
+		</td>
+	</tr>
+
 </tbody></table>

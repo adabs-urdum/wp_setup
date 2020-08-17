@@ -2,7 +2,7 @@
 # This file is distributed under the same license as the WordPress - 5.5.x - Development - Administration package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2020-08-12 08:30:39+0000\n"
+"PO-Revision-Date: 2020-08-17 06:01:53+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -26,6 +26,15 @@ msgstr "1"
 #: wp-admin/upgrade.php:154
 msgid "Continue"
 msgstr "Continue"
+
+#. translators: 1: post_max_size, 2: upload_max_filesize
+#: wp-admin/includes/class-wp-site-health.php:2055
+msgid "The \"%1$s\" value is smaller than \"%2$s\"."
+msgstr "The \"%1$s\" value is smaller than \"%2$s\"."
+
+#: wp-admin/includes/class-wp-debug-data.php:124
+msgid "Environment type"
+msgstr "Environment type"
 
 #: wp-admin/about.php:129
 msgid "Video: An image is added with an image block. In the block toolbar, an icon called \"Crop\" is selected, which changes the toolbar to show image resizing tools. First, zoom is used to zoom into the center of the image. Next, aspect ratio is clicked. This shows a dropdown of common aspect ratios. Square is chosen, and the image is moved within the new square outline. The crop is completed by clicking \"Apply.\""
@@ -273,23 +282,23 @@ msgstr "Disallowed Comment Keys"
 msgid "Plugin and theme auto-updates"
 msgstr "Plugin and theme auto-updates"
 
-#: wp-admin/includes/class-wp-site-health.php:2418
+#: wp-admin/includes/class-wp-site-health.php:2427
 msgid "There appear to be no issues with plugin and theme auto-updates."
 msgstr "There appear to be no issues with plugin and theme auto-updates."
 
-#: wp-admin/includes/class-wp-site-health.php:2412
+#: wp-admin/includes/class-wp-site-health.php:2421
 msgid "Auto-updates for themes appear to be disabled. This will prevent your site from receiving new versions automatically when available."
 msgstr "Auto-updates for themes appear to be disabled. This will prevent your site from receiving new versions automatically when available."
 
-#: wp-admin/includes/class-wp-site-health.php:2407
+#: wp-admin/includes/class-wp-site-health.php:2416
 msgid "Auto-updates for plugins appear to be disabled. This will prevent your site from receiving new versions automatically when available."
 msgstr "Auto-updates for plugins appear to be disabled. This will prevent your site from receiving new versions automatically when available."
 
-#: wp-admin/includes/class-wp-site-health.php:2402
+#: wp-admin/includes/class-wp-site-health.php:2411
 msgid "Auto-updates for plugins and themes appear to be disabled. This will prevent your site from receiving new versions automatically when available."
 msgstr "Auto-updates for plugins and themes appear to be disabled. This will prevent your site from receiving new versions automatically when available."
 
-#: wp-admin/includes/class-wp-site-health.php:2393
+#: wp-admin/includes/class-wp-site-health.php:2402
 msgid "Auto-updates for plugins and/or themes appear to be disabled, but settings are still set to be displayed. This could cause auto-updates to not work as expected."
 msgstr "Auto-updates for plugins and/or themes appear to be disabled, but settings are still set to be displayed. This could cause auto-updates to not work as expected."
 
@@ -319,13 +328,8 @@ msgstr "Sorry, you are not allowed to modify plugins."
 
 #. translators: 1: post_max_size, 2: upload_max_filesize
 #: wp-admin/includes/class-wp-site-health.php:2064
-msgid "The settings for %1$s and %2$s are not the same, this could cause some problems when trying to upload files."
-msgstr "The settings for %1$s and %2$s are not the same, this could cause some problems when trying to upload files."
-
-#. translators: 1: post_max_size, 2: upload_max_filesize
-#: wp-admin/includes/class-wp-site-health.php:2055
-msgid "Mismatched \"%1$s\" and \"%2$s\" values."
-msgstr "Mismatched \"%1$s\" and \"%2$s\" values."
+msgid "The setting for %1$s is smaller than %2$s, this could cause some problems when trying to upload files."
+msgstr "The setting for %1$s is smaller than %2$s, this could cause some problems when trying to upload files."
 
 #. translators: 1: file_uploads, 2: 0
 #: wp-admin/includes/class-wp-site-health.php:2041
@@ -346,28 +350,28 @@ msgstr "The %1$s directive in %2$s determines if uploading files is allowed on y
 msgid "Files can be uploaded."
 msgstr "Files can be uploaded."
 
-#: wp-admin/includes/class-wp-debug-data.php:558
+#: wp-admin/includes/class-wp-debug-data.php:564
 msgid "Max number of files allowed"
 msgstr "Maximum number of files allowed"
 
-#: wp-admin/includes/class-wp-debug-data.php:554
+#: wp-admin/includes/class-wp-debug-data.php:560
 msgid "Max effective file size"
 msgstr "Maximum effective file size"
 
-#: wp-admin/includes/class-wp-debug-data.php:550
+#: wp-admin/includes/class-wp-debug-data.php:556
 msgid "Max size of an uploaded file"
 msgstr "Maximum size of an uploaded file"
 
-#: wp-admin/includes/class-wp-debug-data.php:546
+#: wp-admin/includes/class-wp-debug-data.php:552
 msgid "Max size of post data allowed"
 msgstr "Maximum size of post data allowed"
 
-#: wp-admin/includes/class-wp-debug-data.php:541
+#: wp-admin/includes/class-wp-debug-data.php:547
 #: wp-admin/includes/class-wp-site-health.php:2146
 msgid "File uploads"
 msgstr "File uploads"
 
-#: wp-admin/includes/class-wp-debug-data.php:524
+#: wp-admin/includes/class-wp-debug-data.php:530
 msgid "File upload settings"
 msgstr "File upload settings"
 
@@ -514,7 +518,7 @@ msgstr "The admin email verification page will reappear after %s."
 msgid "<a href=\"https://wordpress.org/support/article/plugins-themes-auto-updates/\">Learn more: Auto-updates documentation</a>"
 msgstr "<a href=\"https://wordpress.org/support/article/plugins-themes-auto-updates/\">Learn more: auto-updates documentation</a>"
 
-#: wp-admin/includes/class-wp-debug-data.php:1138 wp-admin/update-core.php:835
+#: wp-admin/includes/class-wp-debug-data.php:1144 wp-admin/update-core.php:835
 #: wp-admin/plugins.php:574 wp-admin/themes.php:196
 #: wp-admin/network/themes.php:311
 msgid "Auto-updates"
@@ -1013,33 +1017,33 @@ msgstr "Could not remove the current plugin."
 msgid "Removing the current plugin&#8230;"
 msgstr "Removing the current plugin&#8230;"
 
-#: wp-admin/includes/class-wp-debug-data.php:1226
+#: wp-admin/includes/class-wp-debug-data.php:1232
 msgid "Auto-update"
 msgstr "Auto-update"
 
-#: wp-admin/includes/class-wp-debug-data.php:987
-#: wp-admin/includes/class-wp-debug-data.php:1309
+#: wp-admin/includes/class-wp-debug-data.php:993
+#: wp-admin/includes/class-wp-debug-data.php:1315
 #: wp-admin/includes/class-wp-plugins-list-table.php:1100
 #: wp-admin/themes.php:680 wp-admin/js/updates.js:2836
 msgid "Auto-updates disabled"
 msgstr "Auto-updates disabled"
 
-#: wp-admin/includes/class-wp-debug-data.php:985
-#: wp-admin/includes/class-wp-debug-data.php:1307
+#: wp-admin/includes/class-wp-debug-data.php:991
+#: wp-admin/includes/class-wp-debug-data.php:1313
 #: wp-admin/includes/class-wp-plugins-list-table.php:1098
 #: wp-admin/themes.php:682 wp-admin/js/updates.js:2825
 msgid "Auto-updates enabled"
 msgstr "Auto-updates enabled"
 
-#: wp-admin/includes/class-wp-debug-data.php:765
+#: wp-admin/includes/class-wp-debug-data.php:771
 msgid "Are pretty permalinks supported?"
 msgstr "Are pretty permalinks supported?"
 
-#: wp-admin/includes/class-wp-debug-data.php:108
+#: wp-admin/includes/class-wp-debug-data.php:114
 msgid "Is this site discouraging search engines?"
 msgstr "Is this site discouraging search engines?"
 
-#: wp-admin/includes/class-wp-debug-data.php:704
+#: wp-admin/includes/class-wp-debug-data.php:710
 msgid "PHP memory limit (only for admin screens)"
 msgstr "PHP memory limit (only for admin screens)"
 
@@ -1142,13 +1146,13 @@ msgstr "No comments found in Bin."
 msgid "File is empty. Please upload something more substantial. This error could also be caused by uploads being disabled in your %1$s file or by %2$s being defined as smaller than %3$s in %1$s."
 msgstr "File is empty. Please upload something more substantial. This error could also be caused by uploads being disabled in your %1$s file or by %2$s being defined as smaller than %3$s in %1$s."
 
-#: wp-admin/includes/class-wp-site-health.php:2571
+#: wp-admin/includes/class-wp-site-health.php:2580
 msgid "A test is unavailable"
 msgstr "A test is unavailable"
 
 #. translators: 1: The WordPress error message. 2: The WordPress error code.
 #: wp-admin/includes/class-wp-site-health.php:1955
-#: wp-admin/includes/class-wp-site-health.php:2458
+#: wp-admin/includes/class-wp-site-health.php:2467
 msgid "Error: %1$s (%2$s)"
 msgstr "Error: %1$s (%2$s)"
 
@@ -1219,7 +1223,7 @@ msgstr "Resend Confirmation Requests"
 msgid "Delete Requests"
 msgstr "Delete Requests"
 
-#: wp-admin/includes/class-wp-debug-data.php:853
+#: wp-admin/includes/class-wp-debug-data.php:859
 msgid "Table prefix"
 msgstr "Table prefix"
 
@@ -1631,28 +1635,28 @@ msgstr "Rotate right"
 msgid "Rotate left"
 msgstr "Rotate left"
 
-#: wp-admin/includes/class-wp-site-health-auto-updates.php:180
+#: wp-admin/includes/class-wp-site-health-auto-updates.php:184
 msgid "All automatic updates are disabled."
 msgstr "All automatic updates are disabled."
 
-#: wp-admin/includes/class-wp-debug-data.php:865
+#: wp-admin/includes/class-wp-debug-data.php:871
 msgid "Database collation"
 msgstr "Database collation"
 
-#: wp-admin/includes/class-wp-debug-data.php:859
+#: wp-admin/includes/class-wp-debug-data.php:865
 msgid "Database charset"
 msgstr "Database charset"
 
-#: wp-admin/includes/class-wp-debug-data.php:154
+#: wp-admin/includes/class-wp-debug-data.php:160
 msgid "Inactive Themes"
 msgstr "Inactive Themes"
 
-#: wp-admin/includes/class-wp-debug-data.php:149
+#: wp-admin/includes/class-wp-debug-data.php:155
 msgid "Parent Theme"
 msgstr "Parent Theme"
 
 #. translators: %s: wp-content directory name.
-#: wp-admin/includes/class-wp-debug-data.php:137
+#: wp-admin/includes/class-wp-debug-data.php:143
 #: wp-admin/includes/class-wp-plugins-list-table.php:669
 msgid "Drop-ins are single files, found in the %s directory, that replace or enhance WordPress features in ways that are not possible for traditional plugins."
 msgstr "Drop-ins are single files, found in the %s directory, that replace or enhance WordPress features in ways that are not possible for traditional plugins."
@@ -1791,11 +1795,11 @@ msgctxt "Site Health"
 msgid "Info"
 msgstr "Info"
 
-#: wp-admin/includes/class-wp-debug-data.php:450
+#: wp-admin/includes/class-wp-debug-data.php:456
 msgid "Themes directory location"
 msgstr "Themes directory location"
 
-#: wp-admin/includes/class-wp-debug-data.php:114
+#: wp-admin/includes/class-wp-debug-data.php:120
 msgctxt "comment status"
 msgid "Closed"
 msgstr "Closed"
@@ -1872,7 +1876,7 @@ msgstr "Manage your plugins"
 msgid "View Privacy Policy Guide."
 msgstr "View Privacy Policy Guide."
 
-#: wp-admin/includes/class-wp-debug-data.php:75
+#: wp-admin/includes/class-wp-debug-data.php:76
 msgid "User Language"
 msgstr "User Language"
 
@@ -1894,7 +1898,7 @@ msgid "[%s] Background Update Failed"
 msgstr "[%s] Background Update Failed"
 
 #. translators: %s: Name of the filter used.
-#: wp-admin/includes/class-wp-site-health-auto-updates.php:119
+#: wp-admin/includes/class-wp-site-health-auto-updates.php:123
 msgid "Could not confirm that the %s filter is available."
 msgstr "Could not confirm that the %s filter is available."
 
@@ -2129,19 +2133,19 @@ msgstr "This plugin failed to load properly and is paused during recovery mode."
 msgid "Go to the Themes screen"
 msgstr "Go to the Themes screen"
 
-#: wp-admin/includes/class-wp-debug-data.php:1561
+#: wp-admin/includes/class-wp-debug-data.php:1567
 msgid "The directory size calculation has timed out. Usually caused by a very large number of sub-directories and files."
 msgstr "The directory size calculation has timed out. Usually caused by a very large number of sub-directories and files."
 
-#: wp-admin/includes/class-wp-debug-data.php:1605
+#: wp-admin/includes/class-wp-debug-data.php:1611
 msgid "Total size is not available. Some errors were encountered when determining the size of your installation."
 msgstr "Total size is not available. Some errors were encountered when determining the size of your installation."
 
-#: wp-admin/includes/class-wp-debug-data.php:1554
+#: wp-admin/includes/class-wp-debug-data.php:1560
 msgid "The size cannot be calculated. The directory is not accessible. Usually caused by invalid permissions."
 msgstr "The size cannot be calculated. The directory is not accessible. Usually caused by invalid permissions."
 
-#: wp-admin/includes/class-wp-debug-data.php:240
+#: wp-admin/includes/class-wp-debug-data.php:246
 msgid "These settings alter where and how parts of WordPress are loaded."
 msgstr "These settings alter where and how parts of WordPress are loaded."
 
@@ -2183,20 +2187,20 @@ msgstr "Great job!"
 msgid "Secondary menu"
 msgstr "Secondary menu"
 
-#: wp-admin/includes/class-wp-site-health.php:2479
+#: wp-admin/includes/class-wp-site-health.php:2488
 msgid "The loopback request to your site completed successfully."
 msgstr "The loopback request to your site completed successfully."
 
 #. translators: %d: The HTTP response code returned.
-#: wp-admin/includes/class-wp-site-health.php:2471
+#: wp-admin/includes/class-wp-site-health.php:2480
 msgid "The loopback request returned an unexpected http status code, %d, it was not possible to determine if this will prevent features from working as expected."
 msgstr "The loopback request returned an unexpected http status code, %d, it was not possible to determine if this will prevent features from working as expected."
 
-#: wp-admin/includes/class-wp-site-health.php:2455
+#: wp-admin/includes/class-wp-site-health.php:2464
 msgid "The loopback request to your site failed, this means features relying on them are not currently working as expected."
 msgstr "The loopback request to your site failed, this means features relying on them are not currently working as expected."
 
-#: wp-admin/includes/class-wp-site-health.php:2253
+#: wp-admin/includes/class-wp-site-health.php:2262
 msgid "No scheduled events exist on this site."
 msgstr "No scheduled events exist on this site."
 
@@ -2632,500 +2636,500 @@ msgid "We were unable to check if any new versions of WordPress are available."
 msgstr "We were unable to check if any new versions of WordPress are available."
 
 #. translators: %s: Name of the filter used.
-#: wp-admin/includes/class-wp-site-health-auto-updates.php:472
+#: wp-admin/includes/class-wp-site-health-auto-updates.php:476
 msgid "WordPress security and maintenance releases are blocked by the %s filter."
 msgstr "WordPress security and maintenance releases are blocked by the %s filter."
 
 #. translators: %s: Name of the constant used.
-#: wp-admin/includes/class-wp-site-health-auto-updates.php:460
+#: wp-admin/includes/class-wp-site-health-auto-updates.php:464
 msgid "WordPress security and maintenance releases are blocked by %s."
 msgstr "WordPress security and maintenance releases are blocked by %s."
 
 #. translators: %s: Name of the filter used.
-#: wp-admin/includes/class-wp-site-health-auto-updates.php:440
+#: wp-admin/includes/class-wp-site-health-auto-updates.php:444
 msgid "WordPress development updates are blocked by the %s filter."
 msgstr "WordPress development updates are blocked by the %s filter."
 
 #. translators: %s: Name of the constant used.
-#: wp-admin/includes/class-wp-site-health-auto-updates.php:428
+#: wp-admin/includes/class-wp-site-health-auto-updates.php:432
 msgid "WordPress development updates are blocked by the %s constant."
 msgstr "WordPress development updates are blocked by the %s constant."
 
-#: wp-admin/includes/class-wp-site-health-auto-updates.php:404
+#: wp-admin/includes/class-wp-site-health-auto-updates.php:408
 msgid "All of your WordPress files are writable."
 msgstr "All of your WordPress files are writable."
 
-#: wp-admin/includes/class-wp-site-health-auto-updates.php:399
+#: wp-admin/includes/class-wp-site-health-auto-updates.php:403
 msgid "Some files are not writable by WordPress:"
 msgstr "Some files are not writable by WordPress:"
 
-#: wp-admin/includes/class-wp-site-health-auto-updates.php:373
+#: wp-admin/includes/class-wp-site-health-auto-updates.php:377
 msgid "This could mean that connections are failing to WordPress.org."
 msgstr "This could mean that connections are failing to WordPress.org."
 
 #. translators: %s: WordPress version.
-#: wp-admin/includes/class-wp-site-health-auto-updates.php:370
+#: wp-admin/includes/class-wp-site-health-auto-updates.php:374
 msgid "Couldn't retrieve a list of the checksums for WordPress %s."
 msgstr "Couldn't retrieve a list of the checksums for WordPress %s."
 
-#: wp-admin/includes/class-wp-site-health-auto-updates.php:323
+#: wp-admin/includes/class-wp-site-health-auto-updates.php:327
 msgid "Your installation of WordPress doesn't require FTP credentials to perform updates."
 msgstr "Your installation of WordPress doesn't require FTP credentials to perform updates."
 
-#: wp-admin/includes/class-wp-site-health-auto-updates.php:314
+#: wp-admin/includes/class-wp-site-health-auto-updates.php:318
 msgid "(Your site is performing updates over FTP due to file ownership. Talk to your hosting company.)"
 msgstr "(Your site is performing updates over FTP due to file ownership. Talk to your hosting company.)"
 
-#: wp-admin/includes/class-wp-site-health-auto-updates.php:313
+#: wp-admin/includes/class-wp-site-health-auto-updates.php:317
 msgid "Your installation of WordPress prompts for FTP credentials to perform updates."
 msgstr "Your installation of WordPress prompts for FTP credentials to perform updates."
 
-#: wp-admin/includes/class-wp-site-health-auto-updates.php:296
+#: wp-admin/includes/class-wp-site-health-auto-updates.php:300
 msgid "No version control systems were detected."
 msgstr "No version control systems were detected."
 
 #. translators: 1: Folder name. 2: Version control directory.
-#: wp-admin/includes/class-wp-site-health-auto-updates.php:287
+#: wp-admin/includes/class-wp-site-health-auto-updates.php:291
 msgid "The folder %1$s was detected as being under version control (%2$s)."
 msgstr "The folder %1$s was detected as being under version control (%2$s)."
 
 #. translators: 1: Folder name. 2: Version control directory. 3: Filter name.
-#: wp-admin/includes/class-wp-site-health-auto-updates.php:274
+#: wp-admin/includes/class-wp-site-health-auto-updates.php:278
 msgid "The folder %1$s was detected as being under version control (%2$s), but the %3$s filter is allowing updates."
 msgstr "The folder %1$s was detected as being under version control (%2$s), but the %3$s filter is allowing updates."
 
-#: wp-admin/includes/class-wp-site-health-auto-updates.php:219
+#: wp-admin/includes/class-wp-site-health-auto-updates.php:223
 msgid "We'll try again with the next release."
 msgstr "We'll try again with the next release."
 
-#: wp-admin/includes/class-wp-site-health-auto-updates.php:214
+#: wp-admin/includes/class-wp-site-health-auto-updates.php:218
 msgid "A previous automatic background update could not occur."
 msgstr "A previous automatic background update could not occur."
 
 #. translators: %s: Code of error shown.
-#: wp-admin/includes/class-wp-site-health-auto-updates.php:205
-#: wp-admin/includes/class-wp-site-health-auto-updates.php:222
+#: wp-admin/includes/class-wp-site-health-auto-updates.php:209
+#: wp-admin/includes/class-wp-site-health-auto-updates.php:226
 msgid "The error code was %s."
 msgstr "The error code was %s."
 
-#: wp-admin/includes/class-wp-site-health-auto-updates.php:202
+#: wp-admin/includes/class-wp-site-health-auto-updates.php:206
 msgid "When you've been able to update using the \"Update Now\" button on Dashboard > Updates, we'll clear this error for future update attempts."
 msgstr "When you've been able to update using the \"Update Now\" button on Dashboard > Updates, we'll clear this error for future update attempts."
 
-#: wp-admin/includes/class-wp-site-health-auto-updates.php:201
-#: wp-admin/includes/class-wp-site-health-auto-updates.php:216
+#: wp-admin/includes/class-wp-site-health-auto-updates.php:205
+#: wp-admin/includes/class-wp-site-health-auto-updates.php:220
 msgid "You would have received an email because of this."
 msgstr "You would have received an email because of this."
 
-#: wp-admin/includes/class-wp-site-health-auto-updates.php:200
+#: wp-admin/includes/class-wp-site-health-auto-updates.php:204
 msgid "A previous automatic background update ended with a critical failure, so updates are now disabled."
 msgstr "A previous automatic background update ended with a critical failure, so updates are now disabled."
 
 #. translators: %s: Name of the filter used.
-#: wp-admin/includes/class-wp-site-health-auto-updates.php:153
+#: wp-admin/includes/class-wp-site-health-auto-updates.php:157
 msgid "The %s filter is enabled."
 msgstr "The %s filter is enabled."
 
 #. translators: %s: Name of the filter used.
-#: wp-admin/includes/class-wp-site-health-auto-updates.php:132
+#: wp-admin/includes/class-wp-site-health-auto-updates.php:136
 msgid "A plugin has prevented updates by disabling %s."
 msgstr "A plugin has prevented updates by disabling %s."
 
 #. translators: %s: Name of the constant used.
-#: wp-admin/includes/class-wp-site-health-auto-updates.php:73
+#: wp-admin/includes/class-wp-site-health-auto-updates.php:77
 msgid "The %s constant is defined and enabled."
 msgstr "The %s constant is defined and enabled."
 
-#: wp-admin/includes/class-wp-debug-data.php:1344
+#: wp-admin/includes/class-wp-debug-data.php:1350
 msgid "The must use plugins directory"
 msgstr "The must use plugins directory"
 
-#: wp-admin/includes/class-wp-debug-data.php:1093
+#: wp-admin/includes/class-wp-debug-data.php:1099
 msgid "Theme features"
 msgstr "Theme features"
 
-#: wp-admin/includes/class-wp-debug-data.php:1088
+#: wp-admin/includes/class-wp-debug-data.php:1094
 #: wp-admin/includes/class-theme-installer-skin.php:242
 msgid "Parent theme"
 msgstr "Parent theme"
 
-#: wp-admin/includes/class-wp-debug-data.php:1083
-#: wp-admin/includes/class-wp-debug-data.php:1180
+#: wp-admin/includes/class-wp-debug-data.php:1089
+#: wp-admin/includes/class-wp-debug-data.php:1186
 msgid "Author website"
 msgstr "Author website"
 
 #. translators: %s: Latest WordPress version number.
 #. translators: %s: Latest plugin version number.
 #. translators: %s: Latest theme version number.
-#: wp-admin/includes/class-wp-debug-data.php:53
-#: wp-admin/includes/class-wp-debug-data.php:947
-#: wp-admin/includes/class-wp-debug-data.php:1040
-#: wp-admin/includes/class-wp-debug-data.php:1154
-#: wp-admin/includes/class-wp-debug-data.php:1276
+#: wp-admin/includes/class-wp-debug-data.php:54
+#: wp-admin/includes/class-wp-debug-data.php:953
+#: wp-admin/includes/class-wp-debug-data.php:1046
+#: wp-admin/includes/class-wp-debug-data.php:1160
+#: wp-admin/includes/class-wp-debug-data.php:1282
 msgid "(Latest version: %s)"
 msgstr "(Latest version: %s)"
 
 #. translators: 1: Plugin version number. 2: Plugin author name.
 #. translators: 1: Theme version number. 2: Theme author name.
-#: wp-admin/includes/class-wp-debug-data.php:882
-#: wp-admin/includes/class-wp-debug-data.php:929
-#: wp-admin/includes/class-wp-debug-data.php:1258
+#: wp-admin/includes/class-wp-debug-data.php:888
+#: wp-admin/includes/class-wp-debug-data.php:935
+#: wp-admin/includes/class-wp-debug-data.php:1264
 msgid "Version %1$s by %2$s"
 msgstr "Version %1$s by %2$s"
 
-#: wp-admin/includes/class-wp-debug-data.php:877
-#: wp-admin/includes/class-wp-debug-data.php:924
-#: wp-admin/includes/class-wp-debug-data.php:1253
+#: wp-admin/includes/class-wp-debug-data.php:883
+#: wp-admin/includes/class-wp-debug-data.php:930
+#: wp-admin/includes/class-wp-debug-data.php:1259
 msgid "No version or author information is available."
 msgstr "No version or author information is available."
 
-#: wp-admin/includes/class-wp-debug-data.php:825
+#: wp-admin/includes/class-wp-debug-data.php:831
 msgid "Server version"
 msgstr "Server version"
 
-#: wp-admin/includes/class-wp-debug-data.php:820
+#: wp-admin/includes/class-wp-debug-data.php:826
 msgid "Extension"
 msgstr "Extension"
 
 #. translators: %s: .htaccess
-#: wp-admin/includes/class-wp-debug-data.php:784
+#: wp-admin/includes/class-wp-debug-data.php:790
 msgid "Your %s file contains only core WordPress features."
 msgstr "Your %s file contains only core WordPress features."
 
 #. translators: %s: .htaccess
-#: wp-admin/includes/class-wp-debug-data.php:781
+#: wp-admin/includes/class-wp-debug-data.php:787
 msgid "Custom rules have been added to your %s file."
 msgstr "Custom rules have been added to your %s file."
 
-#: wp-admin/includes/class-wp-debug-data.php:788
+#: wp-admin/includes/class-wp-debug-data.php:794
 msgid ".htaccess rules"
 msgstr ".htaccess rules"
 
-#: wp-admin/includes/class-wp-debug-data.php:756
+#: wp-admin/includes/class-wp-debug-data.php:762
 msgid "Is the Imagick library available?"
 msgstr "Is the Imagick library available?"
 
-#: wp-admin/includes/class-wp-debug-data.php:747
+#: wp-admin/includes/class-wp-debug-data.php:753
 msgid "Is SUHOSIN installed?"
 msgstr "Is SUHOSIN installed?"
 
-#: wp-admin/includes/class-wp-debug-data.php:732
-#: wp-admin/includes/class-wp-debug-data.php:737
+#: wp-admin/includes/class-wp-debug-data.php:738
+#: wp-admin/includes/class-wp-debug-data.php:743
 msgid "cURL version"
 msgstr "cURL version"
 
-#: wp-admin/includes/class-wp-debug-data.php:723
+#: wp-admin/includes/class-wp-debug-data.php:729
 msgid "PHP post max size"
 msgstr "PHP post max size"
 
-#: wp-admin/includes/class-wp-debug-data.php:719
+#: wp-admin/includes/class-wp-debug-data.php:725
 msgid "Upload max filesize"
 msgstr "Upload max filesize"
 
-#: wp-admin/includes/class-wp-debug-data.php:715
+#: wp-admin/includes/class-wp-debug-data.php:721
 msgid "Max input time"
 msgstr "Max input time"
 
-#: wp-admin/includes/class-wp-debug-data.php:700
-#: wp-admin/includes/class-wp-debug-data.php:709
+#: wp-admin/includes/class-wp-debug-data.php:706
+#: wp-admin/includes/class-wp-debug-data.php:715
 msgid "PHP memory limit"
 msgstr "PHP memory limit"
 
-#: wp-admin/includes/class-wp-debug-data.php:694
+#: wp-admin/includes/class-wp-debug-data.php:700
 msgid "PHP time limit"
 msgstr "PHP time limit"
 
-#: wp-admin/includes/class-wp-debug-data.php:690
+#: wp-admin/includes/class-wp-debug-data.php:696
 msgid "PHP max input variables"
 msgstr "PHP max input variables"
 
 #. translators: %s: ini_get()
-#: wp-admin/includes/class-wp-debug-data.php:527
-#: wp-admin/includes/class-wp-debug-data.php:683
+#: wp-admin/includes/class-wp-debug-data.php:533
+#: wp-admin/includes/class-wp-debug-data.php:689
 msgid "Unable to determine some settings, as the %s function has been disabled."
 msgstr "Unable to determine some settings, as the %s function has been disabled."
 
-#: wp-admin/includes/class-wp-debug-data.php:680
+#: wp-admin/includes/class-wp-debug-data.php:686
 msgid "Server settings"
 msgstr "Server settings"
 
-#: wp-admin/includes/class-wp-debug-data.php:673
+#: wp-admin/includes/class-wp-debug-data.php:679
 msgid "Unable to determine PHP SAPI"
 msgstr "Unable to determine PHP SAPI"
 
-#: wp-admin/includes/class-wp-debug-data.php:672
+#: wp-admin/includes/class-wp-debug-data.php:678
 msgid "PHP SAPI"
 msgstr "PHP SAPI"
 
-#: wp-admin/includes/class-wp-debug-data.php:639
+#: wp-admin/includes/class-wp-debug-data.php:645
 msgid "(Does not support 64bit values)"
 msgstr "(Does not support 64bit values)"
 
-#: wp-admin/includes/class-wp-debug-data.php:639
+#: wp-admin/includes/class-wp-debug-data.php:645
 msgid "(Supports 64bit values)"
 msgstr "(Supports 64bit values)"
 
-#: wp-admin/includes/class-wp-debug-data.php:646
+#: wp-admin/includes/class-wp-debug-data.php:652
 msgid "Unable to determine PHP version"
 msgstr "Unable to determine PHP version"
 
-#: wp-admin/includes/class-wp-debug-data.php:667
+#: wp-admin/includes/class-wp-debug-data.php:673
 msgid "PHP version"
 msgstr "PHP version"
 
-#: wp-admin/includes/class-wp-debug-data.php:663
+#: wp-admin/includes/class-wp-debug-data.php:669
 msgid "Unable to determine what web server software is used"
 msgstr "Unable to determine what web server software is used"
 
-#: wp-admin/includes/class-wp-debug-data.php:662
+#: wp-admin/includes/class-wp-debug-data.php:668
 msgid "Web server"
 msgstr "Web server"
 
-#: wp-admin/includes/class-wp-debug-data.php:658
+#: wp-admin/includes/class-wp-debug-data.php:664
 msgid "Unable to determine server architecture"
 msgstr "Unable to determine server architecture"
 
-#: wp-admin/includes/class-wp-debug-data.php:657
+#: wp-admin/includes/class-wp-debug-data.php:663
 msgid "Server architecture"
 msgstr "Server architecture"
 
-#: wp-admin/includes/class-wp-debug-data.php:619
+#: wp-admin/includes/class-wp-debug-data.php:625
 msgid "Ghostscript version"
 msgstr "Ghostscript version"
 
-#: wp-admin/includes/class-wp-debug-data.php:614
+#: wp-admin/includes/class-wp-debug-data.php:620
 msgid "Unable to determine if Ghostscript is installed"
 msgstr "Unable to determine if Ghostscript is installed"
 
-#: wp-admin/includes/class-wp-debug-data.php:598
+#: wp-admin/includes/class-wp-debug-data.php:604
 msgid "GD version"
 msgstr "GD version"
 
-#: wp-admin/includes/class-wp-debug-data.php:584
+#: wp-admin/includes/class-wp-debug-data.php:590
 msgid "Imagick Resource Limits"
 msgstr "Imagick Resource Limits"
 
-#: wp-admin/includes/class-wp-debug-data.php:518
+#: wp-admin/includes/class-wp-debug-data.php:524
 msgid "ImageMagick version string"
 msgstr "ImageMagick version string"
 
-#: wp-admin/includes/class-wp-debug-data.php:513
+#: wp-admin/includes/class-wp-debug-data.php:519
 msgid "ImageMagick version number"
 msgstr "ImageMagick version number"
 
-#: wp-admin/includes/class-wp-debug-data.php:487
-#: wp-admin/includes/class-wp-debug-data.php:509
-#: wp-admin/includes/class-wp-debug-data.php:1589
+#: wp-admin/includes/class-wp-debug-data.php:493
+#: wp-admin/includes/class-wp-debug-data.php:515
+#: wp-admin/includes/class-wp-debug-data.php:1595
 msgid "Not available"
 msgstr "Not available"
 
-#: wp-admin/includes/class-wp-debug-data.php:499
+#: wp-admin/includes/class-wp-debug-data.php:505
 msgid "Active editor"
 msgstr "Active editor"
 
-#: wp-admin/includes/class-wp-debug-data.php:473
+#: wp-admin/includes/class-wp-debug-data.php:479
 msgid "Total installation size"
 msgstr "Total installation size"
 
-#: wp-admin/includes/class-wp-debug-data.php:468
+#: wp-admin/includes/class-wp-debug-data.php:474
 msgid "Database size"
 msgstr "Database size"
 
-#: wp-admin/includes/class-wp-debug-data.php:436
+#: wp-admin/includes/class-wp-debug-data.php:442
 msgid "WordPress directory size"
 msgstr "WordPress directory size"
 
-#: wp-admin/includes/class-wp-debug-data.php:432
+#: wp-admin/includes/class-wp-debug-data.php:438
 msgid "WordPress directory location"
 msgstr "WordPress directory location"
 
-#: wp-admin/includes/class-wp-debug-data.php:463
+#: wp-admin/includes/class-wp-debug-data.php:469
 msgid "Plugins directory size"
 msgstr "Plugins directory size"
 
-#: wp-admin/includes/class-wp-debug-data.php:459
+#: wp-admin/includes/class-wp-debug-data.php:465
 msgid "Plugins directory location"
 msgstr "Plugins directory location"
 
-#: wp-admin/includes/class-wp-debug-data.php:454
+#: wp-admin/includes/class-wp-debug-data.php:460
 msgid "Themes directory size"
 msgstr "Themes directory size"
 
-#: wp-admin/includes/class-wp-debug-data.php:1097
-#: wp-admin/includes/class-wp-debug-data.php:1185
+#: wp-admin/includes/class-wp-debug-data.php:1103
+#: wp-admin/includes/class-wp-debug-data.php:1191
 msgid "Theme directory location"
 msgstr "Theme directory location"
 
-#: wp-admin/includes/class-wp-debug-data.php:445
+#: wp-admin/includes/class-wp-debug-data.php:451
 msgid "Uploads directory size"
 msgstr "Uploads directory size"
 
-#: wp-admin/includes/class-wp-debug-data.php:441
+#: wp-admin/includes/class-wp-debug-data.php:447
 msgid "Uploads directory location"
 msgstr "Uploads directory location"
 
 #. translators: 1: The IP address WordPress.org resolves to. 2: The error
 #. returned by the lookup.
-#: wp-admin/includes/class-wp-debug-data.php:418
+#: wp-admin/includes/class-wp-debug-data.php:424
 msgid "Unable to reach WordPress.org at %1$s: %2$s"
 msgstr "Unable to reach WordPress.org at %1$s: %2$s"
 
-#: wp-admin/includes/class-wp-debug-data.php:410
+#: wp-admin/includes/class-wp-debug-data.php:416
 msgid "WordPress.org is reachable"
 msgstr "WordPress.org is reachable"
 
-#: wp-admin/includes/class-wp-debug-data.php:409
 #: wp-admin/includes/class-wp-debug-data.php:415
+#: wp-admin/includes/class-wp-debug-data.php:421
 #: wp-admin/includes/class-wp-site-health.php:2156
 msgid "Communication with WordPress.org"
 msgstr "Communication with WordPress.org"
 
-#: wp-admin/includes/class-wp-debug-data.php:392
+#: wp-admin/includes/class-wp-debug-data.php:398
 msgid "Network count"
 msgstr "Network count"
 
-#: wp-admin/includes/class-wp-debug-data.php:387
+#: wp-admin/includes/class-wp-debug-data.php:393
 msgid "Site count"
 msgstr "Site count"
 
-#: wp-admin/includes/class-wp-debug-data.php:382
-#: wp-admin/includes/class-wp-debug-data.php:399
+#: wp-admin/includes/class-wp-debug-data.php:388
+#: wp-admin/includes/class-wp-debug-data.php:405
 msgid "User count"
 msgstr "User count"
 
-#: wp-admin/includes/class-wp-debug-data.php:358
+#: wp-admin/includes/class-wp-debug-data.php:364
 msgid "The themes directory"
 msgstr "The themes directory"
 
-#: wp-admin/includes/class-wp-debug-data.php:353
+#: wp-admin/includes/class-wp-debug-data.php:359
 msgid "The plugins directory"
 msgstr "The plugins directory"
 
-#: wp-admin/includes/class-wp-debug-data.php:348
+#: wp-admin/includes/class-wp-debug-data.php:354
 msgid "The uploads directory"
 msgstr "The uploads directory"
 
-#: wp-admin/includes/class-wp-debug-data.php:343
+#: wp-admin/includes/class-wp-debug-data.php:349
 msgid "The wp-content directory"
 msgstr "The wp-content directory"
 
-#: wp-admin/includes/class-wp-debug-data.php:339
-#: wp-admin/includes/class-wp-debug-data.php:344
-#: wp-admin/includes/class-wp-debug-data.php:349
-#: wp-admin/includes/class-wp-debug-data.php:354
-#: wp-admin/includes/class-wp-debug-data.php:359
-#: wp-admin/includes/class-wp-debug-data.php:1345
+#: wp-admin/includes/class-wp-debug-data.php:345
+#: wp-admin/includes/class-wp-debug-data.php:350
+#: wp-admin/includes/class-wp-debug-data.php:355
+#: wp-admin/includes/class-wp-debug-data.php:360
+#: wp-admin/includes/class-wp-debug-data.php:365
+#: wp-admin/includes/class-wp-debug-data.php:1351
 msgid "Not writable"
 msgstr "Not writable"
 
-#: wp-admin/includes/class-wp-debug-data.php:339
-#: wp-admin/includes/class-wp-debug-data.php:344
-#: wp-admin/includes/class-wp-debug-data.php:349
-#: wp-admin/includes/class-wp-debug-data.php:354
-#: wp-admin/includes/class-wp-debug-data.php:359
-#: wp-admin/includes/class-wp-debug-data.php:1345
+#: wp-admin/includes/class-wp-debug-data.php:345
+#: wp-admin/includes/class-wp-debug-data.php:350
+#: wp-admin/includes/class-wp-debug-data.php:355
+#: wp-admin/includes/class-wp-debug-data.php:360
+#: wp-admin/includes/class-wp-debug-data.php:365
+#: wp-admin/includes/class-wp-debug-data.php:1351
 msgid "Writable"
 msgstr "Writable"
 
-#: wp-admin/includes/class-wp-debug-data.php:338
+#: wp-admin/includes/class-wp-debug-data.php:344
 msgid "The main WordPress directory"
 msgstr "The main WordPress directory"
 
-#: wp-admin/includes/class-wp-debug-data.php:335
+#: wp-admin/includes/class-wp-debug-data.php:341
 msgid "Shows whether WordPress is able to write to the directories it needs access to."
 msgstr "Shows whether WordPress is able to write to the directories it needs access to."
 
-#: wp-admin/includes/class-wp-debug-data.php:334
+#: wp-admin/includes/class-wp-debug-data.php:340
 msgid "Filesystem Permissions"
 msgstr "File system permissions"
 
-#: wp-admin/includes/class-wp-debug-data.php:207
-#: wp-admin/includes/class-wp-debug-data.php:216
-#: wp-admin/includes/class-wp-debug-data.php:225
-#: wp-admin/includes/class-wp-debug-data.php:234
-#: wp-admin/includes/class-wp-debug-data.php:249
-#: wp-admin/includes/class-wp-debug-data.php:254
-#: wp-admin/includes/class-wp-debug-data.php:316
-#: wp-admin/includes/class-wp-debug-data.php:321
-#: wp-admin/includes/class-wp-debug-data.php:1084
-#: wp-admin/includes/class-wp-debug-data.php:1181
+#: wp-admin/includes/class-wp-debug-data.php:213
+#: wp-admin/includes/class-wp-debug-data.php:222
+#: wp-admin/includes/class-wp-debug-data.php:231
+#: wp-admin/includes/class-wp-debug-data.php:240
+#: wp-admin/includes/class-wp-debug-data.php:255
+#: wp-admin/includes/class-wp-debug-data.php:260
+#: wp-admin/includes/class-wp-debug-data.php:322
+#: wp-admin/includes/class-wp-debug-data.php:327
+#: wp-admin/includes/class-wp-debug-data.php:1090
+#: wp-admin/includes/class-wp-debug-data.php:1187
 msgid "Undefined"
 msgstr "Undefined"
 
-#: wp-admin/includes/class-wp-debug-data.php:239
+#: wp-admin/includes/class-wp-debug-data.php:245
 msgid "WordPress Constants"
 msgstr "WordPress constants"
 
-#: wp-admin/includes/class-wp-debug-data.php:189
+#: wp-admin/includes/class-wp-debug-data.php:195
 msgid "Database"
 msgstr "Database"
 
-#: wp-admin/includes/class-wp-debug-data.php:184
+#: wp-admin/includes/class-wp-debug-data.php:190
 msgid "The options shown below relate to your server setup. If changes are required, you may need your web host&#8217;s assistance."
 msgstr "The options shown below relate to your server setup. If changes are required, you may need your web host&#8217;s assistance."
 
-#: wp-admin/includes/class-wp-debug-data.php:183
+#: wp-admin/includes/class-wp-debug-data.php:189
 msgid "Server"
 msgstr "Server"
 
-#: wp-admin/includes/class-wp-debug-data.php:178
+#: wp-admin/includes/class-wp-debug-data.php:184
 msgid "Media Handling"
 msgstr "Media Handling"
 
-#: wp-admin/includes/class-wp-debug-data.php:172
+#: wp-admin/includes/class-wp-debug-data.php:178
 msgid "Inactive Plugins"
 msgstr "Inactive Plugins"
 
-#: wp-admin/includes/class-wp-debug-data.php:166
+#: wp-admin/includes/class-wp-debug-data.php:172
 msgid "Active Plugins"
 msgstr "Active Plugins"
 
-#: wp-admin/includes/class-wp-debug-data.php:160
+#: wp-admin/includes/class-wp-debug-data.php:166
 msgid "Must Use Plugins"
 msgstr "Must Use Plugins"
 
-#: wp-admin/includes/class-wp-debug-data.php:144
+#: wp-admin/includes/class-wp-debug-data.php:150
 #: wp-admin/includes/class-wp-ms-themes-list-table.php:844
 msgid "Active Theme"
 msgstr "Active theme"
 
-#: wp-admin/includes/class-wp-debug-data.php:133
+#: wp-admin/includes/class-wp-debug-data.php:139
 msgid "Drop-ins"
 msgstr "Drop-ins"
 
-#: wp-admin/includes/class-wp-debug-data.php:127
+#: wp-admin/includes/class-wp-debug-data.php:133
 msgid "Directories and Sizes"
 msgstr "Directories and Sizes"
 
-#: wp-admin/includes/class-wp-debug-data.php:118
+#: wp-admin/includes/class-wp-debug-data.php:104
 msgid "Is this a multisite?"
 msgstr "Is this a multisite?"
 
-#: wp-admin/includes/class-wp-debug-data.php:113
+#: wp-admin/includes/class-wp-debug-data.php:119
 msgid "Default comment status"
 msgstr "Default comment status"
 
-#: wp-admin/includes/class-wp-debug-data.php:103
+#: wp-admin/includes/class-wp-debug-data.php:109
 msgid "Can anyone register on this site?"
 msgstr "Can anyone register on this site?"
 
-#: wp-admin/includes/class-wp-debug-data.php:98
+#: wp-admin/includes/class-wp-debug-data.php:99
 msgid "Is this site using HTTPS?"
 msgstr "Is this site using HTTPS?"
 
-#: wp-admin/includes/class-wp-debug-data.php:94
+#: wp-admin/includes/class-wp-debug-data.php:95
 msgid "No permalink structure set"
 msgstr "No permalink structure set"
 
-#: wp-admin/includes/class-wp-debug-data.php:93
+#: wp-admin/includes/class-wp-debug-data.php:94
 msgid "Permalink structure"
 msgstr "Permalink structure"
 
-#: wp-admin/includes/class-wp-debug-data.php:88
+#: wp-admin/includes/class-wp-debug-data.php:89
 msgid "Site URL"
 msgstr "Site URL"
 
-#: wp-admin/includes/class-wp-debug-data.php:83
+#: wp-admin/includes/class-wp-debug-data.php:84
 msgid "Home URL"
 msgstr "Home URL"
 
@@ -4473,7 +4477,7 @@ msgstr "https://en-gb.wordpress.org/about/licence/"
 
 #: wp-admin/privacy.php:44
 msgid "From time to time, your WordPress site may send data to WordPress.org &#8212; including, but not limited to &#8212; the version of WordPress you are using, and a list of installed plugins and themes."
-msgstr "From time to time, your WordPress site may send data to WordPress.org &#8212; including, but not limited to &#8212; the version of WordPress you are using, and a list of installed plugins and themes."
+msgstr "From time to time, your WordPress site may send data to WordPress.org – including, but not limited to – the version of WordPress you are using, and a list of installed plugins and themes."
 
 #. translators: Attachment information. %s: Date the attachment was uploaded.
 #: wp-admin/includes/meta-boxes.php:415
@@ -4808,7 +4812,7 @@ msgstr "Run Importer"
 msgid "Run %s"
 msgstr "Run %s"
 
-#: wp-admin/includes/class-wp-debug-data.php:114
+#: wp-admin/includes/class-wp-debug-data.php:120
 msgctxt "comment status"
 msgid "Open"
 msgstr "Open"
@@ -8145,7 +8149,7 @@ msgstr "The package contains no files."
 msgid "To navigate between revisions, <strong>drag the slider handle left or right</strong> or <strong>use the Previous or Next buttons</strong>."
 msgstr "To navigate between revisions, <strong>drag the slider handle left or right</strong> or <strong>use the Previous or Next buttons</strong>."
 
-#: wp-admin/includes/class-wp-debug-data.php:428
+#: wp-admin/includes/class-wp-debug-data.php:434
 #: wp-admin/includes/dashboard.php:1097 wp-admin/includes/dashboard.php:1287
 #: wp-admin/customize.php:147
 msgid "Loading&hellip;"
@@ -8407,7 +8411,7 @@ msgstr "Thank you for Updating! Please visit the <a href=\"%s\">Upgrade Network<
 msgid "All right, sparky! You&#8217;ve made it through this part of the installation. WordPress can now communicate with your database. If you are ready, time now to&hellip;"
 msgstr "All right, sunshine! You&#8217;ve made it through this part of the installation. WordPress can now communicate with your database. If you are ready, time now to&hellip;"
 
-#: wp-admin/includes/class-wp-debug-data.php:830
+#: wp-admin/includes/class-wp-debug-data.php:836
 msgid "Client version"
 msgstr "Client version"
 
@@ -9123,18 +9127,18 @@ msgstr "Delete My Site Permanently"
 msgid "I'm sure I want to permanently delete my site, and I am aware I can never get it back or use %s again."
 msgstr "I'm sure I want to permanently delete my site, and I am aware I can never get it back or use %s again."
 
-#: wp-admin/includes/class-wp-debug-data.php:194
-#: wp-admin/includes/class-wp-debug-data.php:204
-#: wp-admin/includes/class-wp-debug-data.php:213
-#: wp-admin/includes/class-wp-debug-data.php:222
-#: wp-admin/includes/class-wp-debug-data.php:231
-#: wp-admin/includes/class-wp-debug-data.php:271
-#: wp-admin/includes/class-wp-debug-data.php:276
-#: wp-admin/includes/class-wp-debug-data.php:286
-#: wp-admin/includes/class-wp-debug-data.php:291
-#: wp-admin/includes/class-wp-debug-data.php:542
-#: wp-admin/includes/class-wp-debug-data.php:1131
-#: wp-admin/includes/class-wp-debug-data.php:1219
+#: wp-admin/includes/class-wp-debug-data.php:200
+#: wp-admin/includes/class-wp-debug-data.php:210
+#: wp-admin/includes/class-wp-debug-data.php:219
+#: wp-admin/includes/class-wp-debug-data.php:228
+#: wp-admin/includes/class-wp-debug-data.php:237
+#: wp-admin/includes/class-wp-debug-data.php:277
+#: wp-admin/includes/class-wp-debug-data.php:282
+#: wp-admin/includes/class-wp-debug-data.php:292
+#: wp-admin/includes/class-wp-debug-data.php:297
+#: wp-admin/includes/class-wp-debug-data.php:548
+#: wp-admin/includes/class-wp-debug-data.php:1137
+#: wp-admin/includes/class-wp-debug-data.php:1225
 msgid "Disabled"
 msgstr "Disabled"
 
@@ -9235,7 +9239,7 @@ msgstr "Let&#8217;s go!"
 msgid "Table prefix (if you want to run more than one WordPress in a single database)"
 msgstr "Table prefix (if you want to run more than one WordPress in a single database)"
 
-#: wp-admin/includes/class-wp-debug-data.php:841 wp-admin/setup-config.php:169
+#: wp-admin/includes/class-wp-debug-data.php:847 wp-admin/setup-config.php:169
 msgid "Database host"
 msgstr "Database host"
 
@@ -9243,11 +9247,11 @@ msgstr "Database host"
 msgid "Database password"
 msgstr "Database password"
 
-#: wp-admin/includes/class-wp-debug-data.php:835 wp-admin/setup-config.php:167
+#: wp-admin/includes/class-wp-debug-data.php:841 wp-admin/setup-config.php:167
 msgid "Database username"
 msgstr "Database username"
 
-#: wp-admin/includes/class-wp-debug-data.php:847 wp-admin/setup-config.php:166
+#: wp-admin/includes/class-wp-debug-data.php:853 wp-admin/setup-config.php:166
 msgid "Database name"
 msgstr "Database name"
 
@@ -10052,9 +10056,9 @@ msgstr "User added."
 #. translators: %s: WordPress version.
 #. translators: %s: Plugin version.
 #. translators: %s: Theme version.
-#: wp-admin/includes/class-wp-debug-data.php:893
-#: wp-admin/includes/class-wp-debug-data.php:940
-#: wp-admin/includes/class-wp-debug-data.php:1269
+#: wp-admin/includes/class-wp-debug-data.php:899
+#: wp-admin/includes/class-wp-debug-data.php:946
+#: wp-admin/includes/class-wp-debug-data.php:1275
 #: wp-admin/includes/class-wp-plugins-list-table.php:1018
 #: wp-admin/includes/update.php:231 wp-admin/includes/update.php:271
 #: wp-admin/includes/ajax-actions.php:4442
@@ -10151,7 +10155,7 @@ msgstr "Post name"
 msgid "This importer is not installed. Please install importers from <a href=\"%s\">the main site</a>."
 msgstr "This importer is not installed. Please install importers from <a href=\"%s\">the main site</a>."
 
-#: wp-admin/includes/class-wp-debug-data.php:71
+#: wp-admin/includes/class-wp-debug-data.php:72
 #: wp-admin/options-general.php:166 wp-admin/network/site-new.php:257
 msgid "Site Language"
 msgstr "Site Language"
@@ -11209,18 +11213,18 @@ msgstr "Show advanced menu properties"
 msgid "You have version %1$s installed. Update to %2$s."
 msgstr "You have version %1$s installed. Update to %2$s."
 
-#: wp-admin/includes/class-wp-debug-data.php:199
-#: wp-admin/includes/class-wp-debug-data.php:204
-#: wp-admin/includes/class-wp-debug-data.php:213
-#: wp-admin/includes/class-wp-debug-data.php:222
-#: wp-admin/includes/class-wp-debug-data.php:231
-#: wp-admin/includes/class-wp-debug-data.php:271
-#: wp-admin/includes/class-wp-debug-data.php:276
-#: wp-admin/includes/class-wp-debug-data.php:286
-#: wp-admin/includes/class-wp-debug-data.php:291
-#: wp-admin/includes/class-wp-debug-data.php:542
-#: wp-admin/includes/class-wp-debug-data.php:1129
-#: wp-admin/includes/class-wp-debug-data.php:1217
+#: wp-admin/includes/class-wp-debug-data.php:205
+#: wp-admin/includes/class-wp-debug-data.php:210
+#: wp-admin/includes/class-wp-debug-data.php:219
+#: wp-admin/includes/class-wp-debug-data.php:228
+#: wp-admin/includes/class-wp-debug-data.php:237
+#: wp-admin/includes/class-wp-debug-data.php:277
+#: wp-admin/includes/class-wp-debug-data.php:282
+#: wp-admin/includes/class-wp-debug-data.php:292
+#: wp-admin/includes/class-wp-debug-data.php:297
+#: wp-admin/includes/class-wp-debug-data.php:548
+#: wp-admin/includes/class-wp-debug-data.php:1135
+#: wp-admin/includes/class-wp-debug-data.php:1223
 msgid "Enabled"
 msgstr "Enabled"
 
@@ -12387,7 +12391,7 @@ msgstr "Custom:"
 msgid "This timezone is currently in standard time."
 msgstr "This timezone is currently in standard time."
 
-#: wp-admin/includes/class-wp-debug-data.php:79
+#: wp-admin/includes/class-wp-debug-data.php:80
 #: wp-admin/options-general.php:224
 msgid "Timezone"
 msgstr "Timezone"
@@ -13605,7 +13609,7 @@ msgstr "Alt text for the image, e.g. &#8220;The Mona Lisa&#8221;"
 msgid "File URL"
 msgstr "File URL"
 
-#: wp-admin/credits.php:30 wp-admin/includes/class-wp-debug-data.php:63
+#: wp-admin/credits.php:30 wp-admin/includes/class-wp-debug-data.php:64
 #: wp-admin/includes/class-wp-privacy-policy-content.php:721
 #: wp-admin/includes/media.php:518 wp-admin/includes/template.php:2014
 #: wp-admin/privacy.php:27 wp-admin/install.php:77 wp-admin/freedoms.php:33

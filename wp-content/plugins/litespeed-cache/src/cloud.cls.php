@@ -29,9 +29,9 @@ class Cloud extends Base {
 
 	const IMGOPTM_TAKEN         = 'img_optm-taken';
 
-	const EXPIRATION_NODE 	= 6; 	// Hours before node expired
-	const EXPIRATION_REQ	= 300; 	// Seconds of min interval between two unfinished requests
-	const EXPIRATION_TOKEN 	= 900; 	// Min intval to request a token 15m
+	const EXPIRATION_NODE = 3; // Days before node expired
+	const EXPIRATION_REQ = 300; // Seconds of min interval between two unfinished requests
+	const EXPIRATION_TOKEN = 900; // Min intval to request a token 15m
 
 	const API_NEWS 			= 'wp/news';
 	const API_REPORT		= 'wp/report' ;
@@ -299,9 +299,7 @@ class Cloud extends Base {
 
 		// Check if the stored server needs to be refreshed
 		if ( ! $force ) {
-			$expiry = time() - (3600 * self::EXPIRATION_NODE);
-
-			if ( ! empty( $this->_summary[ 'server.' . $service ] ) && ! empty( $this->_summary[ 'server_date.' . $service ] ) && $this->_summary[ 'server_date.' . $service ] > $expiry ) {
+			if ( ! empty( $this->_summary[ 'server.' . $service ] ) && ! empty( $this->_summary[ 'server_date.' . $service ] ) && $this->_summary[ 'server_date.' . $service ] > time() - 86400 * self::EXPIRATION_NODE ) {
 				return $this->_summary[ 'server.' . $service ];
 			}
 		}
@@ -314,11 +312,9 @@ class Cloud extends Base {
 
 		// Send request to Quic Online Service
 		$cloud_endpoint = self::SVC_D_NODES;
-
 		if($service == self::SVC_IMG_OPTM) {
 			$cloud_endpoint = self::SVC_D_REGIONNODES;
 		}
-
 		$json = $this->_post( $cloud_endpoint, array( 'svc' => $service ) );
 
 		// Check if get list correctly
@@ -330,17 +326,11 @@ class Cloud extends Base {
 				Admin_Display::error( $msg );
 			}
 
-			// Return cached version if we have it
-			if ( ! empty( $this->_summary[ 'server.' . $service ] ) ){
-				return $this->_summary[ 'server.' . $service ];
-			}
-
 			return false;
 		}
 
 		// Ping closest cloud
 		$speed_list = array();
-
 		foreach ( $json[ 'list' ] as $v ) {
 			$speed_list[ $v ] = Utility::ping( $v );
 		}
@@ -800,8 +790,8 @@ class Cloud extends Base {
 		$response = wp_remote_get( self::CLOUD_SERVER . '/d/req_key?data=' . Utility::arr2str( $data ) );
 		if ( is_wp_error( $response ) ) {
 			$error_message = $response->get_error_message();
-			Debug2::debug( '[CLoud] failed to gen_key: ' . $error_message );
-			Admin_Display::error( __( 'CLoud Error', 'litespeed-cache' ) . ': ' . $error_message );
+			Debug2::debug( '[Cloud] failed to gen_key: ' . $error_message );
+			Admin_Display::error( __( 'Cloud Error', 'litespeed-cache' ) . ': ' . $error_message );
 			return;
 		}
 
@@ -845,7 +835,7 @@ class Cloud extends Base {
 
 		Debug2::debug( '❄️ ✅ send request for key successfully.' );
 
-		Admin_Display::succeed( __( 'Applied for Domain key successfully. Please wait for result. Domain key will be automatically sent to your WordPress.', 'litespeed-cache' ) );
+		Admin_Display::succeed( __( 'Applied for Domain Key successfully. Please wait for result. Domain Key will be automatically sent to your WordPress.', 'litespeed-cache' ) );
 	}
 
 	/**
@@ -967,7 +957,7 @@ class Cloud extends Base {
 		}
 
 		if ( md5( substr( $this->_api_key, 2, 8 ) ) !== $_GET[ 'domain_hash' ] ) {
-			Admin_Display::error( __( 'Domain key hash mismatch', 'litespeed-cache' ), true );
+			Admin_Display::error( __( 'Domain Key hash mismatch', 'litespeed-cache' ), true );
 			return;
 		}
 
