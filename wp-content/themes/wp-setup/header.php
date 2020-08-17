@@ -30,10 +30,38 @@ ga('create', 'UA-2092620-46', 'auto');
 <?php wp_head(); ?>
 </head>
 <body <?php body_class(); ?>>
-<header class="header">
+
+
+<header class="header" id="header">
 
   <div class="header__content">
-
+    <div class="header__logoWrapper">
+      <a class="header__logoLink" href="/" target="_self">
+        <h1>Logo</h1>
+      </a>
+    </div>
+    <div class="header__navWrapper">
+      <input class="header__mobileNavCheckbox" type="checkbox" id="mobileNavCheckbox">
+      <label class="header__mobileNavLabel" for="mobileNavCheckbox">
+        <canvas class="header__mobileNavCanvas" width="20" height="14"></canvas>
+        <svg class="header__mobileNavSVG" width="20" height="14" viewBox="0 0 20 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <line y1="1.25" x2="20" y2="1.25" stroke="#575756" stroke-width="1.5"/>
+          <line y1="7.25" x2="20" y2="7.25" stroke="#575756" stroke-width="1.5"/>
+          <line y1="13.25" x2="20" y2="13.25" stroke="#575756" stroke-width="1.5"/>
+        </svg>
+      </label>
+      <nav class="header__nav">
+        <?=
+          wp_nav_menu([
+            'menu'              => "Hauptmenü", // (int|string|WP_Term) Desired menu. Accepts a menu ID, slug, name, or object.
+            'menu_class'        => "header__menu", // (string) CSS class to use for the ul element which forms the menu. Default 'menu'.
+            'container'         => "", // (string) Whether to wrap the ul, and what to wrap it with. Default 'div'.
+            'container_class'   => "", // (string) Class that is applied to the container. Default 'menu-{menu slug}-container'.
+            'echo'              => true, // (bool) Whether to echo the menu or return it. Default true.
+          ]);
+        ?>
+      </nav>
+    </div>
   </div>
 
 </header>

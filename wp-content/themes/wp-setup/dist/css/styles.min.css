@@ -1411,55 +1411,134 @@ canvas {
   }
 }
 
-.intro {
-  padding: 1.61616vw;
-  max-width: 60.60606vw;
+.header {
   margin: 0 auto 6.46465vw;
   font-size: calc( 1rem * 1.375 + 0.05051vw * 22 - 22 * 1px);
 }
 
+.header__content {
+  display: flex;
+  justify-content: space-between;
+}
+
+.header__mobileNavCheckbox, .header__mobileNavLabel {
+  display: none;
+  cursor: pointer;
+}
+
+.header__menu ul {
+  display: flex;
+}
+
 @media (min-width: 1980px) {
-  .intro {
-    padding: 32px;
-    max-width: 1200px;
+  .header {
     margin: 0 auto 128px;
     font-size: calc( 1rem * 1.375 + 1px * 22 - 22 * 1px);
+  }
+  .header__content {
+    display: flex;
+    justify-content: space-between;
+  }
+  .header__mobileNavCheckbox, .header__mobileNavLabel {
+    display: none;
+    cursor: pointer;
+  }
+  .header__menu ul {
+    display: flex;
   }
 }
 
 @media (max-width: 1450px) {
-  .intro {
-    padding: 2.2069vw;
-    max-width: 82.75862vw;
+  .header {
     margin: 0 auto 8.82759vw;
     font-size: calc( 1rem * 1.375 + 0.06897vw * 22 - 22 * 1px);
+  }
+  .header__content {
+    display: flex;
+    justify-content: space-between;
+  }
+  .header__mobileNavCheckbox, .header__mobileNavLabel {
+    display: none;
+    cursor: pointer;
+  }
+  .header__menu ul {
+    display: flex;
   }
 }
 
 @media (max-width: 1024px) {
-  .intro {
-    padding: 3.125vw;
-    max-width: 117.1875vw;
+  .header {
     margin: 0 auto 12.5vw;
     font-size: calc( 1rem * 1.375 + 0.09766vw * 22 - 22 * 1px);
+  }
+  .header__content {
+    display: flex;
+    justify-content: space-between;
+  }
+  .header__mobileNavCheckbox, .header__mobileNavLabel {
+    display: none;
+    cursor: pointer;
+  }
+  .header__menu ul {
+    display: flex;
   }
 }
 
 @media (max-width: 768px) {
-  .intro {
-    padding: 4.16667vw;
-    max-width: 156.25vw;
+  .header {
     margin: 0 auto 16.66667vw;
     font-size: calc( 1rem * 1.375 + 0.13021vw * 22 - 22 * 1px);
+  }
+  .header__content {
+    display: flex;
+    justify-content: space-between;
+  }
+  .header__mobileNavCheckbox, .header__mobileNavLabel {
+    display: none;
+    cursor: pointer;
+  }
+  .header__menu ul {
+    display: flex;
   }
 }
 
 @media (max-width: 500px) {
-  .intro {
-    padding: 6.4vw;
-    max-width: 240vw;
+  .header {
     margin: 0 auto 25.6vw;
     font-size: calc( 1rem * 1.375 + 0.2vw * 22 - 22 * 1px);
+  }
+  .header__content {
+    display: flex;
+    justify-content: space-between;
+  }
+  .header__mobileNavCheckbox, .header__mobileNavLabel {
+    display: none;
+    cursor: pointer;
+  }
+  .header__menu ul {
+    display: flex;
+  }
+}
+
+@media (max-width: 500px) {
+  .header__nav {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.5);
+    z-index: 90;
+    transform: translateX(100%);
+    transition: transform 0.5s ease-out;
+  }
+  .header__mobileNavLabel {
+    position: relative;
+    display: block;
+    z-index: 100;
+  }
+  .header__mobileNavCheckbox:checked ~ .header__nav {
+    transform: translateX(0);
   }
 }
 
