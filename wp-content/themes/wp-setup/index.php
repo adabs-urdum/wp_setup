@@ -4,6 +4,7 @@
 
   <?php
     $pageID = get_the_ID();
+    echo do_shortcode('[ninja_form id=3]');
   ?>
 
   <?php if (have_posts()) : while (have_posts()) :?>

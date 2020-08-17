@@ -18,7 +18,7 @@
     "build:jsdev": "esbuild ./assets/js/main.js --outfile=./dist/js/functions.min.js --sourcemap '--define:process.env.NODE_ENV=\"development\"' --bundle --loader:.js=jsx --target=es2016",
     "watch:cssdev": "onchange 'assets/styles/**/*.scss' -- npm run build:cssdev",
     "watch:cssadmin": "onchange 'assets/styles/admin.scss' -- npm run build:cssadmin",
-    "watch:csseditor": "onchange 'assets/styles/editor.scss' -- npm run build:csseditor",
+    "watch:csseditor": "onchange 'assets/styles/**/*.scss' -- npm run build:csseditor",
     "watch:jsdev": "onchange 'assets/js/**/*.js' -- npm run build:jsdev",
     "serve": "browser-sync start --proxy https://wp_setup.test --files 'dist/**/*.css, dist/**/*.js' -w",
     "postinstall": "npm run build:setup",

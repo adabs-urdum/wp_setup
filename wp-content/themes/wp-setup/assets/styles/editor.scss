@@ -1,12 +1,18 @@
 @import "variables";
+@import "mixins";
+@import "functions";
 
-body {
-  font-family: sans-serif;
+@import "./general.scss";
+
+@import "./components/button.scss";
+
+html {
+  background: none;
 }
 
-.button {
-  padding: 10px !important;
-  background: $Black !important;
-  color: $Yellow !important;
-  margin: 0 !important;
+body#tinymce.mce-content-body {
+  font-family: $FontFamilyMain;
+
+  @include styles();
+  @include button();
 }

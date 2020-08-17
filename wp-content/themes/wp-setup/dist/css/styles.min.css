@@ -575,28 +575,6 @@ code {
   margin: 0.80808vw 0;
 }
 
-.button {
-  display: inline-block;
-  font-weight: 700;
-  background: #333333;
-  color: #ffb700;
-  padding: 0.90909vw 2.52525vw 0.90909vw;
-  text-transform: uppercase;
-  transition: background 0.3s ease-out;
-  text-decoration: none;
-  margin-right: 0.80808vw;
-  margin-bottom: 0.80808vw;
-}
-
-.button:hover {
-  background: #c68e00;
-  color: #ffb700;
-}
-
-.button:after {
-  content: none;
-}
-
 button {
   cursor: pointer;
   color: inherit;
@@ -736,25 +714,6 @@ canvas {
     padding: 14px 16px 16px;
     margin: 16px 0;
   }
-  .button {
-    display: inline-block;
-    font-weight: 700;
-    background: #333333;
-    color: #ffb700;
-    padding: 18px 50px 18px;
-    text-transform: uppercase;
-    transition: background 0.3s ease-out;
-    text-decoration: none;
-    margin-right: 16px;
-    margin-bottom: 16px;
-  }
-  .button:hover {
-    background: #c68e00;
-    color: #ffb700;
-  }
-  .button:after {
-    content: none;
-  }
   button {
     cursor: pointer;
     color: inherit;
@@ -891,25 +850,6 @@ canvas {
     border-radius: 0.13793vw;
     padding: 0.96552vw 1.10345vw 1.10345vw;
     margin: 1.10345vw 0;
-  }
-  .button {
-    display: inline-block;
-    font-weight: 700;
-    background: #333333;
-    color: #ffb700;
-    padding: 1.24138vw 3.44828vw 1.24138vw;
-    text-transform: uppercase;
-    transition: background 0.3s ease-out;
-    text-decoration: none;
-    margin-right: 1.10345vw;
-    margin-bottom: 1.10345vw;
-  }
-  .button:hover {
-    background: #c68e00;
-    color: #ffb700;
-  }
-  .button:after {
-    content: none;
   }
   button {
     cursor: pointer;
@@ -1048,25 +988,6 @@ canvas {
     padding: 1.36719vw 1.5625vw 1.5625vw;
     margin: 1.5625vw 0;
   }
-  .button {
-    display: inline-block;
-    font-weight: 700;
-    background: #333333;
-    color: #ffb700;
-    padding: 1.75781vw 4.88281vw 1.75781vw;
-    text-transform: uppercase;
-    transition: background 0.3s ease-out;
-    text-decoration: none;
-    margin-right: 1.5625vw;
-    margin-bottom: 1.5625vw;
-  }
-  .button:hover {
-    background: #c68e00;
-    color: #ffb700;
-  }
-  .button:after {
-    content: none;
-  }
   button {
     cursor: pointer;
     color: inherit;
@@ -1203,25 +1124,6 @@ canvas {
     border-radius: 0.26042vw;
     padding: 1.82292vw 2.08333vw 2.08333vw;
     margin: 2.08333vw 0;
-  }
-  .button {
-    display: inline-block;
-    font-weight: 700;
-    background: #333333;
-    color: #ffb700;
-    padding: 2.34375vw 6.51042vw 2.34375vw;
-    text-transform: uppercase;
-    transition: background 0.3s ease-out;
-    text-decoration: none;
-    margin-right: 2.08333vw;
-    margin-bottom: 2.08333vw;
-  }
-  .button:hover {
-    background: #c68e00;
-    color: #ffb700;
-  }
-  .button:after {
-    content: none;
   }
   button {
     cursor: pointer;
@@ -1360,25 +1262,6 @@ canvas {
     padding: 2.8vw 3.2vw 3.2vw;
     margin: 3.2vw 0;
   }
-  .button {
-    display: inline-block;
-    font-weight: 700;
-    background: #333333;
-    color: #ffb700;
-    padding: 3.6vw 10vw 3.6vw;
-    text-transform: uppercase;
-    transition: background 0.3s ease-out;
-    text-decoration: none;
-    margin-right: 3.2vw;
-    margin-bottom: 3.2vw;
-  }
-  .button:hover {
-    background: #c68e00;
-    color: #ffb700;
-  }
-  .button:after {
-    content: none;
-  }
   button {
     cursor: pointer;
     color: inherit;
@@ -1408,6 +1291,138 @@ canvas {
   }
   .desktop_only {
     display: none;
+  }
+}
+
+.button {
+  display: inline-block;
+  font-weight: 700;
+  background: #333333;
+  color: #ffb700;
+  padding: 0.90909vw 2.52525vw 0.90909vw;
+  text-transform: uppercase;
+  transition: background 0.3s ease-out;
+  text-decoration: none;
+  margin-right: 0.80808vw;
+  margin-bottom: 0.80808vw;
+}
+
+.button:hover {
+  background: #c68e00;
+  color: #ffb700;
+}
+
+.button:after {
+  content: none;
+}
+
+@media (min-width: 1980px) {
+  .button {
+    display: inline-block;
+    font-weight: 700;
+    background: #333333;
+    color: #ffb700;
+    padding: 18px 50px 18px;
+    text-transform: uppercase;
+    transition: background 0.3s ease-out;
+    text-decoration: none;
+    margin-right: 16px;
+    margin-bottom: 16px;
+  }
+  .button:hover {
+    background: #c68e00;
+    color: #ffb700;
+  }
+  .button:after {
+    content: none;
+  }
+}
+
+@media (max-width: 1450px) {
+  .button {
+    display: inline-block;
+    font-weight: 700;
+    background: #333333;
+    color: #ffb700;
+    padding: 1.24138vw 3.44828vw 1.24138vw;
+    text-transform: uppercase;
+    transition: background 0.3s ease-out;
+    text-decoration: none;
+    margin-right: 1.10345vw;
+    margin-bottom: 1.10345vw;
+  }
+  .button:hover {
+    background: #c68e00;
+    color: #ffb700;
+  }
+  .button:after {
+    content: none;
+  }
+}
+
+@media (max-width: 1024px) {
+  .button {
+    display: inline-block;
+    font-weight: 700;
+    background: #333333;
+    color: #ffb700;
+    padding: 1.75781vw 4.88281vw 1.75781vw;
+    text-transform: uppercase;
+    transition: background 0.3s ease-out;
+    text-decoration: none;
+    margin-right: 1.5625vw;
+    margin-bottom: 1.5625vw;
+  }
+  .button:hover {
+    background: #c68e00;
+    color: #ffb700;
+  }
+  .button:after {
+    content: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .button {
+    display: inline-block;
+    font-weight: 700;
+    background: #333333;
+    color: #ffb700;
+    padding: 2.34375vw 6.51042vw 2.34375vw;
+    text-transform: uppercase;
+    transition: background 0.3s ease-out;
+    text-decoration: none;
+    margin-right: 2.08333vw;
+    margin-bottom: 2.08333vw;
+  }
+  .button:hover {
+    background: #c68e00;
+    color: #ffb700;
+  }
+  .button:after {
+    content: none;
+  }
+}
+
+@media (max-width: 500px) {
+  .button {
+    display: inline-block;
+    font-weight: 700;
+    background: #333333;
+    color: #ffb700;
+    padding: 3.6vw 10vw 3.6vw;
+    text-transform: uppercase;
+    transition: background 0.3s ease-out;
+    text-decoration: none;
+    margin-right: 3.2vw;
+    margin-bottom: 3.2vw;
+  }
+  .button:hover {
+    background: #c68e00;
+    color: #ffb700;
+  }
+  .button:after {
+    content: none;
   }
 }
 
