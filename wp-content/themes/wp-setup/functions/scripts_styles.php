@@ -12,11 +12,13 @@ function my_theme_scripts() {
   wp_dequeue_script('jquery');
   wp_dequeue_script('jquery-core');
   wp_dequeue_script('jquery-migrate');
-  wp_enqueue_script('jquery', false, array(), null, true);
-  wp_enqueue_script('jquery-core', false, array(), null, true);
-  wp_enqueue_script('jquery-migrate', false, array(), null, true);
-  wp_enqueue_script('functions', get_template_directory_uri() . '/dist/js/functions.min.js', array( 'jquery' ), '1', true);
+  // wp_enqueue_script('jquery', false, array(), null, true);
+  // wp_enqueue_script('jquery-core', false, array(), null, true);
+  // wp_enqueue_script('jquery-migrate', false, array(), null, true);
+  // wp_enqueue_script('functions', get_template_directory_uri() . '/dist/js/functions.min.js', array( 'jquery' ), '1', true);
+  wp_enqueue_script('functions', get_template_directory_uri() . '/dist/js/functions.min.js', null, '1', true);
   wp_localize_script('functions', 'ajaxObject', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ),));
+  wp_deregister_script( 'wp-embed' );
 }
 add_action( 'wp_enqueue_scripts', 'my_theme_scripts' );
 //----------------------------------------------------------
@@ -72,5 +74,38 @@ function login_style() {
 }
 add_action( 'login_enqueue_scripts', 'login_style' );
 //----------------------------------------------------------
+
+// remove dns-prefetch
+//----------------------------------------------------------
+remove_action( 'wp_head', 'wp_resource_hints', 2 );
+//----------------------------------------------------------
+
+
+// remove wp blocks stylesheets
+//----------------------------------------------------------
+function smartwp_remove_wp_block_library_css(){
+ wp_dequeue_style( 'wp-block-library' );
+ wp_dequeue_style( 'wp-block-library-theme' );
+ wp_dequeue_style( 'wc-block-style' );
+}
+add_action( 'wp_enqueue_scripts', 'smartwp_remove_wp_block_library_css', 100 );
+//----------------------------------------------------------
+
+
+// Disable REST API link tag
+//----------------------------------------------------------
+remove_action('wp_head', 'rest_output_link_wp_head', 10);
+//----------------------------------------------------------
+
+// Disable oEmbed Discovery Links
+//----------------------------------------------------------
+remove_action('wp_head', 'wp_oembed_add_discovery_links', 10);
+//----------------------------------------------------------
+
+// Disable REST API link in HTTP headers
+//----------------------------------------------------------
+remove_action('template_redirect', 'rest_output_link_header', 11, 0);
+//----------------------------------------------------------
+
 
 ?>

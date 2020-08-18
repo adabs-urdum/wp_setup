@@ -1,6 +1,7 @@
 "use strict";
 
 import "babel-polyfill";
+import GACE from "./components/googleAnalyticsCustomEvents";
 
 Array.prototype.shuffle = function () {
   return this.sort(function () {
@@ -17,6 +18,11 @@ Array.prototype.uniqueValues = function () {
 };
 
 document.addEventListener("DOMContentLoaded", function () {
+  // set GA-ID
+  // const gace = new GACE({
+  //   id: "UA-164327129-1",
+  // });
+
   class TestClass {
     constructor() {
       this.bindEvents();
