@@ -6,7 +6,9 @@
 @import "./blocks/image.scss";
 @import "./blocks/imageTextCombo.scss";
 
-@import "./components/button.scss";
+.wp-core-ui .wp-block {
+  @import "./components/button.scss";
+}
 
 .editor-styles-wrapper {
   .blocksAdminHelper {
@@ -15,7 +17,8 @@
     left: 50%;
     transform: translate(-50%, -55%);
     font-size: clamp(5rem, $BS * 120, 10rem);
-    text-shadow: 4 * $BS 4 * $BS $White;
+    text-shadow: 2 * $BS 2 * $BS $White, -2 * $BS -2 * $BS $White,
+      2 * $BS -2 * $BS $White, -2 * $BS 2 * $BS $White;
     margin: 0;
   }
 }

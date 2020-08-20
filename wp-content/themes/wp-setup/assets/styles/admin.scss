@@ -19,12 +19,10 @@ button[aria-label="Ausrichtung ändern"] {
   display: none !important;
 }
 
-.wp-block {
-  max-width: 80vw;
-}
-
+.wp-block,
 .block-editor-block-list__block {
-  margin: 0;
+  max-width: 80vw;
+  margin: 0 auto;
 }
 
 .edit-post-visual-editor.editor-styles-wrapper {

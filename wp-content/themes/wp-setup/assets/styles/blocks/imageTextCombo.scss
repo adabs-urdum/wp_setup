@@ -29,6 +29,7 @@
 
     &__image {
       width: 100%;
+      display: block;
 
       @supports (object-fit: cover) {
         object-fit: cover;

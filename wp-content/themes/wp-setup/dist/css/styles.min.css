@@ -2455,35 +2455,41 @@ button.swiper-pagination-bullet {
 
 .image__image {
   width: 100%;
+  display: block;
 }
 
 @media (min-width: 1980px) {
   .image__image {
     width: 100%;
+    display: block;
   }
 }
 
 @media (max-width: 1450px) {
   .image__image {
     width: 100%;
+    display: block;
   }
 }
 
 @media (max-width: 1024px) {
   .image__image {
     width: 100%;
+    display: block;
   }
 }
 
 @media (max-width: 768px) {
   .image__image {
     width: 100%;
+    display: block;
   }
 }
 
 @media (max-width: 500px) {
   .image__image {
     width: 100%;
+    display: block;
   }
 }
 
@@ -2512,6 +2518,7 @@ button.swiper-pagination-bullet {
 
 .imageTextCombo__image {
   width: 100%;
+  display: block;
 }
 
 @supports (object-fit: cover) {
@@ -2542,6 +2549,7 @@ button.swiper-pagination-bullet {
   }
   .imageTextCombo__image {
     width: 100%;
+    display: block;
   }
   @supports (object-fit: cover) {
     .imageTextCombo__image {
@@ -2572,6 +2580,7 @@ button.swiper-pagination-bullet {
   }
   .imageTextCombo__image {
     width: 100%;
+    display: block;
   }
   @supports (object-fit: cover) {
     .imageTextCombo__image {
@@ -2602,6 +2611,7 @@ button.swiper-pagination-bullet {
   }
   .imageTextCombo__image {
     width: 100%;
+    display: block;
   }
   @supports (object-fit: cover) {
     .imageTextCombo__image {
@@ -2632,6 +2642,7 @@ button.swiper-pagination-bullet {
   }
   .imageTextCombo__image {
     width: 100%;
+    display: block;
   }
   @supports (object-fit: cover) {
     .imageTextCombo__image {
@@ -2662,6 +2673,7 @@ button.swiper-pagination-bullet {
   }
   .imageTextCombo__image {
     width: 100%;
+    display: block;
   }
   @supports (object-fit: cover) {
     .imageTextCombo__image {
@@ -2671,7 +2683,7 @@ button.swiper-pagination-bullet {
   }
 }
 
-.button {
+.wp-core-ui .wp-block .button {
   display: inline-block;
   font-weight: 700;
   background: #333333;
@@ -2684,17 +2696,17 @@ button.swiper-pagination-bullet {
   margin-bottom: 0.80808vw;
 }
 
-.button:hover {
+.wp-core-ui .wp-block .button:hover {
   background: #c68e00;
   color: #ffb700;
 }
 
-.button:after {
+.wp-core-ui .wp-block .button:after {
   content: none;
 }
 
 @media (min-width: 1980px) {
-  .button {
+  .wp-core-ui .wp-block .button {
     display: inline-block;
     font-weight: 700;
     background: #333333;
@@ -2706,17 +2718,17 @@ button.swiper-pagination-bullet {
     margin-right: 16px;
     margin-bottom: 16px;
   }
-  .button:hover {
+  .wp-core-ui .wp-block .button:hover {
     background: #c68e00;
     color: #ffb700;
   }
-  .button:after {
+  .wp-core-ui .wp-block .button:after {
     content: none;
   }
 }
 
 @media (max-width: 1450px) {
-  .button {
+  .wp-core-ui .wp-block .button {
     display: inline-block;
     font-weight: 700;
     background: #333333;
@@ -2728,17 +2740,17 @@ button.swiper-pagination-bullet {
     margin-right: 1.10345vw;
     margin-bottom: 1.10345vw;
   }
-  .button:hover {
+  .wp-core-ui .wp-block .button:hover {
     background: #c68e00;
     color: #ffb700;
   }
-  .button:after {
+  .wp-core-ui .wp-block .button:after {
     content: none;
   }
 }
 
 @media (max-width: 1024px) {
-  .button {
+  .wp-core-ui .wp-block .button {
     display: inline-block;
     font-weight: 700;
     background: #333333;
@@ -2750,17 +2762,17 @@ button.swiper-pagination-bullet {
     margin-right: 1.5625vw;
     margin-bottom: 1.5625vw;
   }
-  .button:hover {
+  .wp-core-ui .wp-block .button:hover {
     background: #c68e00;
     color: #ffb700;
   }
-  .button:after {
+  .wp-core-ui .wp-block .button:after {
     content: none;
   }
 }
 
 @media (max-width: 768px) {
-  .button {
+  .wp-core-ui .wp-block .button {
     display: inline-block;
     font-weight: 700;
     background: #333333;
@@ -2772,17 +2784,17 @@ button.swiper-pagination-bullet {
     margin-right: 2.08333vw;
     margin-bottom: 2.08333vw;
   }
-  .button:hover {
+  .wp-core-ui .wp-block .button:hover {
     background: #c68e00;
     color: #ffb700;
   }
-  .button:after {
+  .wp-core-ui .wp-block .button:after {
     content: none;
   }
 }
 
 @media (max-width: 500px) {
-  .button {
+  .wp-core-ui .wp-block .button {
     display: inline-block;
     font-weight: 700;
     background: #333333;
@@ -2794,11 +2806,11 @@ button.swiper-pagination-bullet {
     margin-right: 3.2vw;
     margin-bottom: 3.2vw;
   }
-  .button:hover {
+  .wp-core-ui .wp-block .button:hover {
     background: #c68e00;
     color: #ffb700;
   }
-  .button:after {
+  .wp-core-ui .wp-block .button:after {
     content: none;
   }
 }
@@ -2809,7 +2821,7 @@ button.swiper-pagination-bullet {
   left: 50%;
   transform: translate(-50%, -55%);
   font-size: clamp(5rem, 6.06061vw, 10rem);
-  text-shadow: 0.20202vw 0.20202vw #eeeeee;
+  text-shadow: 0.10101vw 0.10101vw #eeeeee, -0.10101vw -0.10101vw #eeeeee, 0.10101vw -0.10101vw #eeeeee, -0.10101vw 0.10101vw #eeeeee;
   margin: 0;
 }
 
