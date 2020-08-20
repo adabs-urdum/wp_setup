@@ -1,5 +1,10 @@
 <?php
 
+// Remove Blocks Patterns Tab
+//----------------------------------------------------------
+remove_theme_support( 'core-block-patterns' );
+//----------------------------------------------------------
+
 // Remove dashboard widgets
 //----------------------------------------------------------
 remove_action('welcome_panel', 'wp_welcome_panel');

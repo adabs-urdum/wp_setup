@@ -44,6 +44,6 @@ include_once( get_stylesheet_directory() . '/functions/options.php' );
 include_once( get_stylesheet_directory() . '/functions/login.php' );
 include_once( get_stylesheet_directory() . '/functions/wp_mail.php' );
 include_once( get_stylesheet_directory() . '/functions/ninja_forms.php' );
-// include_once( get_stylesheet_directory() . '/functions/blocks.php' );
+include_once( get_stylesheet_directory() . '/functions/blocks.php' );
 
 ?>

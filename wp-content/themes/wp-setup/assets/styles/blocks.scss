@@ -1,0 +1,25 @@
+@import "variables";
+@import "mixins";
+@import "functions";
+
+@import "./blocks/text.scss";
+@import "./blocks/image.scss";
+@import "./blocks/imageTextCombo.scss";
+
+@import "./components/button.scss";
+
+.editor-styles-wrapper {
+  .blocksAdminHelper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -55%);
+    font-size: clamp(5rem, $BS * 120, 10rem);
+    text-shadow: 4 * $BS 4 * $BS $White;
+    margin: 0;
+  }
+}
+
+.block-editor-block-contextual-toolbar-wrapper {
+  margin-left: 0;
+}

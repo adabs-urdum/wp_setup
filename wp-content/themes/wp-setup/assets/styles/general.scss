@@ -4,6 +4,10 @@
   // get Basesize in correct relation to design width
   $BS: getBaseSize($type);
 
+  * {
+    box-sizing: border-box;
+  }
+
   html {
     font-family: $FontFamilyMain;
     font-weight: 300;
@@ -120,9 +124,11 @@
       border-bottom: $BS $Black solid;
     }
 
-    &:hover {}
+    &:hover {
+    }
 
-    &:active {}
+    &:active {
+    }
   }
 
   code {

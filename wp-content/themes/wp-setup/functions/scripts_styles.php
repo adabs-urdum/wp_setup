@@ -30,6 +30,23 @@ function override_acf_styles() {
 add_action( 'admin_enqueue_scripts', 'override_acf_styles', 100 );
 //----------------------------------------------------------
 
+
+// Enqueue block editor CSS
+//----------------------------------------------------------
+function add_block_editor_assets() {
+  $blockPath = '/dist/css/blocks.min.css';
+
+  wp_enqueue_style(
+      'add_block_editor_assets',
+      get_template_directory_uri() . $blockPath,
+      [  ],
+      filemtime( get_template_directory() . $blockPath )
+  );
+
+}
+add_action( 'enqueue_block_editor_assets', 'add_block_editor_assets' );
+//----------------------------------------------------------
+
 // Styles-dropdown for TinyMCE-editor
 //----------------------------------------------------------
 function my_mce_buttons_2( $buttons ) {
