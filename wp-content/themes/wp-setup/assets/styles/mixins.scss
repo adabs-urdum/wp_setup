@@ -1,11 +1,13 @@
 @mixin bsFontSize($BS, $value) {
-  font-size: calc(
-    1rem * #{$RemSizeFactor} + #{$BS} * #{$value} - #{$BaseRemSize} * 1px
-  );
+  font-size: calc(1rem * #{$RemSizeFactor} + #{$BS} * #{$value} - #{$BaseRemSize} * 1px);
+
+  @supports(font-size: max(1rem, 1rem)) {
+    font-size: m#{a}x(1rem, calc(1rem * #{$RemSizeFactor} + #{$BS} * #{$value} - #{$BaseRemSize} * 1px));
+  }
 }
 
 @mixin breakpoint($type) {
-  @if $type== "Max" {
+  @if $type=="Max" {
     @include breakPointMAX() {
       @content;
     }

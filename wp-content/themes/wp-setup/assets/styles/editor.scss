@@ -15,4 +15,6 @@ body#tinymce.mce-content-body {
 
   @include styles();
   @include button();
+
+  max-width: none;
 }

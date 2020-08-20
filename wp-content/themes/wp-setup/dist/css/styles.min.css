@@ -450,10 +450,16 @@ html {
 }
 
 body {
-  font-size: calc( 1rem * 1.375 + 0.05051vw * 22 - 22 * 1px);
+  font-size: calc(1rem * 1.375 + 0.05051vw * 22 - 22 * 1px);
   line-height: 190%;
   max-width: 1980px;
   margin: 0 auto;
+}
+
+@supports (font-size: 1rem) {
+  body {
+    font-size: max(1rem, calc(1rem * 1.375 + 0.05051vw * 22 - 22 * 1px));
+  }
 }
 
 h1,
@@ -485,24 +491,55 @@ h6:last-of-type {
 }
 
 h1 {
-  font-size: calc( 1rem * 1.375 + 0.05051vw * 62 - 22 * 1px);
+  font-size: calc(1rem * 1.375 + 0.05051vw * 62 - 22 * 1px);
+}
+
+@supports (font-size: 1rem) {
+  h1 {
+    font-size: max(1rem, calc(1rem * 1.375 + 0.05051vw * 62 - 22 * 1px));
+  }
 }
 
 h2 {
-  font-size: calc( 1rem * 1.375 + 0.05051vw * 44 - 22 * 1px);
+  font-size: calc(1rem * 1.375 + 0.05051vw * 44 - 22 * 1px);
+}
+
+@supports (font-size: 1rem) {
+  h2 {
+    font-size: max(1rem, calc(1rem * 1.375 + 0.05051vw * 44 - 22 * 1px));
+  }
 }
 
 h3 {
-  font-size: calc( 1rem * 1.375 + 0.05051vw * 36 - 22 * 1px);
+  font-size: calc(1rem * 1.375 + 0.05051vw * 36 - 22 * 1px);
+}
+
+@supports (font-size: 1rem) {
+  h3 {
+    font-size: max(1rem, calc(1rem * 1.375 + 0.05051vw * 36 - 22 * 1px));
+  }
 }
 
 h4 {
-  font-size: calc( 1rem * 1.375 + 0.05051vw * 26 - 22 * 1px);
+  font-size: calc(1rem * 1.375 + 0.05051vw * 26 - 22 * 1px);
+}
+
+@supports (font-size: 1rem) {
+  h4 {
+    font-size: max(1rem, calc(1rem * 1.375 + 0.05051vw * 26 - 22 * 1px));
+  }
 }
 
 h5,
 h6 {
-  font-size: calc( 1rem * 1.375 + 0.05051vw * 20 - 22 * 1px);
+  font-size: calc(1rem * 1.375 + 0.05051vw * 20 - 22 * 1px);
+}
+
+@supports (font-size: 1rem) {
+  h5,
+  h6 {
+    font-size: max(1rem, calc(1rem * 1.375 + 0.05051vw * 20 - 22 * 1px));
+  }
 }
 
 input,
@@ -610,10 +647,15 @@ canvas {
     scroll-behavior: smooth;
   }
   body {
-    font-size: calc( 1rem * 1.375 + 1px * 22 - 22 * 1px);
+    font-size: calc(1rem * 1.375 + 1px * 22 - 22 * 1px);
     line-height: 190%;
     max-width: 1980px;
     margin: 0 auto;
+  }
+  @supports (font-size: 1rem) {
+    body {
+      font-size: max(1rem, calc(1rem * 1.375 + 1px * 22 - 22 * 1px));
+    }
   }
   h1,
   h2,
@@ -641,20 +683,46 @@ canvas {
     margin-bottom: 0;
   }
   h1 {
-    font-size: calc( 1rem * 1.375 + 1px * 62 - 22 * 1px);
+    font-size: calc(1rem * 1.375 + 1px * 62 - 22 * 1px);
+  }
+  @supports (font-size: 1rem) {
+    h1 {
+      font-size: max(1rem, calc(1rem * 1.375 + 1px * 62 - 22 * 1px));
+    }
   }
   h2 {
-    font-size: calc( 1rem * 1.375 + 1px * 44 - 22 * 1px);
+    font-size: calc(1rem * 1.375 + 1px * 44 - 22 * 1px);
+  }
+  @supports (font-size: 1rem) {
+    h2 {
+      font-size: max(1rem, calc(1rem * 1.375 + 1px * 44 - 22 * 1px));
+    }
   }
   h3 {
-    font-size: calc( 1rem * 1.375 + 1px * 36 - 22 * 1px);
+    font-size: calc(1rem * 1.375 + 1px * 36 - 22 * 1px);
+  }
+  @supports (font-size: 1rem) {
+    h3 {
+      font-size: max(1rem, calc(1rem * 1.375 + 1px * 36 - 22 * 1px));
+    }
   }
   h4 {
-    font-size: calc( 1rem * 1.375 + 1px * 26 - 22 * 1px);
+    font-size: calc(1rem * 1.375 + 1px * 26 - 22 * 1px);
+  }
+  @supports (font-size: 1rem) {
+    h4 {
+      font-size: max(1rem, calc(1rem * 1.375 + 1px * 26 - 22 * 1px));
+    }
   }
   h5,
   h6 {
-    font-size: calc( 1rem * 1.375 + 1px * 20 - 22 * 1px);
+    font-size: calc(1rem * 1.375 + 1px * 20 - 22 * 1px);
+  }
+  @supports (font-size: 1rem) {
+    h5,
+    h6 {
+      font-size: max(1rem, calc(1rem * 1.375 + 1px * 20 - 22 * 1px));
+    }
   }
   input,
   button {
@@ -747,10 +815,15 @@ canvas {
     scroll-behavior: smooth;
   }
   body {
-    font-size: calc( 1rem * 1.375 + 0.06897vw * 22 - 22 * 1px);
+    font-size: calc(1rem * 1.375 + 0.06897vw * 22 - 22 * 1px);
     line-height: 190%;
     max-width: 1980px;
     margin: 0 auto;
+  }
+  @supports (font-size: 1rem) {
+    body {
+      font-size: max(1rem, calc(1rem * 1.375 + 0.06897vw * 22 - 22 * 1px));
+    }
   }
   h1,
   h2,
@@ -778,20 +851,46 @@ canvas {
     margin-bottom: 0;
   }
   h1 {
-    font-size: calc( 1rem * 1.375 + 0.06897vw * 62 - 22 * 1px);
+    font-size: calc(1rem * 1.375 + 0.06897vw * 62 - 22 * 1px);
+  }
+  @supports (font-size: 1rem) {
+    h1 {
+      font-size: max(1rem, calc(1rem * 1.375 + 0.06897vw * 62 - 22 * 1px));
+    }
   }
   h2 {
-    font-size: calc( 1rem * 1.375 + 0.06897vw * 44 - 22 * 1px);
+    font-size: calc(1rem * 1.375 + 0.06897vw * 44 - 22 * 1px);
+  }
+  @supports (font-size: 1rem) {
+    h2 {
+      font-size: max(1rem, calc(1rem * 1.375 + 0.06897vw * 44 - 22 * 1px));
+    }
   }
   h3 {
-    font-size: calc( 1rem * 1.375 + 0.06897vw * 36 - 22 * 1px);
+    font-size: calc(1rem * 1.375 + 0.06897vw * 36 - 22 * 1px);
+  }
+  @supports (font-size: 1rem) {
+    h3 {
+      font-size: max(1rem, calc(1rem * 1.375 + 0.06897vw * 36 - 22 * 1px));
+    }
   }
   h4 {
-    font-size: calc( 1rem * 1.375 + 0.06897vw * 26 - 22 * 1px);
+    font-size: calc(1rem * 1.375 + 0.06897vw * 26 - 22 * 1px);
+  }
+  @supports (font-size: 1rem) {
+    h4 {
+      font-size: max(1rem, calc(1rem * 1.375 + 0.06897vw * 26 - 22 * 1px));
+    }
   }
   h5,
   h6 {
-    font-size: calc( 1rem * 1.375 + 0.06897vw * 20 - 22 * 1px);
+    font-size: calc(1rem * 1.375 + 0.06897vw * 20 - 22 * 1px);
+  }
+  @supports (font-size: 1rem) {
+    h5,
+    h6 {
+      font-size: max(1rem, calc(1rem * 1.375 + 0.06897vw * 20 - 22 * 1px));
+    }
   }
   input,
   button {
@@ -884,10 +983,15 @@ canvas {
     scroll-behavior: smooth;
   }
   body {
-    font-size: calc( 1rem * 1.375 + 0.09766vw * 22 - 22 * 1px);
+    font-size: calc(1rem * 1.375 + 0.09766vw * 22 - 22 * 1px);
     line-height: 190%;
     max-width: 1980px;
     margin: 0 auto;
+  }
+  @supports (font-size: 1rem) {
+    body {
+      font-size: max(1rem, calc(1rem * 1.375 + 0.09766vw * 22 - 22 * 1px));
+    }
   }
   h1,
   h2,
@@ -915,20 +1019,46 @@ canvas {
     margin-bottom: 0;
   }
   h1 {
-    font-size: calc( 1rem * 1.375 + 0.09766vw * 62 - 22 * 1px);
+    font-size: calc(1rem * 1.375 + 0.09766vw * 62 - 22 * 1px);
+  }
+  @supports (font-size: 1rem) {
+    h1 {
+      font-size: max(1rem, calc(1rem * 1.375 + 0.09766vw * 62 - 22 * 1px));
+    }
   }
   h2 {
-    font-size: calc( 1rem * 1.375 + 0.09766vw * 44 - 22 * 1px);
+    font-size: calc(1rem * 1.375 + 0.09766vw * 44 - 22 * 1px);
+  }
+  @supports (font-size: 1rem) {
+    h2 {
+      font-size: max(1rem, calc(1rem * 1.375 + 0.09766vw * 44 - 22 * 1px));
+    }
   }
   h3 {
-    font-size: calc( 1rem * 1.375 + 0.09766vw * 36 - 22 * 1px);
+    font-size: calc(1rem * 1.375 + 0.09766vw * 36 - 22 * 1px);
+  }
+  @supports (font-size: 1rem) {
+    h3 {
+      font-size: max(1rem, calc(1rem * 1.375 + 0.09766vw * 36 - 22 * 1px));
+    }
   }
   h4 {
-    font-size: calc( 1rem * 1.375 + 0.09766vw * 26 - 22 * 1px);
+    font-size: calc(1rem * 1.375 + 0.09766vw * 26 - 22 * 1px);
+  }
+  @supports (font-size: 1rem) {
+    h4 {
+      font-size: max(1rem, calc(1rem * 1.375 + 0.09766vw * 26 - 22 * 1px));
+    }
   }
   h5,
   h6 {
-    font-size: calc( 1rem * 1.375 + 0.09766vw * 20 - 22 * 1px);
+    font-size: calc(1rem * 1.375 + 0.09766vw * 20 - 22 * 1px);
+  }
+  @supports (font-size: 1rem) {
+    h5,
+    h6 {
+      font-size: max(1rem, calc(1rem * 1.375 + 0.09766vw * 20 - 22 * 1px));
+    }
   }
   input,
   button {
@@ -1021,10 +1151,15 @@ canvas {
     scroll-behavior: smooth;
   }
   body {
-    font-size: calc( 1rem * 1.375 + 0.13021vw * 22 - 22 * 1px);
+    font-size: calc(1rem * 1.375 + 0.13021vw * 22 - 22 * 1px);
     line-height: 190%;
     max-width: 1980px;
     margin: 0 auto;
+  }
+  @supports (font-size: 1rem) {
+    body {
+      font-size: max(1rem, calc(1rem * 1.375 + 0.13021vw * 22 - 22 * 1px));
+    }
   }
   h1,
   h2,
@@ -1052,20 +1187,46 @@ canvas {
     margin-bottom: 0;
   }
   h1 {
-    font-size: calc( 1rem * 1.375 + 0.13021vw * 62 - 22 * 1px);
+    font-size: calc(1rem * 1.375 + 0.13021vw * 62 - 22 * 1px);
+  }
+  @supports (font-size: 1rem) {
+    h1 {
+      font-size: max(1rem, calc(1rem * 1.375 + 0.13021vw * 62 - 22 * 1px));
+    }
   }
   h2 {
-    font-size: calc( 1rem * 1.375 + 0.13021vw * 44 - 22 * 1px);
+    font-size: calc(1rem * 1.375 + 0.13021vw * 44 - 22 * 1px);
+  }
+  @supports (font-size: 1rem) {
+    h2 {
+      font-size: max(1rem, calc(1rem * 1.375 + 0.13021vw * 44 - 22 * 1px));
+    }
   }
   h3 {
-    font-size: calc( 1rem * 1.375 + 0.13021vw * 36 - 22 * 1px);
+    font-size: calc(1rem * 1.375 + 0.13021vw * 36 - 22 * 1px);
+  }
+  @supports (font-size: 1rem) {
+    h3 {
+      font-size: max(1rem, calc(1rem * 1.375 + 0.13021vw * 36 - 22 * 1px));
+    }
   }
   h4 {
-    font-size: calc( 1rem * 1.375 + 0.13021vw * 26 - 22 * 1px);
+    font-size: calc(1rem * 1.375 + 0.13021vw * 26 - 22 * 1px);
+  }
+  @supports (font-size: 1rem) {
+    h4 {
+      font-size: max(1rem, calc(1rem * 1.375 + 0.13021vw * 26 - 22 * 1px));
+    }
   }
   h5,
   h6 {
-    font-size: calc( 1rem * 1.375 + 0.13021vw * 20 - 22 * 1px);
+    font-size: calc(1rem * 1.375 + 0.13021vw * 20 - 22 * 1px);
+  }
+  @supports (font-size: 1rem) {
+    h5,
+    h6 {
+      font-size: max(1rem, calc(1rem * 1.375 + 0.13021vw * 20 - 22 * 1px));
+    }
   }
   input,
   button {
@@ -1158,10 +1319,15 @@ canvas {
     scroll-behavior: smooth;
   }
   body {
-    font-size: calc( 1rem * 1.375 + 0.2vw * 22 - 22 * 1px);
+    font-size: calc(1rem * 1.375 + 0.2vw * 22 - 22 * 1px);
     line-height: 190%;
     max-width: 1980px;
     margin: 0 auto;
+  }
+  @supports (font-size: 1rem) {
+    body {
+      font-size: max(1rem, calc(1rem * 1.375 + 0.2vw * 22 - 22 * 1px));
+    }
   }
   h1,
   h2,
@@ -1189,20 +1355,46 @@ canvas {
     margin-bottom: 0;
   }
   h1 {
-    font-size: calc( 1rem * 1.375 + 0.2vw * 62 - 22 * 1px);
+    font-size: calc(1rem * 1.375 + 0.2vw * 62 - 22 * 1px);
+  }
+  @supports (font-size: 1rem) {
+    h1 {
+      font-size: max(1rem, calc(1rem * 1.375 + 0.2vw * 62 - 22 * 1px));
+    }
   }
   h2 {
-    font-size: calc( 1rem * 1.375 + 0.2vw * 44 - 22 * 1px);
+    font-size: calc(1rem * 1.375 + 0.2vw * 44 - 22 * 1px);
+  }
+  @supports (font-size: 1rem) {
+    h2 {
+      font-size: max(1rem, calc(1rem * 1.375 + 0.2vw * 44 - 22 * 1px));
+    }
   }
   h3 {
-    font-size: calc( 1rem * 1.375 + 0.2vw * 36 - 22 * 1px);
+    font-size: calc(1rem * 1.375 + 0.2vw * 36 - 22 * 1px);
+  }
+  @supports (font-size: 1rem) {
+    h3 {
+      font-size: max(1rem, calc(1rem * 1.375 + 0.2vw * 36 - 22 * 1px));
+    }
   }
   h4 {
-    font-size: calc( 1rem * 1.375 + 0.2vw * 26 - 22 * 1px);
+    font-size: calc(1rem * 1.375 + 0.2vw * 26 - 22 * 1px);
+  }
+  @supports (font-size: 1rem) {
+    h4 {
+      font-size: max(1rem, calc(1rem * 1.375 + 0.2vw * 26 - 22 * 1px));
+    }
   }
   h5,
   h6 {
-    font-size: calc( 1rem * 1.375 + 0.2vw * 20 - 22 * 1px);
+    font-size: calc(1rem * 1.375 + 0.2vw * 20 - 22 * 1px);
+  }
+  @supports (font-size: 1rem) {
+    h5,
+    h6 {
+      font-size: max(1rem, calc(1rem * 1.375 + 0.2vw * 20 - 22 * 1px));
+    }
   }
   input,
   button {
@@ -1428,7 +1620,13 @@ canvas {
 
 .header {
   margin: 0 auto 6.46465vw;
-  font-size: calc( 1rem * 1.375 + 0.05051vw * 22 - 22 * 1px);
+  font-size: calc(1rem * 1.375 + 0.05051vw * 22 - 22 * 1px);
+}
+
+@supports (font-size: 1rem) {
+  .header {
+    font-size: max(1rem, calc(1rem * 1.375 + 0.05051vw * 22 - 22 * 1px));
+  }
 }
 
 .header__content {
@@ -1448,7 +1646,12 @@ canvas {
 @media (min-width: 1980px) {
   .header {
     margin: 0 auto 128px;
-    font-size: calc( 1rem * 1.375 + 1px * 22 - 22 * 1px);
+    font-size: calc(1rem * 1.375 + 1px * 22 - 22 * 1px);
+  }
+  @supports (font-size: 1rem) {
+    .header {
+      font-size: max(1rem, calc(1rem * 1.375 + 1px * 22 - 22 * 1px));
+    }
   }
   .header__content {
     display: flex;
@@ -1466,7 +1669,12 @@ canvas {
 @media (max-width: 1450px) {
   .header {
     margin: 0 auto 8.82759vw;
-    font-size: calc( 1rem * 1.375 + 0.06897vw * 22 - 22 * 1px);
+    font-size: calc(1rem * 1.375 + 0.06897vw * 22 - 22 * 1px);
+  }
+  @supports (font-size: 1rem) {
+    .header {
+      font-size: max(1rem, calc(1rem * 1.375 + 0.06897vw * 22 - 22 * 1px));
+    }
   }
   .header__content {
     display: flex;
@@ -1484,7 +1692,12 @@ canvas {
 @media (max-width: 1024px) {
   .header {
     margin: 0 auto 12.5vw;
-    font-size: calc( 1rem * 1.375 + 0.09766vw * 22 - 22 * 1px);
+    font-size: calc(1rem * 1.375 + 0.09766vw * 22 - 22 * 1px);
+  }
+  @supports (font-size: 1rem) {
+    .header {
+      font-size: max(1rem, calc(1rem * 1.375 + 0.09766vw * 22 - 22 * 1px));
+    }
   }
   .header__content {
     display: flex;
@@ -1502,7 +1715,12 @@ canvas {
 @media (max-width: 768px) {
   .header {
     margin: 0 auto 16.66667vw;
-    font-size: calc( 1rem * 1.375 + 0.13021vw * 22 - 22 * 1px);
+    font-size: calc(1rem * 1.375 + 0.13021vw * 22 - 22 * 1px);
+  }
+  @supports (font-size: 1rem) {
+    .header {
+      font-size: max(1rem, calc(1rem * 1.375 + 0.13021vw * 22 - 22 * 1px));
+    }
   }
   .header__content {
     display: flex;
@@ -1520,7 +1738,12 @@ canvas {
 @media (max-width: 500px) {
   .header {
     margin: 0 auto 25.6vw;
-    font-size: calc( 1rem * 1.375 + 0.2vw * 22 - 22 * 1px);
+    font-size: calc(1rem * 1.375 + 0.2vw * 22 - 22 * 1px);
+  }
+  @supports (font-size: 1rem) {
+    .header {
+      font-size: max(1rem, calc(1rem * 1.375 + 0.2vw * 22 - 22 * 1px));
+    }
   }
   .header__content {
     display: flex;
