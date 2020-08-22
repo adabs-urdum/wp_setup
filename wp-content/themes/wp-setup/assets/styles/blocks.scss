@@ -5,24 +5,3 @@
 @import "./blocks/text.scss";
 @import "./blocks/image.scss";
 @import "./blocks/imageTextCombo.scss";
-
-.wp-core-ui .wp-block {
-  @import "./components/button.scss";
-}
-
-.editor-styles-wrapper {
-  .blocksAdminHelper {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -55%);
-    font-size: clamp(5rem, $BS * 120, 10rem);
-    text-shadow: 2 * $BS 2 * $BS $White, -2 * $BS -2 * $BS $White,
-      2 * $BS -2 * $BS $White, -2 * $BS 2 * $BS $White;
-    margin: 0;
-  }
-}
-
-.block-editor-block-contextual-toolbar-wrapper {
-  margin-left: 0;
-}

@@ -64,6 +64,18 @@ function my_acf_block_types() {
             'align'             => 'center',
             'keywords'          => [],
         ]);
+
+        acf_register_block_type([
+            'name'              => 'teasers',
+            'title'             => __('Teaser'),
+            'description'       => __('Teaser'),
+            'render_template'   => 'blocks/teasers.php',
+            'category'          => 'contentelements',
+            'icon'              => 'format-gallery',
+            'mode'              => 'preview',
+            'align'             => 'center',
+            'keywords'          => [],
+        ]);
     }
 }
 add_action('acf/init', 'my_acf_block_types');
@@ -74,6 +86,7 @@ function allowed_block_types( $allowed_block_types, $post ) {
         'acf/image',
         'acf/imgtxtcombo',
         'acf/gallery',
+        'acf/teasers',
     ];
 }
 add_filter( 'allowed_block_types', 'allowed_block_types', 10, 2 );
