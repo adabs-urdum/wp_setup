@@ -13,7 +13,7 @@
     font-weight: 300;
     // only set font-size here, if really needed
     // font-size: 16px;
-    line-height: 120%;
+    line-height: 143%;
     color: $Black;
     background-color: $Yellow;
     scroll-behavior: smooth;
@@ -21,7 +21,7 @@
 
   body {
     @include bsFontSize($BS, $BaseRemSize);
-    line-height: 190%;
+    line-height: 143%;
     max-width: $ScreendesignWidthMAX + 0px;
     margin: 0 auto;
   }
@@ -35,11 +35,11 @@
     line-height: 120%;
     font-weight: 700;
 
-    &:first-of-type {
+    &:first-child {
       margin-top: 0;
     }
 
-    &:last-of-type {
+    &:last-child {
       margin-bottom: 0;
     }
   }
@@ -124,11 +124,9 @@
       border-bottom: $BS $Black solid;
     }
 
-    &:hover {
-    }
+    &:hover {}
 
-    &:active {
-    }
+    &:active {}
   }
 
   code {
@@ -155,6 +153,10 @@
   img,
   canvas {
     display: block;
+  }
+
+  strong {
+    font-weight: 700;
   }
 
   .mobile_only {
