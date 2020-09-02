@@ -15,7 +15,7 @@
         $srcset = wp_get_attachment_image_srcset($img['ID']);
       ?>
       <div class="swiper-slide">
-        <img class="image__image" src="<?= $src ?>" title="<?= $imgTitle ?>" alt="<?= $alt ?>" srcset="<?= $srcset ?>">
+        <img class="image__image" loading="lazy" src="<?= $src ?>" title="<?= $imgTitle ?>" alt="<?= $alt ?>" srcset="<?= $srcset ?>">
       </div>
 
       <?php

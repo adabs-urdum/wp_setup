@@ -2,12 +2,12 @@
   $GeneralBaseSize: $BS;
   $BS: null;
 
-  @if $type== "Max" {
-    @return 1px;
+  @if $type=="Max" {
+    @return $MaxBS;
   }
 
   @elseif $type=='MAX' {
-    @return 1px;
+    @return $MaxBS;
   }
 
   @elseif $type=='L' {
@@ -24,7 +24,9 @@
 
   @elseif $type=='XS' {
     @return $XSBS;
-  } @else {
+  }
+
+  @else {
     @return $GeneralBaseSize;
   }
 }

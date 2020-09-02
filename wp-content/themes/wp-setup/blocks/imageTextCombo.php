@@ -16,7 +16,7 @@
       <div><?= $text ?></div>
     </div>
     <div class="imageTextCombo__half imageTextCombo__img">
-      <img class="imageTextCombo__image" src="<?= $src ?>" title="<?= $imgTitle ?>" alt="<?= $alt ?>" srcset="<?= $srcset ?>">
+      <img class="imageTextCombo__image" loading="lazy" src="<?= $src ?>" title="<?= $imgTitle ?>" alt="<?= $alt ?>" srcset="<?= $srcset ?>">
     </div>
   </div>
 </section>

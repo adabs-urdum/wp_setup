@@ -61,6 +61,14 @@ ga('create', 'UA-2092620-46', 'auto');
           ]);
         ?>
       </nav>
+      <ul class="header__langSwitch">
+        <?php
+          // pll_the_languages([
+          //   'display_names_as' => 'slug',
+          //   'hide_current' => false,
+          // ]);
+        ?>
+      </ul>
     </div>
   </div>
 
