@@ -5,7 +5,7 @@
 
 /**
  * Manages the compatibility with Yoast SEO
- * Version tested: 11.5
+ * Version tested: 15.9.2
  *
  * @since 2.3
  */
@@ -16,9 +16,9 @@ class PLL_WPSEO {
 	 * @since 1.6.4
 	 */
 	public function init() {
-		if ( PLL() instanceof PLL_Frontend ) {
-			add_filter( 'option_wpseo_titles', array( $this, 'wpseo_translate_titles' ) );
+		add_action( 'wp_loaded', array( $this, 'wpseo_translate_options' ) );
 
+		if ( PLL() instanceof PLL_Frontend ) {
 			// Filters sitemap queries to remove inactive language or to get
 			// one sitemap per language when using multiple domains or subdomains
 			// because WPSEO does not accept several domains or subdomains in one sitemap
@@ -44,84 +44,47 @@ class PLL_WPSEO {
 				add_filter( 'wpseo_frontend_presenters', array( $this, 'wpseo_frontend_presenters' ) );
 			}
 			add_filter( 'wpseo_canonical', array( $this, 'wpseo_canonical' ) );
+			add_filter( 'wpseo_frontend_presentation', array( $this, 'frontend_presentation' ) );
+			add_filter( 'wpseo_breadcrumb_indexables', array( $this, 'breadcrumb_indexables' ) );
 		} else {
-			add_action( 'admin_init', array( $this, 'wpseo_register_strings' ) );
-
-			// Primary category
-			add_filter( 'pll_copy_post_metas', array( $this, 'copy_post_metas' ) );
+			add_filter( 'pll_copy_post_metas', array( $this, 'copy_post_metas' ), 10, 2 );
 			add_filter( 'pll_translate_post_meta', array( $this, 'translate_post_meta' ), 10, 3 );
 		}
 	}
 
 	/**
-	 * Registers strings for custom post types and custom taxonomies titles and meta descriptions
+	 * Registers options for translation.
 	 *
-	 * @since 2.0
+	 * @since 2.9
 	 */
-	public function wpseo_register_strings() {
-		$options = get_option( 'wpseo_titles' );
-		foreach ( get_post_types( array( 'public' => true, '_builtin' => false ) ) as $t ) {
-			if ( pll_is_translated_post_type( $t ) ) {
-				$this->_wpseo_register_strings( $options, array( 'title-' . $t, 'metadesc-' . $t ) );
-			}
+	public function wpseo_translate_options() {
+		if ( method_exists( 'WPSEO_Options', 'clear_cache' ) ) {
+			WPSEO_Options::clear_cache();
 		}
-		foreach ( get_post_types( array( 'has_archive' => true, '_builtin' => false ) ) as $t ) {
-			if ( pll_is_translated_post_type( $t ) ) {
-				$this->_wpseo_register_strings( $options, array( 'title-ptarchive-' . $t, 'metadesc-ptarchive-' . $t, 'bctitle-ptarchive-' . $t ) );
-			}
-		}
-		foreach ( get_taxonomies( array( 'public' => true, '_builtin' => false ) ) as $t ) {
-			if ( pll_is_translated_taxonomy( $t ) ) {
-				$this->_wpseo_register_strings( $options, array( 'title-tax-' . $t, 'metadesc-tax-' . $t ) );
-			}
-		}
-	}
 
-	/**
-	 * Helper function to translate custom post types and custom taxonomies titles and meta descriptions
-	 *
-	 * @since 2.1.6
-	 *
-	 * @param array $options
-	 * @param array $titles
-	 * @return array
-	 */
-	protected function _wpseo_translate_titles( $options, $titles ) {
-		foreach ( $titles as $title ) {
-			if ( ! empty( $options[ $title ] ) ) {
-				$options[ $title ] = pll__( $options[ $title ] );
-			}
-		}
-		return $options;
-	}
+		$keys = array(
+			'title-*',
+			'metadesc-*',
+			'bctitle-*',
+			'breadcrumbs-sep',
+			'breadcrumbs-home',
+			'breadcrumbs-prefix',
+			'breadcrumbs-archiveprefix',
+			'breadcrumbs-searchprefix',
+			'breadcrumbs-404crumb',
+			'company_name',
+			'rssbefore',
+			'rssafter',
+		);
 
-	/**
-	 * Translates strings for custom post types and custom taxonomies titles and meta descriptions
-	 *
-	 * @since 2.0
-	 *
-	 * @param array $options
-	 * @return array
-	 */
-	public function wpseo_translate_titles( $options ) {
-		if ( PLL() instanceof PLL_Frontend ) {
-			foreach ( get_post_types( array( 'public' => true, '_builtin' => false ) ) as $t ) {
-				if ( pll_is_translated_post_type( $t ) ) {
-					$options = $this->_wpseo_translate_titles( $options, array( 'title-' . $t, 'metadesc-' . $t ) );
-				}
-			}
-			foreach ( get_post_types( array( 'has_archive' => true, '_builtin' => false ) ) as $t ) {
-				if ( pll_is_translated_post_type( $t ) ) {
-					$options = $this->_wpseo_translate_titles( $options, array( 'title-ptarchive-' . $t, 'metadesc-ptarchive-' . $t, 'bctitle-ptarchive-' . $t ) );
-				}
-			}
-			foreach ( get_taxonomies( array( 'public' => true, '_builtin' => false ) ) as $t ) {
-				if ( pll_is_translated_taxonomy( $t ) ) {
-					$options = $this->_wpseo_translate_titles( $options, array( 'title-tax-' . $t, 'metadesc-tax-' . $t ) );
-				}
-			}
-		}
-		return $options;
+		new PLL_Translate_Option( 'wpseo_titles', array_fill_keys( $keys, 1 ), array( 'context' => 'wordpress-seo' ) );
+
+		$keys = array(
+			'og_frontpage_title',
+			'og_frontpage_desc',
+		);
+
+		new PLL_Translate_Option( 'wpseo_social', array_fill_keys( $keys, 1 ), array( 'context' => 'wordpress-seo' ) );
 	}
 
 	/**
@@ -139,7 +102,7 @@ class PLL_WPSEO {
 			$path = ltrim( wp_parse_url( pll_get_requested_url(), PHP_URL_PATH ), '/' );
 		}
 
-		if ( 'sitemap_index.xml' === $path || preg_match( '#([^/]+?)-sitemap([0-9]+)?\.xml|([a-z]+)?-?sitemap\.xsl#', $path ) ) {
+		if ( preg_match( '#sitemap(_index)?\.xml|([^\/]+?)-?sitemap([0-9]+)?\.xml|([a-z]+)?-?sitemap\.xsl#', $path ) ) {
 			$url = PLL()->links_model->switch_language_in_link( $url, PLL()->curlang );
 		}
 
@@ -231,11 +194,11 @@ class PLL_WPSEO {
 	}
 
 	/**
-	 * Add filters before the sitemap is evaluated and outputed
+	 * Add filters before the sitemap is evaluated and outputed.
 	 *
 	 * @since 2.6
 	 *
-	 * @param object $query Instance of WP_Query being filtered.
+	 * @param WP_Query $query Instance of WP_Query being filtered.
 	 */
 	public function before_sitemap( $query ) {
 		$type = $query->get( 'sitemap' );
@@ -295,7 +258,7 @@ class PLL_WPSEO {
 			// Exclude cases where a post type archive is attached to a page (ex: WooCommerce).
 			$slug = ( true === $post_type_obj->has_archive ) ? $post_type_obj->rewrite['slug'] : $post_type_obj->has_archive;
 
-			if ( ! get_page_by_path( $slug ) ) {
+			if ( ! wpcom_vip_get_page_by_path( $slug ) ) {
 				// The post type archive in the current language is already added by WPSEO.
 				$languages = wp_list_filter( $languages, array( 'slug' => pll_current_language() ), 'NOT' );
 
@@ -393,32 +356,110 @@ class PLL_WPSEO {
 	}
 
 	/**
-	 * Helper function to register strings for custom post types and custom taxonomies titles and meta descriptions
+	 * Fixes the links and strings stored in the indexable table since Yoast SEO 14.0
 	 *
-	 * @since 2.1.6
+	 * @since 2.8.2
 	 *
-	 * @param array $options
-	 * @param array $titles
-	 * @return array
+	 * @param object $presentation The indexable presentation.
+	 * @return object
 	 */
-	protected function _wpseo_register_strings( $options, $titles ) {
-		foreach ( $titles as $title ) {
-			if ( ! empty( $options[ $title ] ) ) {
-				pll_register_string( $title, $options[ $title ], 'wordpress-seo' );
-			}
+	public function frontend_presentation( $presentation ) {
+		switch ( $presentation->model->object_type ) {
+			case 'home-page':
+				$presentation->model->permalink = pll_home_url();
+				$presentation->model->title = WPSEO_Options::get( 'title-home-wpseo' );
+				$presentation->model->description = WPSEO_Options::get( 'metadesc-home-wpseo' );
+				$presentation->model->open_graph_title = WPSEO_Options::get( 'og_frontpage_title' );
+				$presentation->model->open_graph_description = WPSEO_Options::get( 'og_frontpage_desc' );
+				break;
+
+			case 'post-type-archive':
+				if ( pll_is_translated_post_type( $presentation->model->object_sub_type ) ) {
+					$presentation->model->permalink = get_post_type_archive_link( $presentation->model->object_sub_type );
+					$presentation->model->title = WPSEO_Options::get( 'title-ptarchive-' . $presentation->model->object_sub_type );
+					$presentation->model->description = WPSEO_Options::get( 'metadesc-ptarchive-' . $presentation->model->object_sub_type );
+				}
+				break;
+
+			case 'user':
+				$presentation->model->permalink = get_author_posts_url( $presentation->model->object_id );
+				break;
+
+			case 'system-page':
+				switch ( $presentation->model->object_sub_type ) {
+					case '404':
+						$presentation->model->title = WPSEO_Options::get( 'title-404-wpseo' );
+						break;
+					case 'search-result':
+						$presentation->model->title = WPSEO_Options::get( 'title-search-wpseo' );
+						break;
+				}
+				break;
 		}
-		return $options;
+
+		return $presentation;
 	}
 
 	/**
-	 * Synchronize the primary term
+	 * Fixes the breadcrumb links and strings stored in the indexable table since Yoast SEO 14.0
+	 *
+	 * @since 2.8.3
+	 *
+	 * @param array $indexables An array of Indexable objects.
+	 * @return object
+	 */
+	public function breadcrumb_indexables( $indexables ) {
+		foreach ( $indexables as &$indexable ) {
+			switch ( $indexable->object_type ) {
+				case 'home-page':
+					$indexable->permalink = pll_home_url();
+					$indexable->breadcrumb_title = pll__( WPSEO_Options::get( 'breadcrumbs-home' ) );
+					break;
+
+				case 'post-type-archive':
+					if ( pll_is_translated_post_type( $indexable->object_sub_type ) ) {
+						$indexable->permalink = get_post_type_archive_link( $indexable->object_sub_type );
+						$breadcrumb_title = WPSEO_Options::get( 'bctitle-ptarchive-' . $indexable->object_sub_type );
+						$breadcrumb_title = $breadcrumb_title ? $breadcrumb_title : $indexable->breadcrumb_title; // The option may be empty.
+						$indexable->breadcrumb_title = pll__( $breadcrumb_title );
+					}
+					break;
+			}
+		}
+
+		return $indexables;
+	}
+
+	/**
+	 * Copies or synchronizes the metas.
 	 *
 	 * @since 2.3.3
 	 *
-	 * @param array $keys List of custom fields names.
+	 * @param string[] $keys List of custom fields names.
+	 * @param bool     $sync True if it is synchronization, false if it is a copy.
 	 * @return array
 	 */
-	public function copy_post_metas( $keys ) {
+	public function copy_post_metas( $keys, $sync ) {
+		if ( ! $sync ) {
+			// Text requiring translation.
+			$keys[] = '_yoast_wpseo_title';
+			$keys[] = '_yoast_wpseo_metadesc';
+			$keys[] = '_yoast_wpseo_bctitle';
+			$keys[] = '_yoast_wpseo_focuskw';
+			$keys[] = '_yoast_wpseo_opengraph-title';
+			$keys[] = '_yoast_wpseo_opengraph-description';
+			$keys[] = '_yoast_wpseo_twitter-title';
+			$keys[] = '_yoast_wpseo_twitter-description';
+
+			// Copy the image urls.
+			$keys[] = '_yoast_wpseo_opengraph-image';
+			$keys[] = '_yoast_wpseo_twitter-image';
+		}
+
+		$keys[] = '_yoast_wpseo_meta-robots-noindex';
+		$keys[] = '_yoast_wpseo_meta-robots-nofollow';
+		$keys[] = '_yoast_wpseo_meta-robots-adv';
+
 		$taxonomies = get_taxonomies(
 			array(
 				'hierarchical' => true,

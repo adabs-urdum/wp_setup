@@ -39,20 +39,23 @@ class WP_Debug_Data {
 		$upload_dir             = wp_upload_dir();
 		$permalink_structure    = get_option( 'permalink_structure' );
 		$is_ssl                 = is_ssl();
+		$is_multisite           = is_multisite();
 		$users_can_register     = get_option( 'users_can_register' );
 		$blog_public            = get_option( 'blog_public' );
 		$default_comment_status = get_option( 'default_comment_status' );
-		$is_multisite           = is_multisite();
+		$environment_type       = wp_get_environment_type();
 		$core_version           = get_bloginfo( 'version' );
 		$core_updates           = get_core_updates();
 		$core_update_needed     = '';
 
-		foreach ( $core_updates as $core => $update ) {
-			if ( 'upgrade' === $update->response ) {
-				/* translators: %s: Latest WordPress version number. */
-				$core_update_needed = ' ' . sprintf( __( '(Latest version: %s)' ), $update->version );
-			} else {
-				$core_update_needed = '';
+		if ( is_array( $core_updates ) ) {
+			foreach ( $core_updates as $core => $update ) {
+				if ( 'upgrade' === $update->response ) {
+					/* translators: %s: Latest WordPress version number. */
+					$core_update_needed = ' ' . sprintf( __( '(Latest version: %s)' ), $update->version );
+				} else {
+					$core_update_needed = '';
+				}
 			}
 		}
 
@@ -99,6 +102,11 @@ class WP_Debug_Data {
 					'value' => $is_ssl ? __( 'Yes' ) : __( 'No' ),
 					'debug' => $is_ssl,
 				),
+				'multisite'              => array(
+					'label' => __( 'Is this a multisite?' ),
+					'value' => $is_multisite ? __( 'Yes' ) : __( 'No' ),
+					'debug' => $is_multisite,
+				),
 				'user_registration'      => array(
 					'label' => __( 'Can anyone register on this site?' ),
 					'value' => $users_can_register ? __( 'Yes' ) : __( 'No' ),
@@ -114,10 +122,10 @@ class WP_Debug_Data {
 					'value' => 'open' === $default_comment_status ? _x( 'Open', 'comment status' ) : _x( 'Closed', 'comment status' ),
 					'debug' => $default_comment_status,
 				),
-				'multisite'              => array(
-					'label' => __( 'Is this a multisite?' ),
-					'value' => $is_multisite ? __( 'Yes' ) : __( 'No' ),
-					'debug' => $is_multisite,
+				'environment_type'       => array(
+					'label' => __( 'Environment type' ),
+					'value' => $environment_type,
+					'debug' => $environment_type,
 				),
 			),
 		);
@@ -261,6 +269,10 @@ class WP_Debug_Data {
 				'WP_PLUGIN_DIR'       => array(
 					'label' => 'WP_PLUGIN_DIR',
 					'value' => WP_PLUGIN_DIR,
+				),
+				'WP_MEMORY_LIMIT'     => array(
+					'label' => 'WP_MEMORY_LIMIT',
+					'value' => WP_MEMORY_LIMIT,
 				),
 				'WP_MAX_MEMORY_LIMIT' => array(
 					'label' => 'WP_MAX_MEMORY_LIMIT',
@@ -503,20 +515,27 @@ class WP_Debug_Data {
 		// Get ImageMagic information, if available.
 		if ( class_exists( 'Imagick' ) ) {
 			// Save the Imagick instance for later use.
-			$imagick         = new Imagick();
-			$imagick_version = $imagick->getVersion();
+			$imagick             = new Imagick();
+			$imagemagick_version = $imagick->getVersion();
 		} else {
-			$imagick_version = __( 'Not available' );
+			$imagemagick_version = __( 'Not available' );
 		}
 
 		$info['wp-media']['fields']['imagick_module_version'] = array(
 			'label' => __( 'ImageMagick version number' ),
-			'value' => ( is_array( $imagick_version ) ? $imagick_version['versionNumber'] : $imagick_version ),
+			'value' => ( is_array( $imagemagick_version ) ? $imagemagick_version['versionNumber'] : $imagemagick_version ),
 		);
 
 		$info['wp-media']['fields']['imagemagick_version'] = array(
 			'label' => __( 'ImageMagick version string' ),
-			'value' => ( is_array( $imagick_version ) ? $imagick_version['versionString'] : $imagick_version ),
+			'value' => ( is_array( $imagemagick_version ) ? $imagemagick_version['versionString'] : $imagemagick_version ),
+		);
+
+		$imagick_version = phpversion( 'imagick' );
+
+		$info['wp-media']['fields']['imagick_version'] = array(
+			'label' => __( 'Imagick version' ),
+			'value' => ( $imagick_version ) ? $imagick_version : __( 'Not available' ),
 		);
 
 		if ( ! function_exists( 'ini_get' ) ) {
@@ -531,10 +550,10 @@ class WP_Debug_Data {
 			);
 		} else {
 			// Get the PHP ini directive values.
-			$post_max_size    = ini_get( 'post_max_size' );
-			$upload_max_size  = ini_get( 'upload_max_filesize' );
-			$max_file_uploads = ini_get( 'max_file_uploads' );
-			$effective        = min( wp_convert_hr_to_bytes( $post_max_size ), wp_convert_hr_to_bytes( $upload_max_size ) );
+			$post_max_size       = ini_get( 'post_max_size' );
+			$upload_max_filesize = ini_get( 'upload_max_filesize' );
+			$max_file_uploads    = ini_get( 'max_file_uploads' );
+			$effective           = min( wp_convert_hr_to_bytes( $post_max_size ), wp_convert_hr_to_bytes( $upload_max_filesize ) );
 
 			// Add info in Media section.
 			$info['wp-media']['fields']['file_uploads']        = array(
@@ -548,7 +567,7 @@ class WP_Debug_Data {
 			);
 			$info['wp-media']['fields']['upload_max_filesize'] = array(
 				'label' => __( 'Max size of an uploaded file' ),
-				'value' => $upload_max_size,
+				'value' => $upload_max_filesize,
 			);
 			$info['wp-media']['fields']['max_effective_size']  = array(
 				'label' => __( 'Max effective file size' ),
@@ -585,6 +604,18 @@ class WP_Debug_Data {
 				'value' => $limits,
 				'debug' => $limits_debug,
 			);
+
+			try {
+				$formats = Imagick::queryFormats( '*' );
+			} catch ( Exception $e ) {
+				$formats = array();
+			}
+
+			$info['wp-media']['fields']['imagemagick_file_formats'] = array(
+				'label' => __( 'ImageMagick supported file formats' ),
+				'value' => ( empty( $formats ) ) ? __( 'Unable to determine' ) : implode( ', ', $formats ),
+				'debug' => ( empty( $formats ) ) ? 'Unable to determine' : implode( ', ', $formats ),
+			);
 		}
 
 		// Get GD information, if available.
@@ -599,6 +630,33 @@ class WP_Debug_Data {
 			'value' => ( is_array( $gd ) ? $gd['GD Version'] : $not_available ),
 			'debug' => ( is_array( $gd ) ? $gd['GD Version'] : 'not available' ),
 		);
+
+		$gd_image_formats     = array();
+		$gd_supported_formats = array(
+			'GIF Create' => 'GIF',
+			'JPEG'       => 'JPEG',
+			'PNG'        => 'PNG',
+			'WebP'       => 'WebP',
+			'BMP'        => 'BMP',
+			'AVIF'       => 'AVIF',
+			'HEIF'       => 'HEIF',
+			'TIFF'       => 'TIFF',
+			'XPM'        => 'XPM',
+		);
+
+		foreach ( $gd_supported_formats as $format_key => $format ) {
+			$index = $format_key . ' Support';
+			if ( isset( $gd[ $index ] ) && $gd[ $index ] ) {
+				array_push( $gd_image_formats, $format );
+			}
+		}
+
+		if ( ! empty( $gd_image_formats ) ) {
+			$info['wp-media']['fields']['gd_formats'] = array(
+				'label' => __( 'GD supported file formats' ),
+				'value' => implode( ', ', $gd_image_formats ),
+			);
+		}
 
 		// Get Ghostscript information, if available.
 		if ( function_exists( 'exec' ) ) {
@@ -711,15 +769,15 @@ class WP_Debug_Data {
 				);
 			}
 
-			$info['wp-server']['fields']['max_input_time']    = array(
+			$info['wp-server']['fields']['max_input_time']      = array(
 				'label' => __( 'Max input time' ),
 				'value' => ini_get( 'max_input_time' ),
 			);
-			$info['wp-server']['fields']['upload_max_size']   = array(
+			$info['wp-server']['fields']['upload_max_filesize'] = array(
 				'label' => __( 'Upload max filesize' ),
 				'value' => ini_get( 'upload_max_filesize' ),
 			);
-			$info['wp-server']['fields']['php_post_max_size'] = array(
+			$info['wp-server']['fields']['php_post_max_size']   = array(
 				'label' => __( 'PHP post max size' ),
 				'value' => ini_get( 'post_max_size' ),
 			);
@@ -968,12 +1026,10 @@ class WP_Debug_Data {
 						'requires_php'  => '',
 						'compatibility' => new stdClass(),
 					);
-					$item = array_merge( $item, array_intersect_key( $plugin, $item ) );
+					$item = wp_parse_args( $plugin, $item );
 				}
 
-				$type = 'plugin';
-				/** This filter is documented in wp-admin/includes/class-wp-automatic-updater.php */
-				$auto_update_forced = apply_filters( "auto_update_{$type}", null, (object) $item );
+				$auto_update_forced = wp_is_auto_update_forced_for_item( 'plugin', null, (object) $item );
 
 				if ( ! is_null( $auto_update_forced ) ) {
 					$enabled = $auto_update_forced;
@@ -1115,9 +1171,7 @@ class WP_Debug_Data {
 				);
 			}
 
-			$type = 'theme';
-			/** This filter is documented in wp-admin/includes/class-wp-automatic-updater.php */
-			$auto_update_forced = apply_filters( "auto_update_{$type}", null, (object) $item );
+			$auto_update_forced = wp_is_auto_update_forced_for_item( 'theme', null, (object) $item );
 
 			if ( ! is_null( $auto_update_forced ) ) {
 				$enabled = $auto_update_forced;
@@ -1203,9 +1257,7 @@ class WP_Debug_Data {
 					);
 				}
 
-				$type = 'theme';
-				/** This filter is documented in wp-admin/includes/class-wp-automatic-updater.php */
-				$auto_update_forced = apply_filters( "auto_update_{$type}", null, (object) $item );
+				$auto_update_forced = wp_is_auto_update_forced_for_item( 'theme', null, (object) $item );
 
 				if ( ! is_null( $auto_update_forced ) ) {
 					$enabled = $auto_update_forced;
@@ -1293,9 +1345,7 @@ class WP_Debug_Data {
 					);
 				}
 
-				$type = 'theme';
-				/** This filter is documented in wp-admin/includes/class-wp-automatic-updater.php */
-				$auto_update_forced = apply_filters( "auto_update_{$type}", null, (object) $item );
+				$auto_update_forced = wp_is_auto_update_forced_for_item( 'theme', null, (object) $item );
 
 				if ( ! is_null( $auto_update_forced ) ) {
 					$enabled = $auto_update_forced;
@@ -1321,7 +1371,7 @@ class WP_Debug_Data {
 				$auto_updates_string = apply_filters( 'theme_auto_update_debug_string', $auto_updates_string, $theme, $enabled );
 
 				$theme_version_string       .= ' | ' . $auto_updates_string;
-				$theme_version_string_debug .= ',' . $auto_updates_string;
+				$theme_version_string_debug .= ', ' . $auto_updates_string;
 			}
 
 			$info['wp-themes-inactive']['fields'][ sanitize_text_field( $theme->name ) ] = array(

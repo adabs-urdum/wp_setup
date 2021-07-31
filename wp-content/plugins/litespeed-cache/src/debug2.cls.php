@@ -1,14 +1,6 @@
 <?php
 /**
  * The plugin logging class.
- *
- * This generate the valid action.
- *
- * @since      	1.1.0
- * @since  		1.5 Moved into /inc
- * @package    	LiteSpeed
- * @subpackage 	LiteSpeed/inc
- * @author     	LiteSpeed Technologies <info@litespeedtech.com>
  */
 namespace LiteSpeed;
 
@@ -24,7 +16,6 @@ class Debug2 extends Instance {
 
 	const BETA_TEST_URL = 'beta_test_url';
 
-	const BETA_TEST_URL_GITHUB = 'https://github.com/litespeedtech/lscache_wp/archive/master.zip';
 	const BETA_TEST_URL_WP = 'https://downloads.wordpress.org/plugin/litespeed-cache.zip';
 
 	/**
@@ -37,7 +28,7 @@ class Debug2 extends Instance {
 	 */
 	protected function __construct() {
 		self::$log_path = LSCWP_CONTENT_DIR . '/debug.log';
-		if ( ! empty( $_SERVER[ 'HTTP_USER_AGENT' ] ) && strpos( $_SERVER[ 'HTTP_USER_AGENT' ], Crawler::FAST_USER_AGENT ) === 0 ) {
+		if ( ! empty( $_SERVER[ 'HTTP_USER_AGENT' ] ) && strpos( $_SERVER[ 'HTTP_USER_AGENT' ], 'lscache_' ) === 0 ) {
 			self::$log_path = LSCWP_CONTENT_DIR . '/crawler.log';
 		}
 
@@ -67,15 +58,8 @@ class Debug2 extends Instance {
 					$zip = Debug2::BETA_TEST_URL_WP;
 				}
 				else {
-					if ( $zip === 'dev' || $zip === Debug2::BETA_TEST_URL_GITHUB ) {
-						$commit = 'dev';
-					}
-					else {
-						$commit = substr( $zip, strpos( $zip, '/commit/' ) + 8 );
-					}
-
 					// Generate zip url
-					$zip = $this->_package_zip( $commit );
+					$zip = $this->_package_zip( $zip );
 				}
 			}
 		}

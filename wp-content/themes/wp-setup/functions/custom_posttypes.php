@@ -54,42 +54,60 @@ add_action( 'init', 'register_custom_post_type_key_visuals', 0 );
 
 // Register custom taxonomy
 //----------------------------------------------------------
-// function crunchify_create_deals_custom_taxonomy() {
+function registerEmployeeCategory() {
 
-//   $labels = array(
-//     'name' => _x( 'Genres', 'taxonomy general name' ),
-//     'singular_name' => _x( 'Genre', 'taxonomy singular name' ),
-//     'search_items' =>  __( 'Genres durchsuchen' ),
-//     'all_items' => __( 'Alle Genres' ),
-//     'parent_item' => __( 'Übergeordnetes Genre' ),
-//     'parent_item_colon' => __( 'Parent Genre:' ),
-//     'edit_item' => __( 'Genre bearbeiten' ),
-//     'update_item' => __( 'Genre aktualisieren' ),
-//     'add_new_item' => __( 'Genre hinzufügen' ),
-//     'new_item_name' => __( 'Neuer Genrename' ),
-//     'menu_name' => __( 'Genres' ),
-//   );
+  $labels = [
+    'name' => _x( 'Bereiche', 'taxonomy general name' ),
+    'singular_name' => _x( 'Bereich', 'taxonomy singular name' ),
+    'search_items' =>  __( 'Bereiche durchsuchen' ),
+    'all_items' => __( 'Alle Bereiche' ),
+    'parent_item' => __( 'Übergeordneter Bereich' ),
+    'parent_item_colon' => __( 'Parent Bereich:' ),
+    'edit_item' => __( 'Bereich bearbeiten' ),
+    'update_item' => __( 'Bereich aktualisieren' ),
+    'add_new_item' => __( 'Bereich hinzufügen' ),
+    'new_item_name' => __( 'Neuer Bereich' ),
+    'menu_name' => __( 'Bereiche' ),
+  ];
 
-//   register_taxonomy('Genre',array('tipp'), array(
-//     'hierarchical' => true,
-//     'labels' => $labels,
-//     'show_ui' => true,
-//     'show_admin_column' => true,
-//     'query_var' => true,
-//     'rewrite' => array( 'slug' => 'genre' ),
-//   ));
+  register_taxonomy('Bereiche',['service'], [
+    'hierarchical' => true,
+    'labels' => $labels,
+    'show_ui' => true,
+    'show_admin_column' => true,
+    'query_var' => true,
+    'rewrite' => ['slug' => 'genre'],
+  ]);
 
-// }
+}
+add_action( 'init', 'registerEmployeeCategory', 0 );
 //----------------------------------------------------------
 
 // Adding ACF Field Event Date to WP admin column
 //----------------------------------------------------------
 // function add_acf_columns ( $columns ) {
 //   return array_merge ( $columns, array (
-//     'datetime' => __('Datum und Uhrzeit')
+//     'from' => __('Datum von'),
+//     'to' => __('bis'),
 //   ) );
 // }
 // add_filter ( 'manage_event_posts_columns', 'add_acf_columns' );
+// /*
+//  * Add columns to event post list
+//  */
+//  function event_custom_column ( $column, $post_id ) {
+//    switch ( $column ) {
+//      case 'from':
+//        echo date('d.m.Y H:i', strtotime(get_post_meta( $post_id, 'from', true )));
+//        break;
+//      case 'to':
+//         if(get_post_meta( $post_id, 'to', true )){
+//           echo date('d.m.Y H:i', strtotime(get_post_meta( $post_id, 'to', true )));
+//         }
+//        break;
+//    }
+//  }
+//  add_action ( 'manage_event_posts_custom_column', 'event_custom_column', 10, 2 );
 //----------------------------------------------------------
 
 

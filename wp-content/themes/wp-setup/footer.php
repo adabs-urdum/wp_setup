@@ -3,7 +3,7 @@
 ?>
 
 <footer class="footer">
-  <div class="footer__content_wrapper">
+  <div class="footer__wrapper">
     <address class="footer__address">
       <?= $address ?>
     </address>

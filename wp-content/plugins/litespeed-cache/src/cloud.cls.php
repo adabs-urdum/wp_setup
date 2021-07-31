@@ -435,6 +435,10 @@ class Cloud extends Base {
 	 * @access private
 	 */
 	private function _maybe_cloud( $service_tag ) {
+		if ( ! wp_http_validate_url( home_url() ) ) {
+			return false;
+		}
+
 		// we don't want the `img_optm-taken` to fail at any given time
 		if ( $service_tag == self::IMGOPTM_TAKEN ) {
 			return true;
@@ -644,7 +648,7 @@ class Cloud extends Base {
 			Admin_Display::error( $msg );
 
 			// Site not on QC, delete invalid domain key
-			if ( $json_msg == 'site_not_registered' ) {
+			if ( $json_msg == 'site_not_registered' || $json_msg == 'err_key' ) {
 				Conf::get_instance()->update_confs( array( Base::O_API_KEY => '' ) );
 
 				$msg = __( 'Site not recognized. Domain Key has been automatically removed. Please request a new one.', 'litespeed-cache' );
@@ -682,9 +686,9 @@ class Cloud extends Base {
 	 * @access public
 	 */
 	public function show_promo() {
-		if ( ! $this->_api_key ) {
-			Admin_Display::error( Error::msg( 'lack_of_api_key' ), true );
-		}
+		// if ( ! $this->_api_key && ! defined( 'LITESPEED_DISMISS_DOMAIN_KEY' ) ) {
+		// 	Admin_Display::error( Error::msg( 'lack_of_api_key' ), true );
+		// }
 
 		if ( empty( $this->_summary[ 'promo' ] ) ) {
 			return;
@@ -978,7 +982,7 @@ class Cloud extends Base {
 		if ( is_wp_error( $response ) ) {
 			$error_message = $response->get_error_message();
 			Debug2::debug( '[CLoud] failed to get ip whitelist: ' . $error_message );
-			throw new \Exception( 'Failed to fetch QUIC.cloud whitelist' );
+			throw new \Exception( 'Failed to fetch QUIC.cloud whitelist ' . $error_message );
 		}
 
 		$json = json_decode( $response[ 'body' ], true );

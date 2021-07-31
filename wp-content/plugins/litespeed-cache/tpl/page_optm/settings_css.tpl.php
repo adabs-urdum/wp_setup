@@ -2,6 +2,9 @@
 namespace LiteSpeed;
 defined( 'WPINC' ) || exit;
 
+// CSS::get_instance()->test_url( '' );
+// exit;
+
 $css_summary = CSS::get_summary();
 $closest_server = Cloud::get_summary( 'server.' . Cloud::SVC_CCSS );
 
@@ -22,7 +25,7 @@ $closest_server = Cloud::get_summary( 'server.' . Cloud::SVC_CCSS );
 		<td>
 			<?php $this->build_switch( $id ); ?>
 			<div class="litespeed-desc">
-				<?php echo __( 'Minify CSS files.', 'litespeed-cache' ); ?>
+				<?php echo __( 'Minify CSS files and inline CSS code.', 'litespeed-cache' ); ?>
 			</div>
 		</td>
 	</tr>
@@ -35,7 +38,7 @@ $closest_server = Cloud::get_summary( 'server.' . Cloud::SVC_CCSS );
 		<td>
 			<?php $this->build_switch( $id ); ?>
 			<div class="litespeed-desc">
-				<?php echo __( 'Combine CSS files.', 'litespeed-cache' ); ?>
+				<?php echo __( 'Combine CSS files and inline CSS code.', 'litespeed-cache' ); ?>
 				<a href="https://docs.litespeedtech.com/lscache/lscwp/ts-optimize/" target="_blank"><?php echo __( 'How to Fix Problems Caused by CSS/JS Optimization.', 'litespeed-cache' ); ?></a>
 			</div>
 		</td>
@@ -43,19 +46,13 @@ $closest_server = Cloud::get_summary( 'server.' . Cloud::SVC_CCSS );
 
 	<tr>
 		<th>
-			<?php $id = Base::O_OPTM_CSS_UNIQUE; ?>
+			<?php $id = Base::O_OPTM_CSS_COMB_EXT_INL; ?>
 			<?php $this->title( $id ); ?>
 		</th>
 		<td>
 			<?php $this->build_switch( $id ); ?>
 			<div class="litespeed-desc">
-				<?php echo sprintf( __( 'When having %1$s %2$s, enabling this will get one combined CSS file for each URI, regardless of the setting %3$s.', 'litespeed-cache' ),
-						'<code>' . Lang::title( Base::O_OPTM_CSS_COMB ) . '</code>',
-						'<code>' . __( 'ON', 'litespeed-cache' ) . '</code>',
-						'<code>' . Lang::title( Base::O_OPTM_MAX_SIZE ) . '</code>' ); ?>
-			</div>
-			<div class="litespeed-desc">
-				<?php echo __( 'This is useful when you want to refine/lint your CSS and further drop the unused CSS per page.', 'litespeed-cache' ); ?>
+				<?php echo sprintf( __( 'Include external CSS and inline CSS in combined file when %1$s is also enabled. This option helps maintain the priorities of CSS, which should minimize potential errors caused by CSS Combine.', 'litespeed-cache' ), '<code>' . Lang::title( Base::O_OPTM_CSS_COMB ) . '</code>' ); ?>
 			</div>
 		</td>
 	</tr>
@@ -63,12 +60,13 @@ $closest_server = Cloud::get_summary( 'server.' . Cloud::SVC_CCSS );
 	<tr class="litespeed-hide">
 		<th class="litespeed-padding-left">
 			<?php $id = Base::O_OPTM_UCSS; ?>
-			<?php $this->title( $id ); ?> (Experiential Only)
+			<?php $this->title( $id ); ?>
 		</th>
 		<td>
 			<?php $this->build_switch( $id ); ?>
 			<div class="litespeed-desc">
 				<?php echo __( 'Use QUIC.cloud online service to generate unique CSS.', 'litespeed-cache' ); ?>
+				<?php echo __( 'This will drop the unused CSS on each page.', 'litespeed-cache' ); ?>
 			</div>
 		</td>
 	</tr>
@@ -201,7 +199,10 @@ $closest_server = Cloud::get_summary( 'server.' . Cloud::SVC_CCSS );
 
 				<?php if ( ! empty( $css_summary[ 'queue' ] ) ) : ?>
 					<div class="litespeed-callout notice notice-warning inline">
-						<h4><?php echo __( 'URL list in queue waiting for cron','litespeed-cache' ); ?></h4>
+						<h4>
+							<?php echo __( 'URL list in queue waiting for cron','litespeed-cache' ); ?>
+							<a href="<?php echo Utility::build_url( Router::ACTION_CSS, CSS::TYPE_CLEAR_Q ); ?>" class="button litespeed-btn-warning litespeed-right">Clear</a>
+						</h4>
 						<p>
 						<?php foreach ( $css_summary[ 'queue' ] as $k => $v ) : ?>
 							<?php if ( ! is_array( $v ) ) continue; ?>

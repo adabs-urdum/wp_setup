@@ -57,8 +57,27 @@ class Doc {
 	 * @since  3.0
 	 * @access public
 	 */
-	public static function one_per_line() {
-		echo __( 'One per line.', 'litespeed-cache' );
+	public static function one_per_line( $return = false ) {
+		$str = __( 'One per line.', 'litespeed-cache' );
+		if ( $return ) {
+			return $str;
+		}
+		echo $str;
+	}
+
+	/**
+	 * One per line
+	 *
+	 * @since  3.4
+	 * @access public
+	 */
+	public static function full_or_partial_url( $string_only = false ) {
+		if ( $string_only ) {
+			echo __( 'Both full and partial strings can be used.', 'litespeed-cache' );
+		}
+		else {
+			echo __( 'Both full URLs and partial strings can be used.', 'litespeed-cache' );
+		}
 	}
 
 	/**

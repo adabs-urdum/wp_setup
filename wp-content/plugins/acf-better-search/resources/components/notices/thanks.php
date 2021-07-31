@@ -19,14 +19,14 @@
         class="acfbsContent__button acfbsButton acfbsButton--green">
         <?= __('Add review', 'acf-better-search'); ?>
       </a>
-      <a href="https://ko-fi.com/gbiorczyk/" target="_blank"
+      <a href="https://ko-fi.com/gbiorczyk/?utm_source=acf-better-search&utm_medium=notice-thanks" target="_blank"
         class="acfbsContent__button acfbsButton acfbsButton--green dashicons-heart">
         <?= __('Provide us a coffee', 'acf-better-search'); ?>
       </a>
-      <a href="#" target="_blank" data-permanently
+      <button type="button" data-permanently
         class="acfbsContent__button acfbsButton acfbsButton--blue">
         <?= __('I added review, do not show again', 'acf-better-search'); ?>
-      </a>
+      </button>
     </div>
   </div>
 </div>

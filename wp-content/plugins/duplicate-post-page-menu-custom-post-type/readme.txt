@@ -1,10 +1,10 @@
 === Duplicate Post Page Menu & Custom Post Type ===
 Contributors: Inqsys
-Tags: clone, duplicate, duplicate post, duplicate page, duplicate menu, duplicate custom post type
+Tags: copy, clone, duplicate page, copy menu, duplicate custom-post
 Donate link: http://www.inqsys.com/donate/
 Requires at least: 3.5
-Tested up to: 5.5
-Stable tag: 1.5.1
+Tested up to: 5.7.1
+Stable tag: 1.7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -78,6 +78,14 @@ If you find this useful, <a href='https://www.inqsys.com/donate/' target='_new'>
 </ol>
 
 == Changelog ==
+<ul><li>1.7.0</li><ul>
+<li>Optimized: jQuery code for WP jquery migration.</li>
+<li>Optimized: PHP code optimize for PHP version 8.0.</li>
+</ul></ul>
+<ul><li>1.6.0</li><ul>
+<li>Improved: Fixed JS conflicts with some old themes.</li>
+<li>Optimized: Ready for WordPress 5.7 (Future version) final jQuery migration.</li>
+</ul></ul>
 <ul><li>1.5.1</li><ul>
 <li>Optimize: JS code for WordPress Version 5.5.</li>
 </ul></ul>

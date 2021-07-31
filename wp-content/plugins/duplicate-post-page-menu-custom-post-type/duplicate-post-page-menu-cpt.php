@@ -8,7 +8,7 @@
 
 *	Author: Inqsys Technology
 
-*	Version: 1.5.1
+*	Version: 1.7.0
 
 *	Text Domain: duplicate-ppmc
 
@@ -57,8 +57,8 @@ if ( ! class_exists( 'Duplicate_PPMC_Init' ) ) {
 			/* Handle all cloning process */
 
 			add_action('init', function(){ 
-				if( get_option('dppmc_installationDate') === false ){
-					update_option("dppmc_installationDate",date('Y-m-d h:i:s') );
+				if( get_option('dppmc_installationNewDate') === false ){
+					update_option("dppmc_installationNewDate",date('Y-m-d h:i:s') );
 				}
 			} );
 
@@ -76,7 +76,7 @@ if ( ! class_exists( 'Duplicate_PPMC_Init' ) ) {
 			
 			add_action( 'admin_notices', array( $this, 'duplicate_ppmc_admin_notice'),100 );
 
-			//add_action( 'admin_notices', array( $this, 'duplicate_ppmc_discount_notice'),100 );
+			add_action( 'admin_notices', array( $this, 'duplicate_ppmc_discount_notice'),100 );
 
 			/*	Extra button on plugin page	*/
 			add_filter( 'plugin_action_links_duplicate-post-page-menu-custom-post-type/duplicate-post-page-menu-cpt.php', array( $this, 'ppmc_plugin_row_meta') );
@@ -102,11 +102,11 @@ if ( ! class_exists( 'Duplicate_PPMC_Init' ) ) {
 		}
 		
 		function ppmc_remove_rating(){
-			update_option('ppmc_support_us_now','true');	
+			update_option('ppmc_support_us_now_x','true');	
 		}
 
 		function ppmc_remove_discount_notice(){
-			set_transient( 'ppmc_remove_discount_notice_valentine', true, DAY_IN_SECONDS * 7 );
+			set_transient( 'ppmc_remove_discount_notice_xmas', true, DAY_IN_SECONDS * 30 );
 		}
 
 		function duplicate_ppmc_admin_notice(){
@@ -115,9 +115,9 @@ if ( ! class_exists( 'Duplicate_PPMC_Init' ) ) {
 				update_option("ppmc_next_period_ratings", date('Y-m-d h:i:s', strtotime('+6 months') ) );
 			}
 			
-			$support = get_option('ppmc_support_us_now');
+			$support = get_option('ppmc_support_us_now_x');
 			$recurring_ask = get_option( 'ppmc_next_period_ratings' );
-			$install_date = get_option('dppmc_installationDate');
+			$install_date = get_option('dppmc_installationNewDate');
 			$display_date = date( 'Y-m-d h:i:s' );
             $install_date= new DateTime( $install_date );
 			$current_date = new DateTime( $display_date );
@@ -129,7 +129,7 @@ if ( ! class_exists( 'Duplicate_PPMC_Init' ) ) {
 			$diff_days= $difference->days;
 
 			if( $ask_days >= 0 && $ask_invert == 1){
-				update_option( 'ppmc_support_us_now', "false" );
+				update_option( 'ppmc_support_us_now_x', "false" );
 				update_option( 'ppmc_next_period_ratings', date("Y-m-d h:i:s", strtotime("+6 months")) );
 			}
 
@@ -169,10 +169,10 @@ if ( ! class_exists( 'Duplicate_PPMC_Init' ) ) {
 
 		function duplicate_ppmc_discount_notice(){
 
-			$should_display = get_transient( 'ppmc_remove_discount_notice_valentine' );
+			$should_display = get_transient( 'ppmc_remove_discount_notice_xmas' );
 			$display_date = date( 'd M Y' );
-			$dateFrom = strtotime("7 February 2020");
-			$dateTo =  strtotime("14 February 2020");
+			$dateFrom = strtotime("15 December 2020");
+			$dateTo =  strtotime("1 January 2021");
 
 			$compare = $dateTo > strtotime($display_date);
 			if( false != $should_display || strtotime($display_date) > $dateTo || strtotime($display_date) < $dateFrom ){
@@ -182,12 +182,12 @@ if ( ! class_exists( 'Duplicate_PPMC_Init' ) ) {
 				$html = "<div class='notice notice-info important' style='padding: 10px;position:relative;line-height:30px;'>";
 				$html .= "<button id='ppmc-dismiss-sale' type='button' style='top:0;right:0;position:absolute;background:#72777c;border: 0;color: white;font-size:16px;border-radius:50px;cursor:pointer'>X</button>";
 				$html .= "<a href='https://www.inqsys.com/duplicate-post-page-menu-custom-post-type-pro-wordpress-plugin/' target='_new'>";
-				$html .= "<img src='".PPMC_URL."/assets/pro-discount.png' style='padding-right:10px;width:100%;height:auto'></a>";
+				$html .= "<img src='".PPMC_URL."/assets/pro-discount.jpeg' style='padding-right:10px;width:100%;height:200px'></a>";
 				$html .= "<div>
-				Hurry!! We are offering <strong>50% off</strong> on our premium plugins. The offer is valid until midnight of 14th of Feb, 2020.
-				To use this offer, use coupon code- “<strong>valentineweek50off</strong>”. 
-				<a href='https://www.inqsys.com/duplicate-post-page-menu-custom-post-type-pro-wordpress-plugin/' target='_new'>Get your deals now!</a>
-
+				Hurry!! We are offering <strong>25% off</strong> on our premium plugins. The offer is valid until midnight of ".date('d F Y', $dateTo).".
+				To use this offer, use coupon code- “<strong>XMAS20</strong>”. 
+				<a class='button button-primary' href='https://www.inqsys.com/duplicate-post-page-menu-custom-post-type-pro-wordpress-plugin/' target='_new'>Get your deals now!</a>
+				<div id='ppmc-not-interested' class='button button-secondry'>Not Interested</div>
 				</div>";
 				
 				$html .= "</div>";
@@ -196,7 +196,7 @@ if ( ! class_exists( 'Duplicate_PPMC_Init' ) ) {
 				if( jQuery() != 'undefined'){
 					jQuery(document).ready(
 						function($){
-							$('#ppmc-dismiss-sale').on('click',function(){
+							$('#ppmc-dismiss-sale,#ppmc-not-interested').on('click',function(){
 								$.ajax({
 									type : 'post',
 									 dataType : 'json',
@@ -219,8 +219,8 @@ if ( ! class_exists( 'Duplicate_PPMC_Init' ) ) {
 
 		function duplicate_ppmc_activate(){
 
-			if( !get_option("dppmc_installationDate") ){
-				update_option("dppmc_installationDate",date('Y-m-d h:i:s') );
+			if( !get_option("dppmc_installationNewDate") ){
+				update_option("dppmc_installationNewDate",date('Y-m-d h:i:s') );
 			}
 			
 			if( !get_option( 'dppmc_post' ) ){

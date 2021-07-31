@@ -1,5 +1,4 @@
-$FontFamilyMain: "Roboto Condensed",
-sans-serif;
+$FontFamilyMain: "Roboto Condensed", sans-serif;
 
 // Font Size set in <html>
 $BaseRemSize: 22;
@@ -30,44 +29,50 @@ $SBS: $BS * $BreakpointSRelation;
 $XSBS: $BS * $BreakpointXSRelation;
 
 // Define used breakpoints
-$Breakpoints: "MAX",
-"L",
-"M",
-"S",
-"XS";
+$Breakpoints: "MAX", "L", "M", "S", "XS";
 
 // Screendesign max width and larger
-$BreakpointMAX: screen and (min-width: $ScreendesignWidthMAX + 0px,
-);
+$BreakpointMAX: screen and
+  (
+    min-width: $ScreendesignWidthMAX + 0px,
+  );
 
 // MacBook Pro (Retina, 15-inch, Mid 2015) screen width
-$BreakpointL: screen and (max-width: $ScreendesignWidthL + 0px,
-);
+$BreakpointL: screen and
+  (
+    max-width: $ScreendesignWidthL + 0px,
+  );
 
 // 1. Gen iPad minmax Max
-$BreakpointM: screen and (max-width: $ScreendesignWidthM + 0px,
-);
+$BreakpointM: screen and
+  (
+    max-width: $ScreendesignWidthM + 0px,
+  );
 
 // 1. Gen iPad minmax Min
-$BreakpointS: screen and (max-width: $ScreendesignWidthS + 0px,
-);
+$BreakpointS: screen and
+  (
+    max-width: $ScreendesignWidthS + 0px,
+  );
 
 // General mobile
-$BreakpointXS: screen and (max-width: $ScreendesignWidthXS + 0px,
-);
+$BreakpointXS: screen and
+  (
+    max-width: $ScreendesignWidthXS + 0px,
+  );
 
 // iPad Resolution (Used to fix bugs in iOS Safari)
-$BreakpointIPadVertical: screen and (width: 768px,
-),
-screen and (height: 1024px,
-);
+$BreakpointIPadVertical: screen and
+    (
+      width: 768px,
+    ),
+  screen and
+    (
+      height: 1024px,
+    );
 
 // Colors
 $White: #eeeeee;
 $Black: #333333;
 $Yellow: #ffb700;
 $YellowDark: #c68e00;
-$Blue: #0dcdff;
-$BlueDark: #1291b3;
-$Violet: #aa14cc;
-$VioletDark: #65067a;

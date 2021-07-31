@@ -1,5 +1,54 @@
 # Change Log
 
+## 3.1.5 - 2021-03-25
+
+### Fixed
+
+- Block permissions not working for nested blocks (e.g. columns)
+
+## 3.1.4 - 2021-03-11
+
+### Changed
+
+- Convert instance of wp.editor to wp.blockEditor
+- Check for MemberPress constant instead of using `is_plugin_active()`
+
+### Fixed
+
+- Compatibility for PHP 8
+
+## 3.1.3 - 2020-09-16
+
+### Changed
+
+- Disabled Content Permissions side meta box
+
+### Fixed
+
+- Issue with comma-separated roles that include spaces
+
+## 3.1.2 - 2020-09-02
+
+### Fixed
+
+- Review prompt should only show to admins
+
+## 3.1.1 - 2020-09-01
+
+### Changed
+
+- Admin UI cleanup
+
+## 3.1.0 - 2020-08-31
+
+### Fixed
+
+- Issue with custom capabilities not saving to custom roles
+
+### Changed
+
+- Admin UI 
+
 ## 3.0.10 - 2020-06-23
 
 ### Fixed

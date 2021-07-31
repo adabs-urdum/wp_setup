@@ -9,5 +9,7 @@
 ?>
 
 <section class="image">
-  <img class="image__image" loading="lazy" src="<?= $src ?>" title="<?= $imgTitle ?>" alt="<?= $alt ?>" srcset="<?= $srcset ?>">
+  <div class="image__wrapper">
+    <img class="image__image" loading="lazy" src="<?= $src ?>" title="<?= $imgTitle ?>" alt="<?= $alt ?>" srcset="<?= $srcset ?>">
+  </div>
 </section>

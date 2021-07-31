@@ -106,6 +106,7 @@ class API extends Base {
 		add_action( 'litespeed_purge_private_all', __NAMESPACE__ . '\Purge::add_private_all' ); // @previous API::purge_private_all()
 		// Action `litespeed_api_purge_post` // Triggered when purge a post // @previous API::hook_purge_post($hook)
 		// Action `litespeed_purged_all` // Triggered after purged all.
+		add_action( 'litespeed_purge_all_object', __NAMESPACE__ . '\Purge::purge_all_object' );
 
 		/**
 		 * ESI
@@ -117,6 +118,7 @@ class API extends Base {
 		// Filter `litespeed_esi_params` // @previous API::hook_esi_param( $hook )
 		// Action `litespeed_tpl_normal` // @previous API::hook_tpl_not_esi($hook) && Action `litespeed_is_not_esi_template`
 		// Action `litespeed_esi_load-$block` // @usage add_action( 'litespeed_esi_load-' . $block, $hook ) // @previous API::hook_tpl_esi($block, $hook)
+		add_action( 'litespeed_esi_combine', __NAMESPACE__ . '\ESI::combine' );
 
 		/**
 		 * Vary
@@ -134,6 +136,11 @@ class API extends Base {
 		 * Cloud
 		 */
 		add_filter( 'litespeed_is_from_cloud', __NAMESPACE__ . '\Cloud::is_from_cloud' ); // Check if current request is from QC (usally its to check REST access) // @see https://wordpress.org/support/topic/image-optimization-not-working-3/
+
+		/**
+		 * Media
+		 */
+		add_action( 'litespeed_media_reset', __NAMESPACE__ . '\Media::delete_attachment' ); // Reset one media row
 
 		/**
 		 * GUI

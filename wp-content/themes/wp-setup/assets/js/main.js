@@ -1,7 +1,7 @@
 "use strict";
 
 import "babel-polyfill";
-import Swiper from "swiper";
+// import Swiper from "swiper";
 import GACE from "./components/googleAnalyticsCustomEvents";
 
 Array.prototype.shuffle = function () {
@@ -23,25 +23,8 @@ document.addEventListener("DOMContentLoaded", function () {
   // const gace = new GACE({
   //   id: "UA-164327129-1",
   // });
-
-  var mySwiper = new Swiper(".gallery", {
-    speed: 400,
-    spaceBetween: 0,
-  });
-
-  class TestClass {
-    constructor() {
-      this.bindEvents();
-    }
-
-    bindEvents = () => {
-      window.addEventListener("resize", this.onWindowResize);
-    };
-
-    onWindowResize = (e) => {
-      console.log("onWindowResize");
-    };
-  }
-
-  const testInstance = new TestClass();
+  // var mySwiper = new Swiper(".gallery", {
+  //   speed: 400,
+  //   spaceBetween: 0,
+  // });
 });

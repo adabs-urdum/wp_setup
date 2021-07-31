@@ -34,7 +34,7 @@ ga('create', 'UA-2092620-46', 'auto');
 
 <header class="header" id="header">
 
-  <div class="header__content">
+  <div class="header__wrapper">
     <div class="header__logoWrapper">
       <a class="header__logoLink" href="/" target="_self">
         <h1>Logo</h1>
