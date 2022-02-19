@@ -47,6 +47,7 @@ Die Ergebnisse von folgenden Tests sind zufriedenstellend
 ### Allgemein
 
 - [ ] Google Analytics ist eingebunden und mit dem korrekten Property verknüpft
+- [ ] Google Search Console ist aufgesetzt
 - [ ] Allfällige Formulare funktionieren einwandfrei und werden an die korrekte Empfänger-Adresse gesendet
 - [ ] Ninja Forms korrekt konfiguriert
 
@@ -56,7 +57,3 @@ Die Ergebnisse von folgenden Tests sind zufriedenstellend
 - [ ] Allfällige DNS-Einträge sind konfiguriert
 - [ ] Allfällige E-Mail-Konten sind eingerichtet
 - [ ] Allfällige Staging-Instanzen sind entfernt
-
-### Administratives
-
-- [ ] Die Website ist in der Google Search Console registriert

@@ -1,0 +1,162 @@
+// Styles
+// name mixin after scss typography
+@mixin typography($type: "") {
+  // get Basesize in correct relation to design width
+  $BS: getBaseSize($type);
+
+  body {
+    font-family: $FontFamilyMain;
+    @include bsFontSize($BS, $BaseRemSize);
+    line-height: 135%;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    line-height: 120%;
+    font-weight: 700;
+
+    &:first-child {
+      margin-top: 0;
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  h1 {
+    @include bsFontSize($BS, 60);
+    line-height: 130%;
+    margin-top: $BS * 60;
+    margin-bottom: $BS * 48;
+  }
+
+  h2 {
+    @include bsFontSize($BS, 48);
+    line-height: 90%;
+    margin-top: $BS * 48;
+    margin-bottom: $BS * 32;
+  }
+
+  h3 {
+    @include bsFontSize($BS, 47);
+    line-height: 120%;
+    margin-top: $BS * 47;
+    margin-bottom: $BS * 32;
+  }
+
+  h4 {
+    @include bsFontSize($BS, 36);
+    line-height: 120%;
+    margin-top: $BS * 36;
+    margin-bottom: $BS * 24;
+  }
+
+  h5 {
+    @include bsFontSize($BS, 24);
+    line-height: 120%;
+    margin-top: $BS * 24;
+    margin-bottom: $BS * 16;
+  }
+
+  h6 {
+    @include bsFontSize($BS, 16);
+    line-height: 135%;
+    font-weight: 400;
+    margin-top: $BS * 16;
+    margin-bottom: $BS * 8;
+  }
+
+  a {
+    position: relative;
+    display: inline-block;
+    text-decoration: none;
+    color: inherit;
+    transition: color 0.2s ease-out;
+
+    &:after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      border-bottom: 2px pink solid;
+      transition: border-color 0.2s ease-out;
+    }
+
+    &:hover {
+    }
+
+    &:active {
+    }
+
+    &:visited {
+      &::after {
+        border-bottom-color: $Black;
+      }
+    }
+  }
+
+  ul,
+  ol,
+  li {
+    padding: 0;
+    list-style: none;
+
+    &:first-child {
+      margin-top: 0;
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  ul {
+    li {
+      // position: relative;
+      padding-left: $BS * 20;
+
+      &:before {
+        content: url('data:image/svg+xml;utf8,<svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M8.98009 10.1061L9.73145 16.2661L8.57442 16.4066L7.83339 10.3312L5.08398 15.8271L4.0414 15.3061L7.21741 8.95734L0.659121 9.02845L0.646484 7.863L6.79086 7.79638L2.28802 3.04581L3.13434 2.24444L7.39535 6.73988L6.66484 0.75066L7.82186 0.610134L8.52192 6.34967L11.2669 0.862504L12.3095 1.38353L9.11402 7.77119L15.6522 7.7003L15.6649 8.86575L9.47399 8.93288L13.9844 13.6914L13.1381 14.4928L8.98009 10.1061Z" fill="%23FF4C00"/></svg>');
+        margin-left: $BS * -20;
+        margin-right: $BS * 10;
+        font-size: 110%;
+        line-height: 50%;
+      }
+    }
+  }
+
+  ol {
+    counter-reset: ol;
+    li {
+      // position: relative;
+      padding-left: $BS * 20;
+
+      &:before {
+        color: pink;
+        counter-increment: ol;
+        content: counter(ol) ".";
+        margin-left: $BS * -20;
+        margin-right: $BS * 10;
+        font-size: 110%;
+        line-height: 50%;
+        font-weight: 700;
+      }
+    }
+  }
+}
+
+// Add typography
+@include typography();
+
+// Add basic typography with breakpoints
+@each $Breakpoint in $Breakpoints {
+  @include breakpoint(#{$Breakpoint}) {
+    @include typography(#{$Breakpoint});
+  }
+}

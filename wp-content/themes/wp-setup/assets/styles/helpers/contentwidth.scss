@@ -1,0 +1,27 @@
+// Styles
+// name mixin after scss contentwidth
+@mixin contentwidth($type: "") {
+  // get Basesize in correct relation to design width
+  $BS: getBaseSize($type);
+  $padding: 64;
+
+  .contentwidth {
+    max-width: $ScreendesignWidthMAX * 1px;
+    max-width: m#{i}n($ScreendesignWidthMAX * 1px, 100vw);
+    margin-left: auto;
+    margin-right: auto;
+    width: $BS * ($ScreendesignWidth + $padding * 2);
+    padding-left: $padding * 64;
+    padding-right: $padding * 64;
+  }
+}
+
+// Add contentwidth
+@include contentwidth();
+
+// Add basic contentwidth with breakpoints
+@each $Breakpoint in $Breakpoints {
+  @include breakpoint(#{$Breakpoint}) {
+    @include contentwidth(#{$Breakpoint});
+  }
+}

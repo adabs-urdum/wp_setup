@@ -4,13 +4,17 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit64bcd231a77bf5f7870b38c2e715eb2f
+class ComposerStaticInitac53ad3fb972de091a07c21ec8d66972
 {
     public static $prefixLengthsPsr4 = array (
         'N' => 
         array (
             'No3x\\WPML\\Tests\\Helper\\' => 23,
             'No3x\\WPML\\Tests\\' => 16,
+        ),
+        'C' => 
+        array (
+            'Composer\\Installers\\' => 20,
         ),
     );
 
@@ -23,6 +27,10 @@ class ComposerStaticInit64bcd231a77bf5f7870b38c2e715eb2f
         array (
             0 => __DIR__ . '/../..' . '/tests/phpunit/tests',
         ),
+        'Composer\\Installers\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/composer/installers/src/Composer/Installers',
+        ),
     );
 
     public static $classMap = array (
@@ -32,9 +40,9 @@ class ComposerStaticInit64bcd231a77bf5f7870b38c2e715eb2f
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit64bcd231a77bf5f7870b38c2e715eb2f::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit64bcd231a77bf5f7870b38c2e715eb2f::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit64bcd231a77bf5f7870b38c2e715eb2f::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitac53ad3fb972de091a07c21ec8d66972::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitac53ad3fb972de091a07c21ec8d66972::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitac53ad3fb972de091a07c21ec8d66972::$classMap;
 
         }, null, ClassLoader::class);
     }

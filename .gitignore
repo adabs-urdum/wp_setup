@@ -20,3 +20,5 @@ wp-content/plugins/hello.php
 Movefile
 */**/node_modules
 .jshintrc
+
+robots.txt
