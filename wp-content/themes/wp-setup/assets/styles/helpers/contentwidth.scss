@@ -6,13 +6,14 @@
   $padding: 64;
 
   .contentwidth {
-    max-width: $ScreendesignWidthMAX * 1px;
-    max-width: m#{i}n($ScreendesignWidthMAX * 1px, 100vw);
+    // max-width: $ScreendesignWidthMAX * 1px;
+    // max-width: m#{i}n($ScreendesignWidthMAX * 1px, 100vw);
     margin-left: auto;
     margin-right: auto;
-    width: $BS * ($ScreendesignWidth + $padding * 2);
-    padding-left: $padding * 64;
-    padding-right: $padding * 64;
+    max-width: $BS * ($ScreendesignWidth + $padding * 2);
+    width: 100%;
+    padding-left: $BS * $padding;
+    padding-right: $BS * $padding;
   }
 }
 

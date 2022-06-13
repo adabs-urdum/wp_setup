@@ -95,9 +95,9 @@
     }
 
     &:visited {
-      &::after {
-        border-bottom-color: $Black;
-      }
+      // &::after {
+      //   border-bottom-color: $Black;
+      // }
     }
   }
 

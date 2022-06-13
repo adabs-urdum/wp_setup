@@ -14,7 +14,7 @@
     "build:cssadmin": "node-sass assets/styles/admin.scss --output-style compressed dist/css/admin.min.css",
     "build:csseditor": "node-sass assets/styles/editor.scss --output-style compressed dist/css/editor.min.css",
     "build:cssblocks": "node-sass assets/styles/adminBlocks.scss --output-style compressed dist/css/blocks.min.css",
-    "build:jsprodOld": "webpack --mode production ./assets/js/main.js --presets --output ./dist/js/functions.min.js --module-bind js=babel-loader",
+    "build:jsprodOld": "webpack --mode production --config ./webpack.config.js",
     "build:jsprod": "esbuild ./assets/js/main.js --outfile=./dist/js/functions.min.js --minify '--define:process.env.NODE_ENV=\"production\"' --bundle --loader:.js=jsx --target=es2016",
     "build:jsdev": "esbuild ./assets/js/main.js --outfile=./dist/js/functions.min.js --sourcemap '--define:process.env.NODE_ENV=\"development\"' --bundle --loader:.js=jsx --target=es2016",
     "watch:cssdev": "onchange 'assets/styles/**/*.scss' -- npm run build:cssdev",

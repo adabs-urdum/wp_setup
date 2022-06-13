@@ -1,11 +1,10 @@
 <?php
-  $img = get_field('image');
-  $caption = $img['caption'];
-  $src = $img['sizes']['L'];
-  $srcset = wp_get_attachment_image_srcset($img['ID']);
-  $alt = $img['alt'] ? $img['alt'] : $img['name'];
-  $imgTitle = $img['title'] ? $img['title'] : $img['name'];
-  $srcset = wp_get_attachment_image_srcset($img['ID']);
+$img = get_field('image');
+$caption = $img['caption'];
+$src = $img['sizes']['L'];
+$srcset = wp_get_attachment_image_srcset($img['ID']);
+$alt = $img['alt'] ? $img['alt'] : $img['name'];
+$imgTitle = $img['title'] ? $img['title'] : $img['name'];
 ?>
 
 <section class="image">

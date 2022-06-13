@@ -50,10 +50,6 @@ button[aria-label="Ausrichtung ändern"] {
   box-shadow: 0 0 0 1.5px $ColorLight;
 }
 
-.wp-core-ui .wp-block {
-  @import "./components/button.scss";
-}
-
 .block-editor-block-contextual-toolbar-wrapper {
   margin-left: 0;
 }

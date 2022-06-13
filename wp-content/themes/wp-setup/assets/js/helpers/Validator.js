@@ -14,7 +14,7 @@ class Validator {
       zipcity: `([\\d]){4}\\s([${this.letters}\\s-.]){2,}`,
       zip: `([\\d]){4}`,
       city: `([${this.letters}\\s-.]){2,}`,
-      mail: `[${this.letters}_.-]{1,}@[${this.letters}_-]{1,}[.]{1}[${this.letters}]{2,3}`,
+      mail: `[${this.letters}_.+-]{1,}@[${this.letters}_.-]{1,}[.]{1}[${this.letters}]{2,3}`,
       pass: `.{5,}`,
     };
 

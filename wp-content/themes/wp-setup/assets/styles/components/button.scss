@@ -4,7 +4,8 @@
   // get Basesize in correct relation to design width
   $BS: getBaseSize($type);
 
-  .button {
+  .button,
+  button {
     display: inline-block;
     font-weight: 700;
     background: $Black;
@@ -15,6 +16,8 @@
     text-decoration: none;
     margin-right: $BS * 16;
     margin-bottom: $BS * 16;
+    border: none;
+    cursor: pointer;
 
     &:hover {
       background: $YellowDark;

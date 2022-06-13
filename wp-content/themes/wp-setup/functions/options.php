@@ -15,6 +15,7 @@ function my_acf_op_init() {
           'position' => '',
           'icon_url' => '',
           'redirect' => false,
+      'post_id' => 'footer'
         ]);
 
         // Add sub page.
@@ -25,5 +26,3 @@ function my_acf_op_init() {
         // ]);
     }
 }
-
-?>

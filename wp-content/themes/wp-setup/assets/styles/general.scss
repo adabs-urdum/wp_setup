@@ -17,12 +17,12 @@
     color: $Black;
     background-color: $Yellow;
     scroll-behavior: smooth;
+    font-display: swap;
   }
 
   body {
     @include bsFontSize($BS, $BaseRemSize);
     line-height: 143%;
-    max-width: $ScreendesignWidthMAX + 0px;
     margin: 0 auto;
   }
 

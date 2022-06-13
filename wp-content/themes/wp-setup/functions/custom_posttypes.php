@@ -24,7 +24,7 @@
 //         'description'         => __( 'Mitarbeiter Detail Info', 'wp-setup' ),
 //         'labels'              => $labels,
 //         // 'supports'            => array('editor'),
-//         'supports'            => array('title'),
+// 'supports'            => ['editor', 'title', 'revisions'],
 //         // 'supports'            => false,
 //         'taxonomies'          => [],
 //         'hierarchical'        => false,
@@ -188,5 +188,3 @@
 // 	}
 // }
 // add_action( 'pre_get_posts', 'my_column_orderby' );
-
-?>

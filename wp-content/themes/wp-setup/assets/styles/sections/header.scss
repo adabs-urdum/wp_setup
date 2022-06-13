@@ -8,7 +8,7 @@
     margin: 0 auto $BS * 128;
     @include bsFontSize($BS, 22);
 
-    &__content {
+    &__wrapper {
       display: flex;
       justify-content: space-between;
     }
@@ -20,9 +20,7 @@
     }
 
     &__menu {
-      ul {
-        display: flex;
-      }
+      display: flex;
     }
   }
 }
@@ -62,7 +60,7 @@
 
     &__mobileNavCheckbox {
       &:checked {
-        &~.header {
+        & ~ .header {
           &__nav {
             transform: translateX(0);
           }

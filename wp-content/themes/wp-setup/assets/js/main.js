@@ -27,4 +27,11 @@ document.addEventListener("DOMContentLoaded", function () {
   //   speed: 400,
   //   spaceBetween: 0,
   // });
+
+  const cookieBox = document.querySelector("div.cookiebox");
+  if (cookieBox) {
+    new CookieBox({
+      section: cookieBox,
+    });
+  }
 });

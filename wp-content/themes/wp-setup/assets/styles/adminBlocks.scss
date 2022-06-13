@@ -6,7 +6,10 @@
 
 .wp-core-ui .wp-block {
   @import "typography";
-  @import "./components/button";
+
+  #tinymce body {
+    @import "./components/button";
+  }
 
   body {
     font-size: 19px;
