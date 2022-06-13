@@ -98,8 +98,8 @@ add_filter('wp_mail_original_content', 'filter_wp_mail_original_content', 10, 1)
 //   $phpmailer->IsSMTP();
 //   $phpmailer->SMTPAuth   = true;  // Authentication
 //   $phpmailer->Host       = 'mail.cyon.ch';
-//   $phpmailer->Username   = 'redaktion@frida-magazin.ch';
-//   $phpmailer->Password   = 'ZGxNyYXn8rGx';
+//   $phpmailer->Username   = 'xyz@test.ch';
+//   $phpmailer->Password   = 'abc';
 //   $phpmailer->SMTPSecure = 'ssl'; // Enable if required - 'tls' is another possible value
 //   $phpmailer->Port       = 465;    // SMTP Port - 26 is for GMail
 // }
