@@ -1,8 +1,41 @@
 <?php
 
+// // Register custom taxonomy
+// //----------------------------------------------------------
+// function registerCustomTaxonomy() {
+
+//   $labels = [
+//     'name' => _x( 'Bereiche', 'taxonomy general name' ),
+//     'singular_name' => _x( 'Bereich', 'taxonomy singular name' ),
+//     'search_items' =>  __( 'Bereiche durchsuchen' ),
+//     'all_items' => __( 'Alle Bereiche' ),
+//     'parent_item' => __( 'Übergeordneter Bereich' ),
+//     'parent_item_colon' => __( 'Parent Bereich:' ),
+//     'edit_item' => __( 'Bereich bearbeiten' ),
+//     'update_item' => __( 'Bereich aktualisieren' ),
+//     'add_new_item' => __( 'Bereich hinzufügen' ),
+//     'new_item_name' => __( 'Neuer Bereich' ),
+//     'menu_name' => __( 'Bereiche' ),
+//   ];
+
+//   register_taxonomy('Bereiche',['service'], [
+//     'hierarchical' => true,
+//     'labels' => $labels,
+//     'show_ui' => true,
+//     'show_admin_column' => true,
+//     'query_var' => true,
+//     'rewrite' => ['slug' => 'genre'],
+// 'show_in_quick_edit' => false,
+//     'meta_box_cb' => false,
+//   ]);
+
+// }
+// add_action( 'init', 'registerCustomTaxonomy', 0 );
+// //----------------------------------------------------------
+
 // // Register Custom Post Types
 // //----------------------------------------------------------
-// function register_custom_post_type_key_visuals() {
+// function register_custom_post_types() {
 
 //     $labels = array(
 //         'name'                => __( 'Dienstleistung', 'wp-setup' ),
@@ -48,39 +81,7 @@
 
 // }
 
-// add_action( 'init', 'register_custom_post_type_key_visuals', 0 );
-// //----------------------------------------------------------
-
-
-// // Register custom taxonomy
-// //----------------------------------------------------------
-// function registerEmployeeCategory() {
-
-//   $labels = [
-//     'name' => _x( 'Bereiche', 'taxonomy general name' ),
-//     'singular_name' => _x( 'Bereich', 'taxonomy singular name' ),
-//     'search_items' =>  __( 'Bereiche durchsuchen' ),
-//     'all_items' => __( 'Alle Bereiche' ),
-//     'parent_item' => __( 'Übergeordneter Bereich' ),
-//     'parent_item_colon' => __( 'Parent Bereich:' ),
-//     'edit_item' => __( 'Bereich bearbeiten' ),
-//     'update_item' => __( 'Bereich aktualisieren' ),
-//     'add_new_item' => __( 'Bereich hinzufügen' ),
-//     'new_item_name' => __( 'Neuer Bereich' ),
-//     'menu_name' => __( 'Bereiche' ),
-//   ];
-
-//   register_taxonomy('Bereiche',['service'], [
-//     'hierarchical' => true,
-//     'labels' => $labels,
-//     'show_ui' => true,
-//     'show_admin_column' => true,
-//     'query_var' => true,
-//     'rewrite' => ['slug' => 'genre'],
-//   ]);
-
-// }
-// add_action( 'init', 'registerEmployeeCategory', 0 );
+// add_action( 'init', 'register_custom_post_types', 0 );
 // //----------------------------------------------------------
 
 
