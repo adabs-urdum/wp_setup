@@ -35,53 +35,66 @@
 
 // // Register Custom Post Types
 // //----------------------------------------------------------
-// function register_custom_post_types() {
+// function register_custom_post_types()
+// {
 
+//   $customPostTypes = [
+//     [
+//       'name' => 'course',
+//       'singular' => 'Kurs',
+//       'plural' => 'Kurse',
+//       'supports' => ['editor', 'title', 'revisions'],
+//       // 'supports' => ['editor'],
+//       // 'supports' => false,
+//       'rewrite' => ['slug' => 'angebot'],
+//       'show_in_rest' => false,
+//     ]
+//   ];
+
+//   foreach ($customPostTypes as $customPostType) {
 //     $labels = array(
-//         'name'                => __( 'Dienstleistung', 'wp-setup' ),
-//         'singular_name'       => __( 'Dienstleistung', 'wp-setup' ),
-//         'menu_name'           => __( 'Dienstleistungen', 'wp-setup' ),
-//         'parent_item_colon'   => __( 'Dienstleistung', 'wp-setup' ),
-//         'all_items'           => __( 'Alle Dienstleistungen', 'wp-setup' ),
-//         'view_item'           => __( 'Dienstleistung ansehen', 'wp-setup' ),
-//         'add_new_item'        => __( 'Dienstleistung hinzufügen', 'wp-setup' ),
-//         'add_new'             => __( 'Neue hinzufügen', 'wp-setup' ),
-//         'edit_item'           => __( 'Dienstleistung bearbeiten', 'wp-setup' ),
-//         'update_item'         => __( 'Dienstleistung aktualisieren', 'wp-setup' ),
-//         'search_items'        => __( 'Dienstleistung suchen', 'wp-setup' ),
-//         'not_found'           => __( 'Nicht gefunden', 'wp-setup' ),
-//         'not_found_in_trash'  => __( 'Nicht im Papierkorb gefunden', 'wp-setup' ),
+//       'name'                => __($customPostType['plural'], 'wp-setup'),
+//       'singular_name'       => __("{$customPostType['singular']}", 'wp-setup'),
+//       'menu_name'           => __($customPostType['plural'], 'wp-setup'),
+//       'parent_item_colon'   => __("{$customPostType['singular']}", 'wp-setup'),
+//       'all_items'           => __("Alle {$customPostType['plural']}", 'wp-setup'),
+//       'view_item'           => __("{$customPostType['singular']} ansehen", 'wp-setup'),
+//       'add_new_item'        => __("{$customPostType['singular']} hinzufügen", 'wp-setup'),
+//       'add_new'             => __("{$customPostType['singular']} hinzufügen", 'wp-setup'),
+//       'edit_item'           => __("{$customPostType['singular']} bearbeiten", 'wp-setup'),
+//       'update_item'         => __("{$customPostType['singular']} aktualisieren", 'wp-setup'),
+//       'search_items'        => __("{$customPostType['singular']} suchen", 'wp-setup'),
+//       'not_found'           => __('Nicht gefunden', 'wp-setup'),
+//       'not_found_in_trash'  => __('Nicht im Papierkorb gefunden', 'wp-setup'),
 //     );
 //     $args = array(
-//         'label'               => __( 'service', 'wp-setup' ),
-//         'description'         => __( 'Mitarbeiter Detail Info', 'wp-setup' ),
-//         'labels'              => $labels,
-//         // 'supports'            => array('editor'),
-// 'supports'            => ['editor', 'title', 'revisions'],
-//         // 'supports'            => false,
-//         'taxonomies'          => [],
-//         'hierarchical'        => false,
-//         'public'              => true,
-//         'show_ui'             => true,
-//         'show_in_menu'        => true,
-//         'show_in_nav_menus'   => true,
-//         'show_in_admin_bar'   => true,
-//         // 'show_in_rest'        => true,
-//         'menu_position'       => 5,
-//         'menu_icon'           => 'dashicons-universal-access',
-//         'can_export'          => true,
-//         'has_archive'         => false,
-//         'exclude_from_search' => false,
-//         'publicly_queryable'  => true,
-//         'capability_type'     => 'page',
+//       'label'               => __($customPostType['name'], 'wp-setup'),
+//       'description'         => __("{$customPostType['singular']} Detail Info", 'wp-setup'),
+//       'labels'              => $labels,
+//       'supports'            => $customPostType['supports'],
+//       'taxonomies'          => [],
+//       'hierarchical'        => false,
+//       'public'              => true,
+//       'show_ui'             => true,
+//       'show_in_menu'        => true,
+//       'show_in_nav_menus'   => true,
+//       'show_in_admin_bar'   => true,
+//       'show_in_rest'        => $customPostType['show_in_rest'],
+//       'menu_position'       => 21,
+//       'menu_icon'           => 'dashicons-universal-access',
+//       'can_export'          => true,
+//       'has_archive'         => false,
+//       'exclude_from_search' => false,
+//       'publicly_queryable'  => true,
+//       'capability_type'     => 'page',
+//       'rewrite' => $customPostType['rewrite'],
 //     );
-//     register_post_type( 'service', $args );
+//     register_post_type($customPostType['name'], $args);
+//   }
 
-//     flush_rewrite_rules();
-
+//   flush_rewrite_rules();
 // }
-
-// add_action( 'init', 'register_custom_post_types', 0 );
+// add_action('init', 'register_custom_post_types', 0);
 // //----------------------------------------------------------
 
 

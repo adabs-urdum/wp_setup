@@ -1,21 +1,17 @@
 jQuery(document).ready(function () {
-  jQuery("#njt-FileBird-review a").on("click", function () {
+  jQuery("#njt-FileBird-review a, #njt-FileBird-review button.notice-dismiss").on("click", function () {
     var thisElement = this;
     var fieldValue = jQuery(thisElement).attr("data");
     var proLink = "https://codecanyon.net/item/media-folders-manager-for-wordpress/reviews/21715379?utf8=%E2%9C%93&reviews_controls%5Bsort%5D=ratings_descending";
-    var freeLink = "https://wordpress.org/support/plugin/filebird/reviews/#new-post";
     var hidePopup = false;
     if (fieldValue == "rateNow") {
-      fieldValue = "ratePro";
-      if (fieldValue == "ratePro") {
-        window.open(proLink, "_blank");
-      }
-
-      if (fieldValue == "rateFree") {
-        window.open(freeLink, "_blank");
-      }
+      window.open(proLink, "_blank");
     } else {
       hidePopup = true;
+    }
+  
+    if (jQuery(thisElement).hasClass('notice-dismiss')) {
+      fieldValue = 'later'
     }
 
     jQuery

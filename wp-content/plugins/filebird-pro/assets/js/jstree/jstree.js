@@ -3,11 +3,7 @@
 	"use strict";
 	if (typeof define === 'function' && define.amd) {
 		define(['jquery'], factory);
-	}
-	else if(typeof module !== 'undefined' && module.exports) {
-		module.exports = factory(require('jquery'));
-	}
-	else {
+	} else {
 		factory(jQuery);
 	}
 }(function ($, undefined) {
@@ -650,6 +646,7 @@
 		 */
 		_create_prototype_node : function () {
 			var _node = document.createElement('LI'), _temp1, _temp2;
+			var svgIcon = this.settings.core.svgIcon
 			_node.setAttribute('role', 'treeitem');
 			_temp1 = document.createElement('I');
 			_temp1.className = 'jstree-icon jstree-ocl';
@@ -662,10 +659,12 @@
 			_temp2 = document.createElement('I');
 			_temp2.className = 'jstree-icon jstree-themeicon';
 			_temp2.setAttribute('role', 'presentation');
+			if (svgIcon){
+				_temp2.appendChild(jQuery.parseHTML(svgIcon)[0])
+			} 
 			_temp1.appendChild(_temp2);
 			_node.appendChild(_temp1);
 			_temp1 = _temp2 = null;
-
 			return _node;
 		},
 		_kbevent_to_func : function (e) {
@@ -2584,7 +2583,9 @@
 				node.childNodes[1].appendChild(d.createTextNode(obj.text));
 			}
 			else {
-				node.childNodes[1].innerHTML += obj.text;
+				var nodeText = d.createElement('SPAN')
+				nodeText.innerHTML = obj.text
+				node.childNodes[1].appendChild(nodeText)
 			}
 
 
@@ -6563,63 +6564,6 @@
 						$.vakata.context.hide();
 					}
 				})
-				.on('keydown', 'a', function (e) {
-						var o = null;
-						switch(e.which) {
-							case 13:
-							case 32:
-								e.type = "click";
-								e.preventDefault();
-								$(e.currentTarget).trigger(e);
-								break;
-							case 37:
-								if(vakata_context.is_visible) {
-									vakata_context.element.find(".vakata-context-hover").last().closest("li").first().find("ul").hide().find(".vakata-context-hover").removeClass("vakata-context-hover").end().end().children('a').focus();
-									e.stopImmediatePropagation();
-									e.preventDefault();
-								}
-								break;
-							case 38:
-								if(vakata_context.is_visible) {
-									o = vakata_context.element.find("ul:visible").addBack().last().children(".vakata-context-hover").removeClass("vakata-context-hover").prevAll("li:not(.vakata-context-separator)").first();
-									if(!o.length) { o = vakata_context.element.find("ul:visible").addBack().last().children("li:not(.vakata-context-separator)").last(); }
-									o.addClass("vakata-context-hover").children('a').focus();
-									e.stopImmediatePropagation();
-									e.preventDefault();
-								}
-								break;
-							case 39:
-								if(vakata_context.is_visible) {
-									vakata_context.element.find(".vakata-context-hover").last().children("ul").show().children("li:not(.vakata-context-separator)").removeClass("vakata-context-hover").first().addClass("vakata-context-hover").children('a').focus();
-									e.stopImmediatePropagation();
-									e.preventDefault();
-								}
-								break;
-							case 40:
-								if(vakata_context.is_visible) {
-									o = vakata_context.element.find("ul:visible").addBack().last().children(".vakata-context-hover").removeClass("vakata-context-hover").nextAll("li:not(.vakata-context-separator)").first();
-									if(!o.length) { o = vakata_context.element.find("ul:visible").addBack().last().children("li:not(.vakata-context-separator)").first(); }
-									o.addClass("vakata-context-hover").children('a').focus();
-									e.stopImmediatePropagation();
-									e.preventDefault();
-								}
-								break;
-							case 27:
-								$.vakata.context.hide();
-								e.preventDefault();
-								break;
-							default:
-								//console.log(e.which);
-								break;
-						}
-					})
-				.on('keydown', function (e) {
-					e.preventDefault();
-					var a = vakata_context.element.find('.vakata-contextmenu-shortcut-' + e.which).parent();
-					if(a.parent().not('.vakata-context-disabled')) {
-						a.click();
-					}
-				});
 
 			$(document)
 				.on("mousedown.vakata.jstree", function (e) {
@@ -6740,7 +6684,7 @@
 						}
 						var obj = this.get_node(e.target),
 							mlt = this.is_selected(obj) && this.settings.dnd.drag_selection ? this.get_top_selected().length : 1,
-							txt = (mlt > 1 ? mlt + ' ' + this.get_string('nodes') : this.get_text(e.currentTarget));
+							txt = (mlt > 1 ? mlt + ' ' + this.get_string('folders') : this.get_text(e.currentTarget));
 						if(this.settings.core.force_text) {
 							txt = $.vakata.html.escape(txt);
 						}

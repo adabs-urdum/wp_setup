@@ -1,3 +1,205 @@
+Sep 12, 2022 - Version 5.0.6
+- Fixed: SVG Icon in Safari
+- Added: Notice when create/update folder fail
+- Fixed: FileBird Gallery not display image when using EWWW Image Optimizer plugin
+- Fixed: Some bugs
+
+Aug 11, 2022 - Version 5.0.5
+- Added: Support Avada Theme
+- Fixed: Bugs
+
+Aug 9, 2022 - Version 5.0.4
+- Added: Support Bricks builder
+- Fixed: Issue with wordpress.com
+- Fixed: Compatible with Themify
+
+Jul 22, 2022 - Version 5.0.3
+- Improved: Folder name sorting
+- Fixed: Import from 3rd party plugins
+
+Jul 21, 2022 - Version 5.0.2
+- Removed: CSS Gallery when not using Gutenberg
+- Fixed: PHP warning
+
+Jul 5, 2022 - Version 5.0.1
+- Updated: Korean Language
+- Removed: All .DS_Store files
+- Fixed: Schedule permission error
+- Fixed: Conflict with Oxygen Builder
+- Fixed: Module build failed
+
+Jun 30, 2022 - Version 5.0
+- Added: FileBird Themes (Windows 11, Dropbox)
+- Added: FileBird Folder colors
+- Added: Move folders in bulk
+- Added: FileBird Gallery Layouts (Flex | Manasory | Grid) and Lightbox
+- Added: New Sort by Size and Generate attachment size
+- Added: New API method for Dev
+- Added: Some new settings
+- Added: Full Support Gutenberg Block Translation with new json file (you can generate by using wp i18n make-json which have been published by WP version 5)
+- Added: Support Korean Language
+- Added: Support Themify
+- Added: Recommended plugins
+- Optimized: Performance (FileBird 5 loads the previous versions, refactored code base, optimized query, removed some library, changed structure)
+- Improved: UI and notices
+- Improved: FileBird Auto Update, License checking
+- Updated: POT file
+- Fixed: CSS with LMS Plugin
+- Fixed: Minimize Upload Popup
+- Fixed: Warning in PHP 8 (Tested in PHP 8.1)
+- Fixed: Schedule Auto Clean Temp folder when using folder download function
+- Fixed: Divi Builder Bug
+- Fixed: Generate name when download folder
+- Fixed: Compatible with Enhanced Media plugin
+- Fixed: Some bugs
+
+Feb 9, 2022 - Version 4.9.9.1
+- Optimized code
+
+Jan 7, 2022 - Version 4.9.9
+- Fixed: Slow query 
+- Fixed: File permissions
+- Fixed: Hide tab Import/Export error
+
+Dec 30, 2021 - Version 4.9.8
+- Added: Import/Export folder structure into CSV
+- Added: Flat/Default tree view in modal
+- Improved: UI and text
+- Fixed: Conflict with Envato market
+
+Dec 10, 2021 - Version 4.9.7
+- Fixed: Conflict with ACF 
+- Fixed: Error in folder.php
+
+Dec 6, 2021 - Version 4.9.6
+- Added: Support MailPoet
+
+Dec 2, 2021 - Version 4.9.5
+- Added: Folder selector in Edit media
+- Fixed: WooCommerce conflict (break Upload Theme button)
+
+Nov 10, 2021 - Version 4.9.4
+- Fixed: Elementor With PolyLang wrong folder counter
+- Fixed: Image ALT in FileBird Gutenberg Gallery
+
+Sep 29, 2021 – Version 4.9.3
+- Added: Import folders for Folders by Premio
+- Fixed: Compatible with WordPress old versions
+
+Sep 9, 2021 – Version 4.9.2
+- Improved: Import notice
+- Fixed: Some small bugs
+
+Aug 25, 2021 - Version 4.9.1
+- Fixed: Auto update schedule
+- Fixed: Gutenberg widgets missing
+
+Aug 13, 2021 - Version 4.9
+- Added: Infinite scroll
+- Added: Plugin activation alert
+- Added: Sorting by File Name in FileBird Gallery
+- Improved: Folder name sorting
+- Improved: DE Language
+- Fixed: Drag files in Tablet (not include Ipad Pro)
+
+Jul 21, 2021 - Version 4.8
+- Fixed: Compatible with WordPress 5.8
+- Fixed: Replace image
+
+Jul 15, 2021 - Version 4.7.9
+- Fixed: Elementor Modal Upload image
+- Fixed: Add New Folder bug
+
+
+Jul 14, 2021 - Version 4.7.8
+– Fixed: Conflict with Photo Gallery plugin
+– Fixed: ACF warning
+– Fixed: ACF meta field image can’t load
+– Fixed: WPML Counter (in WPML latest version 4.4.10)
+
+Jul 2, 2021 - Version 4.7.7
+- Added: Notice when a license was used
+- Fixed: Loading Uncategorized folder
+- Fixed: Context menu position
+- Fixed: Small bugs
+
+Jun 25, 2021 - Version 4.7.6
+- Fixed: Auto update
+
+Jun 24, 2021 - Version 4.7.5
+- Supported: Enhanced Media Library
+- Supported: Media Library Assistant
+- Improved: Load large files
+- Improved: Translation (Added missing strings)
+- Fixed: Security
+
+Jun 15, 2021 - Version 4.7.4
+- Updated: Languages
+– Fixed: JS conflict with Divi builder
+– Fixed: WPML non translated mode make folder counter and files in folders get wrong
+– Fixed: Conflict with Debug Bar plugin
+– Fixed: PolyLang get missing files in folder
+– Fixed: Folder always loading
+– Fixed: Important security updates
+
+May 26, 2021 - Version 4.7.3
+
+- Added: Support Dokan plugin
+- Improved: FileBird UI in Mobile
+- Improved: Library
+- Improved: Translations, update POT file
+- Fixed: Auto Update function conflict with plugins and themes
+- Fixed: Image validation for ACF plugin
+- Fixed: Counter wrong in Elementor Pro
+- Fixed: Gutenberg issues (Wrong tag in frontend, Large images chosen when create gallery)
+- Fixed: Missing language "NL"
+- Fixed: RestAPI (404 Error)
+- Fixed: WPML/Polylang Full Compatible modes in Setting Media, support "All languages in admin bar", wrong Counter
+
+Apr 7, 2021 - Version 4.7.2
+- Added: Upload multiple images in multiple folders when upload processing
+- Fixed: Can't set folder Uncategorized as default in folder load
+- Fixed: Append right folder
+- Fixed: Update database make folders duplicated when "Each user folder mode" enabled
+- Improved: Tooltip
+- Improved: UI
+- Improved: Activation 
+- Optimized: Filebird Zip Size
+
+Mar 30, 2021 - Version 4.7
+- Added: New Resize bar
+- Added: Support PHP 8 and greater
+- Added: Support Tatsu Builder
+- Improved: Performance
+- Improved: Optimize code
+- Improved: UI
+- Improved: Text
+- Fixed: Counter in WPML
+- Fixed: Tooltip bugs
+- Fixed: Can't set "Uncategorized" default folder load
+- Fixed: Reorder on Edit gallery
+- Fixed: Small bugs
+
+Mar 12, 2021 - Version 4.6
+- Added: Set auto sorting for files
+- Added: Auto updates via Envato login
+- Added: Sync Gutenberg gallery 
+- Updated: Pot files
+
+Jan 18, 2021 - Version 4.4
+- Added: Download folder feature
+- Improved: Performance
+- Fixed: Duplicate folder when import
+- Fixed: Folder tree scroll
+
+Jan 4, 2021 - Version 4.3.2
+- Fixed: Drag and drop on Tablet
+- Fixed: Edit Gallery
+- Fixed: Set over the max number of AttachmentID 
+- Fixed: FileBird Gallery selector in Gutenberg
+- Fixed: CSS conflict with Shortpixel plugin
+- Removed: Drag and drop on Mobile
+
 Dec 21, 2020 - Version 4.3.1
 - Added: Support shortcode for Document Gallery
 - Added: API - Get folder detail by folder_id

@@ -37,6 +37,7 @@ add_theme_support('title-tag');
 define('FS_METHOD', 'direct');
 //----------------------------------------------------------
 
+include_once(get_stylesheet_directory() . '/functions/admin.php');
 include_once(get_stylesheet_directory() . '/functions/scripts_styles.php');
 include_once(get_stylesheet_directory() . '/functions/menu.php');
 include_once(get_stylesheet_directory() . '/functions/disable.php');

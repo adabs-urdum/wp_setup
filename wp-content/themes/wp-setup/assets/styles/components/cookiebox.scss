@@ -20,9 +20,11 @@
     &__box {
       width: 100%;
       max-width: $BS * 800;
+      max-height: 100%;
       margin: 0 auto;
       padding: $BS * 64;
       background-color: #eeeeee;
+      overflow: auto;
     }
 
     &__tabWrapper {
@@ -120,5 +122,28 @@
 @each $Breakpoint in $Breakpoints {
   @include breakpoint(#{$Breakpoint}) {
     @include cookiebox(#{$Breakpoint});
+  }
+}
+
+@include breakPointS() {
+  $BS: getBaseSize("S");
+
+  .cookiebox {
+    padding: $BS * 64;
+
+    &__box {
+      padding: $BS * 64;
+    }
+
+    &__buttonWrapper {
+      flex-direction: column;
+
+      .button {
+        &:nth-child(2) {
+          margin-top: $BS * 16;
+          margin-left: 0;
+        }
+      }
+    }
   }
 }
